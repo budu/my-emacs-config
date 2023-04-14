@@ -20,20 +20,26 @@
 
 (setq inhibit-startup-message t)
 
-(column-number-mode)									; show column in mode line
-(global-display-line-numbers-mode t)	; show line numbers
-(menu-bar-mode -1)										; disable the menu bar
-(scroll-bar-mode -1)									; disable visible scrollbar
-(set-fringe-mode 10)									; give some breathing room
-(tool-bar-mode -1)										; disable the toolbar
-(tooltip-mode -1)											; disable tooltips
+(column-number-mode)                 ; show column in mode line
+(global-display-line-numbers-mode t) ; show line numbers
+(menu-bar-mode -1)                   ; disable the menu bar
+(scroll-bar-mode -1)                 ; disable visible scrollbar
+(set-fringe-mode 10)                 ; give some breathing room
+(tool-bar-mode -1)                   ; disable the toolbar
+(tooltip-mode -1)                    ; disable tooltips
 
 ;;;; personal preference
 
-(setq-default 
+(setq-default
  fill-column 92
  indent-tabs-mode nil
+ show-trailing-whitespace t
  tab-width 2)
+
+;; don't use tabs in align-regexp
+(defadvice align-regexp (around align-regexp-with-spaces activate)
+  (let ((indent-tabs-mode nil))
+    ad-do-it))
 
 ;;;; fonts
 
@@ -42,20 +48,20 @@
 ;;;; key bindings
 
 (global-set-key "\C-c\C-c" 'comment-or-uncomment-region)
-(global-set-key "\C-h"		 'delete-backward-char)         ; displace help-command
-(global-set-key "\C-m"		 'mu/kmacro-start-or-end-macro) ; displace newline
-(global-set-key "\C-w"		 'backward-kill-word)           ; displace kill-region
+(global-set-key "\C-h"     'delete-backward-char)         ; displace help-command
+(global-set-key "\C-m"     'mu/kmacro-start-or-end-macro) ; displace newline
+(global-set-key "\C-w"     'backward-kill-word)           ; displace kill-region
 (global-set-key "\C-x\C-b" 'mu/switch-to-last-buffer)     ; displace list-buffers
 (global-set-key "\C-x\C-c" 'kill-region)                  ; displace save-buffers-kill-terminal
 (global-set-key "\C-x\M-q" 'save-buffers-kill-emacs)
-(global-set-key "\M-j"		 'next-window-any-frame)        ; displace default-indent-new-line
-(global-set-key "\M-k"		 'previous-window-any-frame)    ; displace kill-sentence
+(global-set-key "\M-j"     'next-window-any-frame)        ; displace default-indent-new-line
+(global-set-key "\M-k"     'previous-window-any-frame)    ; displace kill-sentence
 
 (global-set-key (kbd "C-'") 'mu/touch)
 
 (global-set-key "\C-z"    "()\C-b") ; displace suspend-frame
 (global-set-key "\M-z"    "[]\C-b") ; displace zap-to-char
-(global-set-key "\C-\M-z" "{}\C-b") 
+(global-set-key "\C-\M-z" "{}\C-b")
 
 ;;;; packages
 
