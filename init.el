@@ -47,9 +47,10 @@
 
 ;;;; key bindings
 
+(define-key input-decode-map [?\C-m] [C-m])
+
 (global-set-key "\C-c\C-c" 'comment-or-uncomment-region)
 (global-set-key "\C-h"     'delete-backward-char)         ; displace help-command
-(global-set-key "\C-m"     'mu/kmacro-start-or-end-macro) ; displace newline
 (global-set-key "\C-w"     'backward-kill-word)           ; displace kill-region
 (global-set-key "\C-x\C-b" 'mu/switch-to-last-buffer)     ; displace list-buffers
 (global-set-key "\C-x\C-c" 'kill-region)                  ; displace save-buffers-kill-terminal
@@ -57,7 +58,8 @@
 (global-set-key "\M-j"     'next-window-any-frame)        ; displace default-indent-new-line
 (global-set-key "\M-k"     'previous-window-any-frame)    ; displace kill-sentence
 
-(global-set-key (kbd "C-'") 'mu/touch)
+(global-set-key (kbd "C-'")   'mu/touch)
+(global-set-key (kbd "<C-m>") 'mu/kmacro-start-or-end-macro) ; displace newline
 
 (global-set-key "\C-z"    "()\C-b") ; displace suspend-frame
 (global-set-key "\M-z"    "[]\C-b") ; displace zap-to-char
