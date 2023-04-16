@@ -250,4 +250,17 @@
 ;;;; prog
 
 (add-hook 'prog-mode-hook 'electric-pair-mode)
+
+(use-package coffee-mode)
+(use-package elisp-lint)
+(use-package rvm :init (rvm-use-default))
+(use-package scss-mode)
+(use-package yaml-mode)
+
+;;;; emmet
+
+(use-package emmet-mode
+  :hook sgml-mode
+  :bind ("C-j" . newline-and-indent))
+
 ;;;; end
