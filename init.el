@@ -217,3 +217,19 @@
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
+
+;;;; end
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(company-box company lsp-ivy lsp-treemacs lsp-ui spinner lsp-mode counsel-projectile projectile helpful which-key ivy-rich ivy counsel rainbow-delimiters doom-themes doom-modeline all-the-icons zenburn-theme use-package slim-mode ruby-electric markdown-mode magit load-relative helm-ls-git helm-ag emojify)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
