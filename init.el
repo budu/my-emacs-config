@@ -100,6 +100,14 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package emojify
+  :hook (after-init . global-emojify-mode)
+  :config
+  (setq emojify-user-emojis
+        '((":memo:" . (("name" . "Memo")
+                       ("image" . "~/.emacs.d/emojis/1f4dd.png")
+                       ("style" . "github"))))))
+
 ;;;; backups
 
 (setq
