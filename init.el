@@ -195,13 +195,14 @@
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :bind
-  (("C-c C-f" . projectile-find-file))
+  (("C-c f" . projectile-find-file))
+  (("C-c s" . projectile-ripgrep))
   :init
   (when (file-directory-p "~/cg")
     (setq projectile-project-search-path '("~/cg")))
   (when (file-directory-p "~/project")
     (setq projectile-project-search-path '("~/project")))
-  (setq projectile-switch-project-action #'projectile-dired))
+  (setq projectile-switch-project-action #'projectile-vc))
 
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
