@@ -62,6 +62,8 @@
   (let ((indent-tabs-mode nil))
     ad-do-it))
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;;;; fonts
 
 (set-face-attribute 'default nil :font "Fira Code Retina" :height mu/default-font-size)
