@@ -170,6 +170,12 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
+;;;; translation
+
+(use-package lingva
+  :bind
+  ("C-c t" . lingva-translate))
+
 ;;;; magit
 
 (use-package magit
