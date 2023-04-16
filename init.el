@@ -168,6 +168,14 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
+;;;; magit
+
+(use-package magit
+  :commands magit-status
+  :custom
+  (magit-display-buffer-function
+   #'magit-display-buffer-same-window-except-diff-v1))
+
 ;;;; projectile
 
 (use-package projectile
