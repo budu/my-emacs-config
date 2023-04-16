@@ -51,6 +51,8 @@
 
 ;;;; personal preference
 
+(setq custom-file "custom.el")
+
 (setq-default
  fill-column 92
  indent-tabs-mode nil
