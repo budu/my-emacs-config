@@ -247,4 +247,7 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
+;;;; prog
+
+(add-hook 'prog-mode-hook 'electric-pair-mode)
 ;;;; end
