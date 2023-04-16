@@ -176,6 +176,8 @@
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap
   ("C-c p" . projectile-command-map)
+  :bind
+  (("C-c C-f" . projectile-find-file))
   :init
   (when (file-directory-p "~/cg")
     (setq projectile-project-search-path '("~/cg")))
