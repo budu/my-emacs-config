@@ -85,6 +85,7 @@
 
 (global-set-key (kbd "C-'")   'mu/touch)
 (global-set-key (kbd "<C-m>") 'mu/kmacro-start-or-end-macro) ; displace newline
+(global-set-key (kbd "<f12>") (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
 (global-set-key "\C-z"    "()\C-b") ; displace suspend-frame
 (global-set-key "\M-z"    "[]\C-b") ; displace zap-to-char
