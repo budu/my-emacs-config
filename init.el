@@ -37,6 +37,10 @@
 
 (defvar mu/default-font-size 180)
 
+;;;; local vars overrides
+
+(load-relative "local-vars.el")
+
 ;;;; minimalism
 
 (setq inhibit-startup-message t)
