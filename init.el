@@ -8,6 +8,14 @@
 ;;;;;;;; bash/readline configuration.
 ;;;;;;;;
 
+;;;; shims
+
+(let ((dir (expand-file-name "~/.asdf/shims/")))
+  (when (and (file-directory-p dir)
+             (not (member dir exec-path)))
+    (setenv "PATH" (concat (getenv "PATH") (concat ":" dir)))
+    (setq exec-path (push dir exec-path))))
+
 ;;;; packages
 
 (require 'package)
