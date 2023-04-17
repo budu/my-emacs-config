@@ -200,6 +200,7 @@
 (use-package flyspell
   :hook
   (text-mode . flyspell-mode)
+  (prog-mode . flyspell-prog-mode)
   :config
   (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
     (add-hook hook (lambda () (flyspell-mode -1)))))
