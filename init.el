@@ -276,4 +276,12 @@
   :hook sgml-mode
   :bind ("C-j" . newline-and-indent))
 
+;;;; direnv
+
+(use-package direnv
+  :config
+  (defun direnv--detect ()
+    "/home/budu/.asdf/shims/direnv")
+  (direnv-mode))
+
 ;;;; end
