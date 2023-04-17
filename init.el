@@ -195,6 +195,22 @@
   :bind
   ("C-c t" . lingva-translate))
 
+;;;; spelling
+
+(use-package flyspell
+  :hook
+  (text-mode . flyspell-mode)
+  :config
+  (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
+    (add-hook hook (lambda () (flyspell-mode -1)))))
+
+(use-package flyspell-correct
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+
+(use-package flyspell-correct-ivy
+  :after flyspell-correct)
+
 ;;;; magit
 
 (use-package magit
