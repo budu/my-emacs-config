@@ -37,6 +37,8 @@
 
 (defvar mu/default-font-size 180)
 
+(setq scheme-program-name "racket")
+
 ;;;; local vars overrides
 
 (load-relative "local-vars.el")
@@ -256,6 +258,7 @@
 
 (use-package coffee-mode)
 (use-package elisp-lint)
+(use-package geiser-racket)
 (use-package rvm :init (rvm-use-default))
 (use-package scss-mode)
 (use-package yaml-mode)
