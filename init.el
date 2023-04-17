@@ -71,7 +71,8 @@
  fill-column 92
  indent-tabs-mode nil
  show-trailing-whitespace t
- tab-width 2)
+ tab-width 2
+ css-indent-offset 2)
 
 ;; don't use tabs in align-regexp
 (defadvice align-regexp (around align-regexp-with-spaces activate)
