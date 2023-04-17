@@ -283,9 +283,12 @@
 (use-package elisp-lint)
 (use-package geiser-racket)
 (use-package inf-ruby)
-(use-package rvm :init (rvm-use-default))
 (use-package scss-mode)
 (use-package yaml-mode)
+
+(use-package rvm
+  :init (rvm-use-default)
+  :bind ("C-M-g" . rvm-open-gem))
 
 ;;;; emmet
 
