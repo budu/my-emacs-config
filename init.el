@@ -214,6 +214,7 @@
   :bind
   (("C-c f" . projectile-find-file))
   (("C-c s" . projectile-ripgrep))
+  (("C-F" . projectile-find-file))
   :init
   (when (file-directory-p "~/cg")
     (setq projectile-project-search-path '("~/cg")))
