@@ -80,6 +80,7 @@
 
 (define-key input-decode-map [?\C-m] [C-m])
 
+(global-set-key "\C-cl"    'magit-log-buffer-file)
 (global-set-key "\C-c\C-c" 'comment-or-uncomment-region)
 (global-set-key "\C-h"     'delete-backward-char)         ; displace help-command
 (global-set-key "\C-w"     'backward-kill-word)           ; displace kill-region
