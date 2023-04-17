@@ -153,17 +153,13 @@
   :diminish
   :bind (("C-M-s" . swiper)
          :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
          ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
          ("C-w" . ivy-yank-word)
+         ("C-SPC" . ivy-occur)
          :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
          ("C-l" . ivy-done)
          ("C-d" . ivy-switch-buffer-kill)
          :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
          ("C-d" . ivy-reverse-i-search-kill))
   :config
   (ivy-mode 1))
@@ -215,7 +211,7 @@
   :bind
   (("C-c f" . projectile-find-file))
   (("C-c s" . projectile-ripgrep))
-  (("C-F" . projectile-find-file))
+  (("C-S-f" . projectile-find-file))
   :init
   (when (file-directory-p "~/cg")
     (setq projectile-project-search-path '("~/cg")))
