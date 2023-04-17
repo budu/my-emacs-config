@@ -139,12 +139,13 @@
 
 (use-package ivy
   :diminish
-  :bind (("C-s" . swiper)
+  :bind (("C-M-s" . swiper)
          :map ivy-minibuffer-map
          ("TAB" . ivy-alt-done)
          ("C-l" . ivy-alt-done)
          ("C-j" . ivy-next-line)
          ("C-k" . ivy-previous-line)
+         ("C-w" . ivy-yank-word)
          :map ivy-switch-buffer-map
          ("C-k" . ivy-previous-line)
          ("C-l" . ivy-done)
