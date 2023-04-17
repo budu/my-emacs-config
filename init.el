@@ -49,7 +49,9 @@
 
 ;;;; local vars overrides
 
-(load-relative "local-vars.el")
+(let ((filename "local-vars.el"))
+  (when (file-exists-p filename)
+    (load-relative filename)))
 
 ;;;; minimalism
 
