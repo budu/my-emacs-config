@@ -213,6 +213,12 @@
     (setq projectile-project-search-path '("~/project")))
   (setq projectile-switch-project-action #'projectile-vc))
 
+(use-package projectile-rails
+  :bind-keymap
+  ("C-c r" . projectile-rails-command-map)
+  :config
+  (projectile-rails-global-mode))
+
 ;;;; lsp
 
 (use-package spinner)
