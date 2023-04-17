@@ -220,6 +220,9 @@
   (setq projectile-switch-project-action #'projectile-vc))
 
 (use-package projectile-rails
+  :hook
+  (ruby-mode . lsp)
+  (ruby-mode . rvm-activate-corresponding-ruby)
   :bind-keymap
   ("C-c r" . projectile-rails-command-map)
   :config
