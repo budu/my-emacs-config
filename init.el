@@ -210,9 +210,6 @@
     (setq projectile-project-search-path '("~/project")))
   (setq projectile-switch-project-action #'projectile-vc))
 
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
-
 ;;;; lsp
 
 (use-package spinner)
