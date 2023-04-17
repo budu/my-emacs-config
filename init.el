@@ -228,6 +228,13 @@
   :config
   (projectile-rails-global-mode))
 
+(use-package projectile-ripgrep)
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode)
+  :init
+  (setq counsel-projectile-switch-project-action #'projectile-vc))
+
 ;;;; lsp
 
 (use-package spinner)
