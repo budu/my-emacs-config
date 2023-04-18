@@ -37,9 +37,10 @@
 
 (use-package load-relative)
 
-;;;; functions
+;;;; functions & macros
 
 (load-relative "functions.el")
+(load-relative "macros.el")
 
 ;;;; vars
 
@@ -109,6 +110,7 @@
 (global-set-key "\C-z"    "()\C-b") ; displace suspend-frame
 (global-set-key "\M-z"    "[]\C-b") ; displace zap-to-char
 (global-set-key "\C-\M-z" "{}\C-b")
+(global-set-key "\C-\M-d" 'mu/kill-parens) ; displace down-list
 
 ;;;; appearance
 
@@ -310,6 +312,10 @@
 (use-package rvm
   :init (rvm-use-default)
   :bind ("C-M-g" . rvm-open-gem))
+
+(use-package ruby-mode
+  :bind (:map ruby-mode-map
+         ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
 
 ;;;; emmet
 
