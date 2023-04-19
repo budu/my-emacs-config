@@ -322,6 +322,7 @@
 
 (use-package ruby-mode
   :bind (:map ruby-mode-map
+         ("C-i" . "||\C-b") ; displace indent-for-tab-command
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
 
 (use-package projectile-rails
@@ -336,6 +337,8 @@
 (use-package rspec-mode
   :hook
   (ruby-mode . rspec-mode))
+
+(use-package ruby-end)
 
 ;;;; emmet
 
