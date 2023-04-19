@@ -189,24 +189,21 @@
 
 (use-package which-key
   :diminish which-key-mode
-  :custom
-  (which-key-frame-max-width 200)
-  (which-key-idle-delay 0.5)
-  (which-key-min-column-description-width 50)
-  (which-key-max-description-length 50)
-  (which-key-side-window-location 'bottom)
-  (which-key-side-window-max-height 0.25)
+  :custom ((which-key-frame-max-width 200)
+           (which-key-idle-delay 0.5)
+           (which-key-min-column-description-width 50)
+           (which-key-max-description-length 50)
+           (which-key-side-window-location 'bottom)
+           (which-key-side-window-max-height 0.25))
   :init (which-key-mode))
 
 (use-package helpful
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key)
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable))
+  :bind (([remap describe-function] . counsel-describe-function)
+         ([remap describe-command] . helpful-command)
+         ([remap describe-variable] . counsel-describe-variable)
+         ([remap describe-key] . helpful-key))
+  :custom ((counsel-describe-function-function #'helpful-callable)
+           (counsel-describe-variable-function #'helpful-variable)))
 
 ;;;; translation
 
@@ -216,9 +213,8 @@
 ;;;; spelling
 
 (use-package flyspell
-  :hook
-  (text-mode . flyspell-mode)
-  (prog-mode . flyspell-prog-mode)
+  :hook ((text-mode . flyspell-mode)
+         (prog-mode . flyspell-prog-mode))
   :config
   (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
     (add-hook hook (lambda () (flyspell-mode -1)))))
@@ -234,9 +230,8 @@
 
 (use-package magit
   :commands magit-status
-  :custom
-  (magit-display-buffer-function
-   #'magit-display-buffer-same-window-except-diff-v1))
+  :custom (magit-display-buffer-function
+           #'magit-display-buffer-same-window-except-diff-v1))
 
 ;;;; projectile
 
@@ -291,9 +286,8 @@
          ("<tab>" . company-complete-selection)
          :map lsp-mode-map
          ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
+  :custom ((company-minimum-prefix-length 1)
+           (company-idle-delay 0.0)))
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
@@ -321,9 +315,8 @@
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
 
 (use-package projectile-rails
-  :hook
-  (ruby-mode . lsp)
-  (ruby-mode . rvm-activate-corresponding-ruby)
+  :hook ((ruby-mode . lsp)
+         (ruby-mode . rvm-activate-corresponding-ruby))
   :bind-keymap ("C-c r" . projectile-rails-command-map)
   :config (projectile-rails-global-mode))
 
