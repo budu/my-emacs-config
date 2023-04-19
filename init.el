@@ -78,6 +78,8 @@
  css-indent-offset 2
  truncate-lines 0)
 
+(delete-selection-mode 1)
+
 ;; don't use tabs in align-regexp
 (defadvice align-regexp (around align-regexp-with-spaces activate)
   (let ((indent-tabs-mode nil))
