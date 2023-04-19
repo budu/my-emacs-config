@@ -79,21 +79,19 @@
  css-indent-offset 2
  truncate-lines 0)
 
-(delete-selection-mode 1)
-
 ;; don't use tabs in align-regexp
 (defadvice align-regexp (around align-regexp-with-spaces activate)
   (let ((indent-tabs-mode nil))
     ad-do-it))
 
+(delete-selection-mode 1)
+
+;;;; global hooks
+
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
 
-;;;; fonts
-
-(set-face-attribute 'default nil :font "Fira Code Retina" :height mu/default-font-size)
-
-;;;; key bindings
+;;;; global key bindings
 
 (define-key input-decode-map [?\C-m] [C-m])
 (define-key input-decode-map [?\C-i] [C-i])
@@ -110,7 +108,6 @@
 (global-set-key "\M-k"     'previous-window-any-frame)    ; displace kill-sentence
 (global-set-key "\C-\M-h"  'mark-paragraph)               ; displace mark-defun
 
-
 (global-set-key (kbd "C-'")      'mu/touch)
 (global-set-key (kbd "C-:")      "&:")
 (global-set-key (kbd "C-M-S-h")  'mark-defun)
@@ -125,11 +122,13 @@
 
 ;;;; appearance
 
+(set-face-attribute 'default nil :font "Fira Code Retina" :height mu/default-font-size)
+
 (use-package all-the-icons) ; M-x all-the-icons-install-fonts
 
 (use-package doom-modeline
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
+  :custom ((doom-modeline-height 15))
+  :init (doom-modeline-mode 1))
 
 (use-package doom-themes
   :init (load-theme 'doom-dracula t))
@@ -181,41 +180,38 @@
          ("C-d" . ivy-switch-buffer-kill)
          :map ivy-reverse-i-search-map
          ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
+  :config (ivy-mode 1))
 
 (use-package ivy-rich
-  :init
-  (ivy-rich-mode 1))
+  :init (ivy-rich-mode 1))
 
 ;;;; help
 
 (use-package which-key
   :diminish which-key-mode
-  :init (which-key-mode)
   :custom
   (which-key-frame-max-width 200)
   (which-key-idle-delay 0.5)
   (which-key-min-column-description-width 50)
   (which-key-max-description-length 50)
   (which-key-side-window-location 'bottom)
-  (which-key-side-window-max-height 0.25))
+  (which-key-side-window-max-height 0.25)
+  :init (which-key-mode))
 
 (use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
   :bind
   ([remap describe-function] . counsel-describe-function)
   ([remap describe-command] . helpful-command)
   ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
+  ([remap describe-key] . helpful-key)
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable))
 
 ;;;; translation
 
 (use-package lingva
-  :bind
-  ("C-c t" . lingva-translate))
+  :bind ("C-c t" . lingva-translate))
 
 ;;;; spelling
 
@@ -246,27 +242,24 @@
 
 (use-package projectile
   :diminish projectile-mode
-  :config (projectile-mode)
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :bind (("C-c f" . projectile-find-file)
+         ("C-c s" . projectile-ripgrep)
+         ("C-S-f" . projectile-find-file))
   :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :bind
-  (("C-c f" . projectile-find-file))
-  (("C-c s" . projectile-ripgrep))
-  (("C-S-f" . projectile-find-file))
   :init
   (when (file-directory-p "~/cg")
     (setq projectile-project-search-path '("~/cg")))
   (when (file-directory-p "~/projects")
     (setq projectile-project-search-path '("~/projects")))
-  (setq projectile-switch-project-action #'projectile-vc))
+  (setq projectile-switch-project-action #'projectile-vc)
+  :config (projectile-mode))
 
 (use-package projectile-ripgrep)
 
 (use-package counsel-projectile
-  :config (counsel-projectile-mode)
-  :init
-  (setq counsel-projectile-switch-project-action #'projectile-vc))
+  :init (setq counsel-projectile-switch-project-action #'projectile-vc)
+  :config (counsel-projectile-mode))
 
 ;;;; lsp
 
@@ -279,15 +272,12 @@
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook (lsp-mode . mu/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :config
-  (lsp-enable-which-key-integration t))
+  :init (setq lsp-keymap-prefix "C-c l")
+  :config (lsp-enable-which-key-integration t))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
+  :custom (lsp-ui-doc-position 'bottom))
 
 (use-package lsp-treemacs
   :after lsp)
@@ -298,8 +288,8 @@
   :after lsp-mode
   :hook (lsp-mode . company-mode)
   :bind (:map company-active-map
-         ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
+         ("<tab>" . company-complete-selection)
+         :map lsp-mode-map
          ("<tab>" . company-indent-or-complete-common))
   :custom
   (company-minimum-prefix-length 1)
@@ -323,8 +313,8 @@
 (use-package inf-ruby)
 
 (use-package rvm
-  :init (rvm-use-default)
-  :bind ("C-M-g" . rvm-open-gem))
+  :bind ("C-M-g" . rvm-open-gem)
+  :init (rvm-use-default))
 
 (use-package ruby-mode
   :bind (:map ruby-mode-map
@@ -334,14 +324,11 @@
   :hook
   (ruby-mode . lsp)
   (ruby-mode . rvm-activate-corresponding-ruby)
-  :bind-keymap
-  ("C-c r" . projectile-rails-command-map)
-  :config
-  (projectile-rails-global-mode))
+  :bind-keymap ("C-c r" . projectile-rails-command-map)
+  :config (projectile-rails-global-mode))
 
 (use-package rspec-mode
-  :hook
-  (ruby-mode . rspec-mode))
+  :hook (ruby-mode . rspec-mode))
 
 (use-package ruby-end)
 
