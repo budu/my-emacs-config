@@ -106,6 +106,7 @@
 (global-set-key "\C-x\M-q" 'save-buffers-kill-emacs)
 (global-set-key "\M-j"     'next-window-any-frame)        ; displace default-indent-new-line
 (global-set-key "\M-k"     'previous-window-any-frame)    ; displace kill-sentence
+(global-set-key "\C-\M-h"  'mark-paragraph)               ; displace mark-defun
 
 (global-set-key (kbd "C-'")   'mu/touch)
 (global-set-key (kbd "<C-m>") 'mu/kmacro-start-or-end-macro) ; displace newline
@@ -150,6 +151,9 @@
  version-control t)     ; use versioned backups
 
 ;;;; ivy
+
+(use-package expand-region
+  :bind (("M-h" . er/expand-region)))
 
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
