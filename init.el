@@ -96,6 +96,7 @@
 ;;;; key bindings
 
 (define-key input-decode-map [?\C-m] [C-m])
+(define-key input-decode-map [?\C-i] [C-i])
 
 (global-set-key "\C-cb"    'magit-blame)
 (global-set-key "\C-cl"    'magit-log-buffer-file)
@@ -110,6 +111,7 @@
 (global-set-key "\C-\M-h"  'mark-paragraph)               ; displace mark-defun
 
 (global-set-key (kbd "C-'")   'mu/touch)
+(global-set-key (kbd "<C-i>") "||\C-b") ; displace tab-bound function
 (global-set-key (kbd "<C-m>") 'mu/kmacro-start-or-end-macro) ; displace newline
 (global-set-key (kbd "<f12>") (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
@@ -323,7 +325,6 @@
 
 (use-package ruby-mode
   :bind (:map ruby-mode-map
-         ("C-i" . "||\C-b") ; displace indent-for-tab-command
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
 
 (use-package projectile-rails
