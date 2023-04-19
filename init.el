@@ -87,6 +87,7 @@
     ad-do-it))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
 
 ;;;; fonts
 
