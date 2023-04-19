@@ -257,8 +257,8 @@
   :init
   (when (file-directory-p "~/cg")
     (setq projectile-project-search-path '("~/cg")))
-  (when (file-directory-p "~/project")
-    (setq projectile-project-search-path '("~/project")))
+  (when (file-directory-p "~/projects")
+    (setq projectile-project-search-path '("~/projects")))
   (setq projectile-switch-project-action #'projectile-vc))
 
 (use-package projectile-ripgrep)
