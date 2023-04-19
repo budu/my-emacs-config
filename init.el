@@ -329,6 +329,10 @@
   :config
   (projectile-rails-global-mode))
 
+(use-package rspec-mode
+  :hook
+  (ruby-mode . rspec-mode))
+
 ;;;; emmet
 
 (use-package emmet-mode
