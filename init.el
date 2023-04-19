@@ -68,7 +68,8 @@
 
 ;;;; personal preference
 
-(setq custom-file "custom.el")
+(setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
+(load-relative "custom.el")
 
 (setq-default
  fill-column 92
