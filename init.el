@@ -181,10 +181,15 @@
 ;;;; help
 
 (use-package which-key
-  :init (which-key-mode)
   :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 1))
+  :init (which-key-mode)
+  :custom
+  (which-key-frame-max-width 200)
+  (which-key-idle-delay 0.5)
+  (which-key-min-column-description-width 50)
+  (which-key-max-description-length 50)
+  (which-key-side-window-location 'bottom)
+  (which-key-side-window-max-height 0.25))
 
 (use-package helpful
   :custom
