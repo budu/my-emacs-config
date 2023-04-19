@@ -110,7 +110,10 @@
 (global-set-key "\M-k"     'previous-window-any-frame)    ; displace kill-sentence
 (global-set-key "\C-\M-h"  'mark-paragraph)               ; displace mark-defun
 
-(global-set-key (kbd "C-'")   'mu/touch)
+
+(global-set-key (kbd "C-'")      'mu/touch)
+(global-set-key (kbd "C-:")      "&:")
+(global-set-key (kbd "C-M-S-h")  'mark-defun)
 (global-set-key (kbd "<C-i>") "||\C-b") ; displace tab-bound function
 (global-set-key (kbd "<C-m>") 'mu/kmacro-start-or-end-macro) ; displace newline
 (global-set-key (kbd "<f12>") (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
