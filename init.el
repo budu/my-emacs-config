@@ -251,15 +251,6 @@
     (setq projectile-project-search-path '("~/project")))
   (setq projectile-switch-project-action #'projectile-vc))
 
-(use-package projectile-rails
-  :hook
-  (ruby-mode . lsp)
-  (ruby-mode . rvm-activate-corresponding-ruby)
-  :bind-keymap
-  ("C-c r" . projectile-rails-command-map)
-  :config
-  (projectile-rails-global-mode))
-
 (use-package projectile-ripgrep)
 
 (use-package counsel-projectile
@@ -314,9 +305,12 @@
 (use-package coffee-mode)
 (use-package elisp-lint)
 (use-package geiser-racket)
-(use-package inf-ruby)
 (use-package scss-mode)
 (use-package yaml-mode)
+
+;;;; ruby
+
+(use-package inf-ruby)
 
 (use-package rvm
   :init (rvm-use-default)
@@ -325,6 +319,15 @@
 (use-package ruby-mode
   :bind (:map ruby-mode-map
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
+
+(use-package projectile-rails
+  :hook
+  (ruby-mode . lsp)
+  (ruby-mode . rvm-activate-corresponding-ruby)
+  :bind-keymap
+  ("C-c r" . projectile-rails-command-map)
+  :config
+  (projectile-rails-global-mode))
 
 ;;;; emmet
 
