@@ -90,6 +90,7 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
+(add-hook 'comint-mode-hook 'goto-address-mode)
 
 ;;;; global key bindings
 
