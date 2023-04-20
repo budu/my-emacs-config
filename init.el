@@ -241,7 +241,8 @@
   :bind-keymap ("C-c p" . projectile-command-map)
   :bind (("C-c f" . projectile-find-file)
          ("C-c s" . projectile-ripgrep)
-         ("C-S-f" . projectile-find-file))
+         ("C-S-f" . projectile-find-file)
+         ("C-M-S-f" . projectile-ripgrep))
   :custom ((projectile-completion-system 'ivy))
   :init
   (when (file-directory-p "~/cg")
