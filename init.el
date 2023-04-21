@@ -303,6 +303,7 @@
 (use-package elisp-lint)
 (use-package geiser-racket)
 (use-package scss-mode)
+(use-package slim-mode)
 (use-package yaml-mode)
 
 ;;;; ruby
