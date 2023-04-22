@@ -50,8 +50,8 @@
 
 ;;;; local vars overrides
 
-(let ((filename "local-vars.el"))
-  (when (file-exists-p filename)
+(let ((filename "~/.emacs.d/local-vars.el"))
+  (when (file-exists-p (expand-file-name filename))
     (load-relative filename)))
 
 ;;;; minimalism
