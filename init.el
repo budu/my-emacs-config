@@ -317,6 +317,7 @@
   :init (rvm-use-default))
 
 (use-package ruby-mode
+  :mode "\\.arb\\'"
   :bind (:map ruby-mode-map
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
 
