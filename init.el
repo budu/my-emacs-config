@@ -307,6 +307,12 @@
 (use-package slim-mode)
 (use-package yaml-mode)
 
+;;;; emmet
+
+(use-package emmet-mode
+  :hook sgml-mode
+  :bind ("C-j" . newline-and-indent))
+
 ;;;; ruby
 
 (use-package inf-ruby)
@@ -335,11 +341,5 @@
 
 (use-package scss-mode
   :bind ([remap scss-compile] . comment-or-uncomment-region))
-
-;;;; emmet
-
-(use-package emmet-mode
-  :hook sgml-mode
-  :bind ("C-j" . newline-and-indent))
 
 ;;;; end
