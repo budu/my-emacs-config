@@ -304,7 +304,6 @@
 (use-package coffee-mode)
 (use-package elisp-lint)
 (use-package geiser-racket)
-(use-package scss-mode)
 (use-package slim-mode)
 (use-package yaml-mode)
 
@@ -331,6 +330,11 @@
   :hook (ruby-mode . rspec-mode))
 
 (use-package ruby-end)
+
+;;;; scss
+
+(use-package scss-mode
+  :bind ([remap scss-compile] . comment-or-uncomment-region))
 
 ;;;; emmet
 
