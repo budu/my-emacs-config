@@ -18,6 +18,9 @@
 
 ;;;; packages
 
+(let ((default-directory  "~/.emacs.d/lisp/"))
+  (normal-top-level-add-to-load-path '("emacs-libyaml")))
+
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -337,6 +340,16 @@
   :hook (ruby-mode . rspec-mode))
 
 (use-package ruby-end)
+
+(use-package rails-i18n
+  :bind (:map ruby-mode-map
+         ("C-c i" . 'rails-i18n-insert-with-cache)
+         ("C-c i" . 'rails-i18n-insert-no-cache)
+         :map slim-mode-map
+         ("C-c i" . 'rails-i18n-insert-with-cache)
+         ("C-c i" . 'rails-i18n-insert-no-cache))
+  :init (require 'libyaml)
+  :config (advice-add 'rails-i18n--read-lines :override #'yaml-read-file))
 
 ;;;; scss
 
