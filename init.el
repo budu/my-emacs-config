@@ -212,7 +212,8 @@
 ;;;; translation
 
 (use-package lingva
-  :bind ("C-c t" . lingva-translate))
+  :bind ("C-c t" . lingva-translate)
+  :custom (lingva-target "fr"))
 
 ;;;; spelling
 
