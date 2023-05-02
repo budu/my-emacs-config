@@ -89,12 +89,6 @@
 
 (delete-selection-mode 1)
 
-;;;; global hooks
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-(add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
-(add-hook 'comint-mode-hook 'goto-address-mode)
-
 ;;;; global key bindings
 
 (define-key input-decode-map [?\C-m] [C-m])
@@ -355,5 +349,19 @@
 
 (use-package scss-mode
   :bind ([remap scss-compile] . comment-or-uncomment-region))
+
+;;;; global hooks
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
+(add-hook 'comint-mode-hook 'goto-address-mode)
+
+(dolist (hook '(special-mode-hook
+                term-mode-hook
+                comint-mode-hook
+                compilation-mode-hook
+                minibuffer-setup-hook))
+  (add-hook hook
+            (lambda () (setq show-trailing-whitespace nil))))
 
 ;;;; end
