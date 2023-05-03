@@ -80,6 +80,7 @@
  show-trailing-whitespace t
  tab-width 2
  css-indent-offset 2
+ js-indent-level 2
  truncate-lines 0)
 
 ;; don't use tabs in align-regexp
