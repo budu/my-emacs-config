@@ -256,6 +256,15 @@
 
 (use-package projectile-ripgrep)
 
+(advice-add 'counsel-rg
+            :around
+            (lambda (func &rest args)
+              (cl-flet ((filter-func (code) (if (= code 2) 0 code)))
+                (unwind-protect
+                    (progn (advice-add 'process-exit-status :filter-return #'filter-func)
+                           (apply func args))
+                  (advice-remove 'process-exit-status #'filter-func)))))
+
 (use-package counsel-projectile
   :init (setq counsel-projectile-switch-project-action #'projectile-vc)
   :config (counsel-projectile-mode))
