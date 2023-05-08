@@ -319,7 +319,8 @@
 
 (use-package emmet-mode
   :hook sgml-mode
-  :bind ("C-j" . newline-and-indent))
+  :bind (:map emmet-mode-keymap
+         ("C-j" . newline-and-indent)))
 
 ;;;; ruby
 
