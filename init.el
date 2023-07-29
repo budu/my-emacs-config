@@ -310,11 +310,11 @@
 (add-hook 'prog-mode-hook 'electric-pair-mode)
 
 (use-package coffee-mode)
+(use-package crystal-mode)
 (use-package elisp-lint)
 (use-package geiser-racket)
 (use-package slim-mode)
 (use-package yaml-mode)
-(use-package crystal-mode)
 
 ;;;; emmet
 
