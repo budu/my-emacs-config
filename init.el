@@ -362,6 +362,11 @@
 (use-package scss-mode
   :bind ([remap scss-compile] . comment-or-uncomment-region))
 
+;;;; web
+
+(use-package web-mode
+  :mode "\\.svelte\\'")
+
 ;;;; global hooks
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
