@@ -314,6 +314,7 @@
 (use-package geiser-racket)
 (use-package slim-mode)
 (use-package yaml-mode)
+(use-package crystal-mode)
 
 ;;;; emmet
 
