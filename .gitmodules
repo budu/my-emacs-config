@@ -1,0 +1,3 @@
+[submodule "lisp/emacs-libyaml"]
+  path = lisp/emacs-libyaml
+  url = https://github.com/syohex/emacs-libyaml.git
