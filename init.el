@@ -94,6 +94,7 @@
 
 (define-key input-decode-map [?\C-m] [C-m])
 (define-key input-decode-map [?\C-i] [C-i])
+(define-key input-decode-map [?\M-i] [M-i])
 
 (global-set-key "\C-cb"    'magit-blame)
 (global-set-key "\C-xl"    'magit-log-buffer-file)
@@ -112,6 +113,7 @@
 (global-set-key (kbd "C-M-S-h") 'mark-defun)
 (global-set-key (kbd "C->")     "-> {  }\C-b\C-b")
 (global-set-key (kbd "<C-i>")   "||\C-b") ; displace tab-bound function
+(global-set-key (kbd "<M-i>")   "<% %>\C-b\C-b\C-b") ; displace tab-to-tab-stop function
 (global-set-key (kbd "<C-m>")   'mu/kmacro-start-or-end-macro) ; displace newline
 (global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
