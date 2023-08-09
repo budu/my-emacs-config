@@ -107,6 +107,7 @@
 (global-set-key "\M-j"     'next-window-any-frame)        ; displace default-indent-new-line
 (global-set-key "\M-k"     'previous-window-any-frame)    ; displace kill-sentence
 (global-set-key "\C-\M-h"  'mark-paragraph)               ; displace mark-defun
+(global-set-key "\C-\M-g"  'mu/search-gems)
 
 (global-set-key (kbd "C-'")     'mu/touch)
 (global-set-key (kbd "C-:")     "&:")
@@ -331,7 +332,6 @@
 (use-package inf-ruby)
 
 (use-package rvm
-  :bind ("C-M-g" . rvm-open-gem)
   :init (rvm-use-default))
 
 (use-package ruby-mode

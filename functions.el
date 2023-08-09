@@ -13,3 +13,10 @@
   (interactive)
   (shell-command (concat "touch " (shell-quote-argument (buffer-file-name))))
   (clear-visited-file-modtime))
+
+;; hardcoded for now
+(defun mu/search-gems (search-term)
+  (interactive (list (read-from-minibuffer "Search gems for: ")))
+  (counsel-rg search-term
+              "/home/budu/.rvm/gems/ruby-2.7.6@reservotron/gems/"
+              "--no-ignore"))
