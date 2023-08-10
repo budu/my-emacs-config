@@ -365,6 +365,12 @@
 (use-package scss-mode
   :bind ([remap scss-compile] . comment-or-uncomment-region))
 
+;;;; sql
+
+(use-package sql-mode
+  :ensure nil
+  :mode "\\.sql.erb\\'")
+
 ;;;; web
 
 (use-package web-mode
