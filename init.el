@@ -121,7 +121,7 @@
 (global-set-key (kbd "C-'")     'mu/touch)
 (global-set-key (kbd "C-:")     "&:")
 (global-set-key (kbd "C-M-S-h") 'mark-defun)
-(global-set-key (kbd "C->")     "-> {  }\C-b\C-b")
+(global-set-key (kbd "M-p")     "-> {  }\C-b\C-b")
 (global-set-key (kbd "<C-i>")   "||\C-b") ; displace tab-bound function
 (global-set-key (kbd "<M-i>")   "<% %>\C-b\C-b\C-b") ; displace tab-to-tab-stop function
 (global-set-key (kbd "<C-m>")   'mu/kmacro-start-or-end-macro) ; displace newline
