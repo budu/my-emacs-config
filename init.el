@@ -241,6 +241,11 @@
 (use-package flyspell-correct-ivy
   :after flyspell-correct)
 
+;;;; winner
+
+(winner-mode 1)
+(global-set-key (kbd "C-x `") 'winner-undo) ; displace next-error
+
 ;;;; magit
 
 (use-package magit
