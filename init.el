@@ -113,8 +113,8 @@
 (global-set-key "\C-x\C-b" 'mu/switch-to-last-buffer)     ; displace list-buffers
 (global-set-key "\C-x\C-c" 'kill-region)                  ; displace save-buffers-kill-terminal
 (global-set-key "\C-x\M-q" 'save-buffers-kill-emacs)
-(global-set-key "\M-j"     'next-window-any-frame)        ; displace default-indent-new-line
-(global-set-key "\M-k"     'previous-window-any-frame)    ; displace kill-sentence
+(global-set-key "\M-j"     'previous-window-any-frame)    ; displace default-indent-new-line
+(global-set-key "\M-k"     'next-window-any-frame)        ; displace kill-sentence
 (global-set-key "\C-\M-h"  'mark-paragraph)               ; displace mark-defun
 (global-set-key "\C-\M-g"  'mu/search-gems)
 
