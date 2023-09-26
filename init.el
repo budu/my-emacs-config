@@ -329,11 +329,16 @@
 (use-package coffee-mode)
 (use-package crystal-mode)
 (use-package dap-mode)
-(use-package ein)
 (use-package elisp-lint)
 (use-package geiser-racket)
 (use-package slim-mode)
 (use-package yaml-mode)
+
+;;;; ein
+
+(use-package ein
+  :bind (:map ein:notebook-mode-map
+         ("<C-M-return>" . ein:worksheet-execute-cell)))
 
 ;;;; emmet
 
