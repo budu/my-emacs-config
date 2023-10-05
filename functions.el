@@ -1,3 +1,18 @@
+;; Written in collaboration with ChatGPT 3.5, might need improvements
+(defun mu/convert-region-to-percent-w-syntax (begin end)
+  "Convert a region of text inside square brackets to Ruby's %w syntax and replace it."
+  (interactive "r")
+  (save-excursion
+    (re-search-forward "\\]" nil t)
+    (when (re-search-backward "\\[" nil t)
+      (let* ((start (point))
+             (end (re-search-forward "\\]" nil t))
+             (region-text (buffer-substring-no-properties (+ start 1) (- end 1))))
+        (delete-region start end)
+        (setq region-text (replace-regexp-in-string "[ \t\n,]+" " " region-text))
+        (setq region-text (replace-regexp-in-string "\\(\"\\)\\(.*?\\)\\(\"\\)" "\\2" region-text))
+        (insert (concat "%w[" region-text "]"))))))
+
 (defun mu/kmacro-start-or-end-macro (arg)
   (interactive "P")
   (if (or defining-kbd-macro executing-kbd-macro)

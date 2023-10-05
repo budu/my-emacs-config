@@ -105,6 +105,7 @@
 (define-key input-decode-map [?\C-i] [C-i])
 (define-key input-decode-map [?\M-i] [M-i])
 
+(global-set-key "\C-c5"    'mu/convert-region-to-percent-w-syntax)
 (global-set-key "\C-cb"    'magit-blame)
 (global-set-key "\C-xl"    'magit-log-buffer-file)
 (global-set-key "\C-c\C-c" 'comment-or-uncomment-region)
