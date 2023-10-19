@@ -294,6 +294,7 @@
 (use-package coffee-mode)
 (use-package crystal-mode)
 (use-package dap-mode)
+(use-package dockerfile-mode)
 (use-package elisp-lint)
 (use-package geiser-racket)
 (use-package slim-mode)
