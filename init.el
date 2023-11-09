@@ -295,7 +295,7 @@
 
 (use-package ellama
   :init
-  (setopt ellama-language "English")
+  (setopt ellama-language "French")
   (require 'llm-ollama)
   (setopt ellama-provider
 		  (make-llm-ollama
