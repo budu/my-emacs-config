@@ -105,6 +105,7 @@
 (define-key input-decode-map [?\C-i] [C-i])
 (define-key input-decode-map [?\M-i] [M-i])
 
+(global-set-key [C-tab]    'mu/cslist-to-indented-lines-and-back)
 (global-set-key "\C-c5"    'mu/convert-region-to-percent-w-syntax)
 (global-set-key "\C-cb"    'magit-blame)
 (global-set-key "\C-xl"    'magit-log-buffer-file)
@@ -128,6 +129,7 @@
 (global-set-key (kbd "<C-m>")   'mu/kmacro-start-or-end-macro) ; displace newline
 (global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
+(global-set-key "\C-cw"   "%w[")
 (global-set-key "\C-z"    "()\C-b") ; displace suspend-frame
 (global-set-key "\M-z"    "[]\C-b") ; displace zap-to-char
 (global-set-key "\C-\M-z" "{}\C-b")

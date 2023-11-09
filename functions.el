@@ -13,6 +13,32 @@
         (setq region-text (replace-regexp-in-string "\\(\"\\)\\(.*?\\)\\(\"\\)" "\\2" region-text))
         (insert (concat "%w[" region-text "]"))))))
 
+;; From SO with improvements made using ChatGPT 4
+(defun mu/cslist-to-indented-lines-and-back (start end &optional arg)
+  (interactive "r\nP")
+  (call-interactively 'er/expand-region 0)
+  (when (<= start end)
+    (call-interactively 'er/mark-inside-pairs 2))
+  (setq start (region-beginning))
+  (setq end (region-end))
+  (if (string-match-p "\n" (buffer-substring start end))
+      (let ((insertion
+             (mapconcat
+              (lambda (x) (string-trim x))
+              (split-string (buffer-substring start end) "\n") " ")))
+        (delete-region start end)
+        (insert insertion)
+        (indent-region start end)
+        (when arg (forward-char (length insertion))))
+      (let ((insertion
+             (mapconcat
+              (lambda (x) (string-trim x))
+              (split-string (buffer-substring start end) ",") ",\C-j")))
+        (delete-region start end)
+        (insert insertion)
+        (indent-region start end)
+        (when arg (forward-char (length insertion))))))
+
 (defun mu/kmacro-start-or-end-macro (arg)
   (interactive "P")
   (if (or defining-kbd-macro executing-kbd-macro)
