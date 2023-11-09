@@ -9,7 +9,7 @@
              (end (re-search-forward "\\]" nil t))
              (region-text (buffer-substring-no-properties (+ start 1) (- end 1))))
         (delete-region start end)
-        (setq region-text (replace-regexp-in-string "[ \t\n,]+" " " region-text))
+        (setq region-text (replace-regexp-in-string "[ \t,]+" " " region-text))
         (setq region-text (replace-regexp-in-string "\\(\"\\)\\(.*?\\)\\(\"\\)" "\\2" region-text))
         (insert (concat "%w[" region-text "]"))))))
 
