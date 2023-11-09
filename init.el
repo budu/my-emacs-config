@@ -287,6 +287,17 @@
   :init (setq counsel-projectile-switch-project-action #'projectile-vc)
   :config (counsel-projectile-mode))
 
+;;;; ellama
+
+(use-package ellama
+  :init
+  (setopt ellama-language "English")
+  (require 'llm-ollama)
+  (setopt ellama-provider
+		  (make-llm-ollama
+		   :chat-model "zephyr:latest"
+       :embedding-model "zephyr:latest")))
+
 ;;;; prog
 
 (add-hook 'prog-mode-hook 'electric-pair-mode)
