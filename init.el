@@ -328,6 +328,12 @@
   :bind (:map emmet-mode-keymap
          ("C-j" . newline-and-indent)))
 
+;;;; restclient
+
+(use-package restclient
+  :ensure t
+  :mode (("\\.http\\'" . restclient-mode)))
+
 ;;;; ruby
 
 (use-package inf-ruby)
