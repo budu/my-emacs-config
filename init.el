@@ -322,13 +322,6 @@
   :bind (:map ein:notebook-mode-map
          ("<C-M-return>" . ein:worksheet-execute-cell)))
 
-;;;; emmet
-
-(use-package emmet-mode
-  :hook sgml-mode
-  :bind (:map emmet-mode-keymap
-         ("C-j" . newline-and-indent)))
-
 ;;;; restclient
 
 (use-package restclient
@@ -382,6 +375,13 @@
 
 (use-package web-mode
   :mode "\\.svelte\\'")
+
+;;;; emmet
+
+(use-package emmet-mode
+  :hook web-mode
+  :bind (:map emmet-mode-keymap
+         ("C-j" . newline-and-indent)))
 
 ;;;; global hooks
 
