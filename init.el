@@ -374,7 +374,10 @@
 ;;;; web
 
 (use-package web-mode
-  :mode "\\.svelte\\'")
+  :mode "\\.svelte\\'"
+  :custom ((web-mode-markup-indent-offset 2)
+           (web-mode-css-indent-offset 2)
+           (web-mode-code-indent-offset 2)))
 
 ;;;; emmet
 
