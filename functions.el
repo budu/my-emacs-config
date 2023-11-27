@@ -16,11 +16,12 @@
 ;; From SO with improvements made using ChatGPT 4
 (defun mu/cslist-to-indented-lines-and-back (start end &optional arg)
   (interactive "r\nP")
-  (call-interactively 'er/expand-region 0)
-  (when (<= start end)
-    (call-interactively 'er/mark-inside-pairs 2))
-  (setq start (region-beginning))
-  (setq end (region-end))
+  (unless (use-region-p)
+    (call-interactively 'er/expand-region 0)
+    (when (<= start end)
+      (call-interactively 'er/mark-inside-pairs 2))
+    (setq start (region-beginning))
+    (setq end (region-end)))
   (if (string-match-p "\n" (buffer-substring start end))
       (let ((insertion
              (mapconcat
