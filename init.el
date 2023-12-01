@@ -307,7 +307,6 @@
 
 (add-hook 'prog-mode-hook 'electric-pair-mode)
 
-(use-package coffee-mode)
 (use-package crystal-mode)
 (use-package dap-mode)
 (use-package dockerfile-mode)
@@ -359,6 +358,13 @@
          ("C-c i" . 'rails-i18n-insert-no-cache))
   :init (require 'libyaml)
   :config (advice-add 'rails-i18n--read-lines :override #'yaml-read-file))
+
+;;;; coffeescript
+
+(use-package coffee-mode
+  :bind (:map coffee-mode-map
+         ("C-j" . 'coffee-newline-and-indent))
+  :custom (coffee-indent-like-python-mode t))
 
 ;;;; scss
 
