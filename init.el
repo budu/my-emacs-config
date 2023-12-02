@@ -392,6 +392,13 @@
   :bind (:map emmet-mode-keymap
          ("C-j" . newline-and-indent)))
 
+;;;; markdown
+
+(use-package markdown-mode
+  :bind (:map markdown-mode-map
+         ("C-M-b". markdown-backward-paragraph)
+         ("C-M-f". markdown-forward-paragraph)))
+
 ;;;; global hooks
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
