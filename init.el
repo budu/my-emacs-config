@@ -314,6 +314,7 @@
 (use-package dockerfile-mode)
 (use-package elisp-lint)
 (use-package geiser-racket)
+(use-package lua-mode)
 (use-package slim-mode)
 (use-package yaml-mode)
 
