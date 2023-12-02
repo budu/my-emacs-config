@@ -130,6 +130,8 @@
 (global-set-key (kbd "<C-i>")   "||\C-b") ; displace tab-bound function
 (global-set-key (kbd "<M-i>")   "<% %>\C-b\C-b\C-b") ; displace tab-to-tab-stop function
 (global-set-key (kbd "<C-m>")   'mu/kmacro-start-or-end-macro) ; displace newline
+(global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
+(global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
 (global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
 (global-set-key "\C-cw"   "%w[")
