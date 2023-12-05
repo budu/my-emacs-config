@@ -47,7 +47,7 @@
 
 ;;;; vars
 
-(defvar mu/default-font-size 180)
+(defvar mu/default-font-size 120)
 
 (setq scheme-program-name "racket")
 
