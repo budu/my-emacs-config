@@ -102,6 +102,7 @@
 
 ;;;; global key bindings
 
+(define-key input-decode-map [?\C--] [C--])
 (define-key input-decode-map [?\C-m] [C-m])
 (define-key input-decode-map [?\C-i] [C-i])
 (define-key input-decode-map [?\M-i] [M-i])
@@ -123,6 +124,8 @@
 (global-set-key "\C-\M-h"  'mark-paragraph)               ; displace mark-defun
 (global-set-key "\C-\M-g"  'mu/search-gems)
 
+(global-set-key (kbd "C--")     'text-scale-decrease)     ; displace negative-argument
+(global-set-key (kbd "C-=")     'text-scale-increase)
 (global-set-key (kbd "C-'")     'mu/touch)
 (global-set-key (kbd "C-:")     "&:")
 (global-set-key (kbd "C-M-S-h") 'mark-defun)
