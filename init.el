@@ -405,6 +405,12 @@
          ("C-M-b". markdown-backward-paragraph)
          ("C-M-f". markdown-forward-paragraph)))
 
+(use-package grip-mode
+  :ensure t
+  :custom ((grip-binary-path "~/.python/bin/grip"))
+  :bind (:map markdown-mode-command-map
+         ("g" . grip-mode)))
+
 ;;;; global hooks
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
