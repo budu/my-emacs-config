@@ -325,7 +325,7 @@
 
 (use-package restclient
   :ensure t
-  :mode (("\\.http\\'" . restclient-mode)))
+  :mode (("\\.rc\\'" . restclient-mode)))
 
 ;;;; ruby
 
