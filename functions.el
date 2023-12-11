@@ -71,5 +71,5 @@
 (defun mu/search-gems (search-term)
   (interactive (list (read-from-minibuffer "Search gems for: ")))
   (counsel-rg search-term
-              "/home/budu/.rvm/gems/ruby-2.7.6@reservotron/gems/"
+              "/home/budu/.asdf/installs/ruby/2.7.6/lib/ruby/gems/2.7.0/gems"
               "--no-ignore"))
