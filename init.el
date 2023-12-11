@@ -230,12 +230,6 @@
   :custom ((counsel-describe-function-function #'helpful-callable)
            (counsel-describe-variable-function #'helpful-variable)))
 
-;;;; translation
-
-(use-package lingva
-  :bind ("C-c t" . lingva-translate)
-  :custom (lingva-target "fr"))
-
 ;;;; spelling
 
 (use-package flyspell
