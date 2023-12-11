@@ -138,6 +138,7 @@
 (global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
 (global-set-key "\C-cw"   "%w[")
+(global-set-key "\C-ci"   "%i[")
 (global-set-key "\C-z"    "()\C-b") ; displace suspend-frame
 (global-set-key "\M-z"    "[]\C-b") ; displace zap-to-char
 (global-set-key "\C-\M-z" "{}\C-b")
