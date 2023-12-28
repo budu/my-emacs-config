@@ -39,6 +39,8 @@
 (setq use-package-always-ensure t)
 
 (use-package load-relative)
+(use-package quelpa)
+(use-package quelpa-use-package)
 
 ;;;; functions & macros
 
