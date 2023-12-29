@@ -319,6 +319,20 @@
 (use-package slim-mode)
 (use-package yaml-mode)
 
+;;;; copilot
+
+(use-package copilot
+  :quelpa (copilot :fetcher github
+                   :repo "zerolfx/copilot.el"
+                   :branch "main"
+                   :files ("dist" "*.el"))
+  :hook ((prog-mode . copilot-mode)
+         (copilot-mode . (lambda ()
+                           (setq-local copilot--indent-warning-printed-p t))))
+  :bind (:map copilot-completion-map
+         ("<return>" . copilot-accept-completion)
+         ("<M-tab>" . copilot-next-completion)))
+
 ;;;; ein
 
 (use-package ein
