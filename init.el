@@ -153,7 +153,10 @@
                     :font "Fira Code Retina"
                     :height mu/default-font-size)
 
-(use-package all-the-icons) ; M-x all-the-icons-install-fonts
+; Run these after the package has been installed:
+; M-x all-the-icons-install-fonts
+; M-x nerd-icons-install-fonts
+(use-package all-the-icons)
 
 (use-package doom-modeline
   :custom ((doom-modeline-height 15))
