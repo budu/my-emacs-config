@@ -313,8 +313,8 @@
   (require 'llm-ollama)
   (setopt ellama-provider
 		  (make-llm-ollama
-		   :chat-model "zephyr:latest"
-       :embedding-model "zephyr:latest")))
+		   :chat-model "codellama:13b"
+       :embedding-model "codellama:13b")))
 
 ;;;; prog
 
