@@ -234,6 +234,16 @@
   :custom ((counsel-describe-function-function #'helpful-callable)
            (counsel-describe-variable-function #'helpful-variable)))
 
+;;;; screenshot
+
+(use-package screenshot
+  :ensure nil
+  :quelpa (screenshot :fetcher github
+                      :repo "tecosaur/screenshot"
+                      :branch "master"
+                      :files ("screenshot.el"))
+  :bind (("<f8>" . screenshot)))
+
 ;;;; spelling
 
 (use-package flyspell
