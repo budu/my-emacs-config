@@ -337,6 +337,8 @@
                    :branch "main"
                    :files ("dist" "*.el"))
   :hook ((prog-mode . copilot-mode)
+         (markdown-mode . copilot-mode)
+         (adoc-mode . copilot-mode)
          (copilot-mode . (lambda ()
                            (setq-local copilot--indent-warning-printed-p t))))
   :bind (:map copilot-completion-map
@@ -419,6 +421,12 @@
   :hook web-mode
   :bind (:map emmet-mode-keymap
          ("C-j" . newline-and-indent)))
+
+;;;; adoc
+
+(use-package adoc-mode
+  :mode "\\.adoc\\'"
+  :custom ((adoc-command "asciidoctor")))
 
 ;;;; markdown
 
