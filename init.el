@@ -51,7 +51,10 @@
 
 (defvar mu/default-font-size 120)
 
-(setq scheme-program-name "racket")
+; set paragraph-start to handle various lists style
+(setq paragraph-start "\f\\|[ \t]*$\\|[ \t]*[-+*] \\|[ \t]*[0-9]+\\. ")
+; handle fill-paragraph list indentation
+(setq adaptive-fill-regexp "[ \t]*\\([-+*] \\|\\([0-9]+\\.\\)[ \t]+\\|[ \t]*[-+*][ \t]+\\|[ \t]*[0-9]+\\.\\)[ \t]*")
 
 ;;;; local vars overrides
 
@@ -320,6 +323,8 @@
        :embedding-model "codellama:13b")))
 
 ;;;; prog
+
+(setq scheme-program-name "racket")
 
 (add-hook 'prog-mode-hook 'electric-pair-mode)
 
