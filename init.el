@@ -335,6 +335,7 @@
 ;;;; copilot
 
 (use-package copilot
+  :ensure nil
   :quelpa (copilot :fetcher github
                    :repo "zerolfx/copilot.el"
                    :branch "main"
