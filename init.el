@@ -348,6 +348,7 @@
   :hook ((prog-mode . copilot-mode)
          (markdown-mode . copilot-mode)
          (adoc-mode . copilot-mode)
+         (git-commit-mode . copilot-mode)
          (copilot-mode . (lambda ()
                            (setq-local copilot--indent-warning-printed-p t))))
   :bind (:map copilot-completion-map
