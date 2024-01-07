@@ -85,6 +85,7 @@
  show-trailing-whitespace t
  tab-width 2
  css-indent-offset 2
+ lua-indent-level 2
  js-indent-level 2
  typescript-indent-level 2
  truncate-lines 0)
