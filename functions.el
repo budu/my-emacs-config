@@ -106,3 +106,14 @@
   (counsel-rg search-term
               "/home/budu/.asdf/installs/ruby/2.7.6/lib/ruby/gems/2.7.0/gems"
               "--no-ignore"))
+
+;; wrap region in quotes using Ruby string interpolation
+(defun mu/wrap-in-interpolated-quotes ()
+  (interactive)
+  (let ((start (region-beginning))
+        (end (region-end)))
+    (goto-char end)
+    (insert "}\"")
+    (goto-char start)
+    (insert "\"#{")
+    (goto-char (+ start 1))))

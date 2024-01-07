@@ -146,6 +146,9 @@
 
 (global-set-key (kbd "C-<return>") 'mu/open-at-point)
 
+;; key binding to wrap region in quote
+(global-set-key (kbd "C-\"") 'mu/wrap-in-interpolated-quotes)
+
 (global-set-key "\C-cw"   "%w[")
 (global-set-key "\C-ci"   "%i[")
 (global-set-key "\C-z"    "()\C-b") ; displace suspend-frame
