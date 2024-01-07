@@ -146,6 +146,10 @@
 
 (global-set-key (kbd "C-<return>") 'mu/open-at-point)
 
+(global-set-key (kbd "C-M-q")
+  (lambda () (interactive)
+    (setq fill-column (- (window-width) 7))))
+
 ;; key binding to wrap region in quote
 (global-set-key (kbd "C-\"") 'mu/wrap-in-interpolated-quotes)
 
