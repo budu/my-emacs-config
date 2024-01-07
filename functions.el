@@ -66,6 +66,19 @@
       (kmacro-end-macro arg)
     (kmacro-start-macro arg)))
 
+(defun mu/open-at-point ()
+  "Open the thing at point, if possible.
+   If the thing at point looks like a commit hash, open the
+   corresponding commit in Magit. If it looks like a URL, open it in
+   the browser."
+  (interactive)
+  (let ((thing (thing-at-point 'url)))
+    (if thing (browse-url-at-point)
+      (let ((thing (thing-at-point 'symbol)))
+        (cond ((string-match-p "^[0-9a-f]\\{7,40\\}$" thing)
+               (magit-show-commit thing))
+              (t (message "Nothing to open at point for; %s" thing)))))))
+
 (defun mu/sort-words (reverse beg end)
   "Sort words in region alphabetically, in REVERSE if negative.
    Prefixed with negative \\[universal-argument], sorts in reverse.

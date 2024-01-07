@@ -144,6 +144,8 @@
 (global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
 (global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
+(global-set-key (kbd "C-<return>") 'mu/open-at-point)
+
 (global-set-key "\C-cw"   "%w[")
 (global-set-key "\C-ci"   "%i[")
 (global-set-key "\C-z"    "()\C-b") ; displace suspend-frame
