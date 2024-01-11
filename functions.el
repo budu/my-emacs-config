@@ -75,8 +75,10 @@
   (let ((thing (thing-at-point 'url)))
     (if thing (browse-url-at-point)
       (let ((thing (thing-at-point 'symbol)))
-        (cond ((string-match-p "^[0-9a-f]\\{7,40\\}$" thing)
+        (cond ((string-match-p "^[0-9a-f]\\{7,20\\}$" thing)
                (magit-show-commit thing))
+              ((string-match-p "^[0-9a-f]\\{21,41\\}$" thing)
+               (browse-url (format "https://github.com/codegenome/reservotron/commit/%s" thing)))
               (t (message "Nothing to open at point for; %s" thing)))))))
 
 (defun mu/sort-words (reverse beg end)
