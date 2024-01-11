@@ -106,7 +106,12 @@
 (defun mu/search-gems (search-term)
   (interactive (list (read-from-minibuffer "Search gems for: ")))
   (counsel-rg search-term
-              "/home/budu/.asdf/installs/ruby/2.7.6/lib/ruby/gems/2.7.0/gems"
+              (let* ((ruby-version (->> "/opt/asdf-vm/bin/asdf current ruby | tr -s ' ' | cut -d' ' -f2"
+                                        (shell-command-to-string)
+                                        (string-trim)))
+                     (partial-version (replace-regexp-in-string "[0-9]+$" "0" ruby-version))
+                     (gems-path "/home/budu/.asdf/installs/ruby/%s/lib/ruby/gems/%s/gems"))
+                   (format gems-path ruby-version partial-version))
               "--no-ignore"))
 
 ;; wrap region in quotes using Ruby string interpolation
