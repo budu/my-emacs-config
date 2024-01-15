@@ -187,7 +187,10 @@
   (setq emojify-user-emojis
         '((":memo:" . (("name" . "Memo")
                        ("image" . "~/.emacs.d/emojis/1f4dd.png")
-                       ("style" . "github"))))))
+                       ("style" . "github")))
+          (":broom:" . (("name" . "Broom")
+                        ("image" . "~/.emacs.d/emojis/1f9f9.png")
+                        ("style" . "github"))))))
 
 ;;;; backups
 
