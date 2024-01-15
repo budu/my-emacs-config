@@ -60,6 +60,17 @@
         (indent-region start end)
         (when arg (forward-char (length insertion))))))
 
+(defun mu/goto-personal-notes ()
+  (interactive)
+  (let ((notes-directory "doc/nb-notes"))
+    (->> notes-directory
+         (projectile-expand-root)
+         (directory-files)
+         (last)
+         (car)
+         (concat (projectile-project-root) notes-directory "/")
+         (find-file))))
+
 (defun mu/kmacro-start-or-end-macro (arg)
   (interactive "P")
   (if (or defining-kbd-macro executing-kbd-macro)
