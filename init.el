@@ -426,6 +426,17 @@
 (use-package rspec-mode
   :hook (ruby-mode . rspec-mode))
 
+(use-package robe
+  :hook ((ruby-mode . robe-mode)
+         (slim-mode . robe-mode)) ; FIXME: bindings not working
+  :bind (:map ruby-mode-map
+         ("C-c C-d" . 'robe-doc)
+         ("C-c C-k" . 'robe-rails-refresh)
+         ("C-c C-l" . 'robe-load-current-buffer)
+         ("C-c C-s" . 'robe-start)
+         ("C-c C-t" . 'robe-test)
+         ("C-c C-v" . 'robe-jump)))
+
 (use-package ruby-end)
 
 (use-package rails-i18n
