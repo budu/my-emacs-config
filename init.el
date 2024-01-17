@@ -337,6 +337,11 @@
 		   :chat-model "codellama:13b"
        :embedding-model "codellama:13b")))
 
+;;;; text
+
+(add-hook 'text-mode-hook
+          (lambda () (setq fill-column 72)))
+
 ;;;; prog
 
 (setq scheme-program-name "racket")
