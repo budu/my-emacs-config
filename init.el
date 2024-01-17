@@ -365,8 +365,7 @@
                    :branch "main"
                    :files ("dist" "*.el"))
   :hook ((prog-mode . copilot-mode)
-         (markdown-mode . copilot-mode)
-         (adoc-mode . copilot-mode)
+         (text-mode . copilot-mode)
          (git-commit-mode . copilot-mode)
          (copilot-mode . (lambda ()
                            (setq-local copilot--indent-warning-printed-p t))))
