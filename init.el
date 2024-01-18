@@ -355,6 +355,14 @@
 (use-package slim-mode)
 (use-package yaml-mode)
 
+;;;; eglot
+
+(use-package eglot
+  :hook (prog-mode . eglot-ensure)
+  :custom
+  (eglot-autoshutdown t)
+  (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp")))
+
 ;;;; copilot
 
 (use-package copilot
