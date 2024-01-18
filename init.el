@@ -383,6 +383,15 @@
             (set-face-attribute 'copilot-overlay-face nil
                                 :foreground "#585")))
 
+;;;; flycheck
+
+(use-package flycheck
+  :diminish flycheck-mode
+  :hook (prog-mode . flycheck-mode)
+  :custom ((flycheck-check-syntax-automatically '(save mode-enabled))
+           (flycheck-display-errors-delay 0.25)
+           (flycheck-emacs-lisp-load-path 'inherit)))
+
 ;;;; ein
 
 (use-package ein
