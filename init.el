@@ -437,6 +437,13 @@
          ("C-c C-t" . 'robe-test)
          ("C-c C-v" . 'robe-jump)))
 
+(use-package rubocop
+  :init
+  (add-hook 'ruby-mode-hook 'rubocop-mode)
+  :diminish rubocop-mode
+  :config
+  (setq rubocop-autocorrect-on-save t))
+
 (use-package ruby-end)
 
 (use-package rails-i18n
