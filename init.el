@@ -8,14 +8,6 @@
 ;;;;;;;; bash/readline configuration.
 ;;;;;;;;
 
-;;;; shims
-
-(let ((dir (expand-file-name "~/.asdf/shims/")))
-  (when (and (file-directory-p dir)
-             (not (member dir exec-path)))
-    (setenv "PATH" (concat (getenv "PATH") (concat ":" dir)))
-    (setq exec-path (push dir exec-path))))
-
 ;;;; packages
 
 (let ((default-directory  "~/.emacs.d/lisp/"))
@@ -41,6 +33,18 @@
 (use-package load-relative)
 (use-package quelpa)
 (use-package quelpa-use-package)
+
+;;;; shims
+
+(use-package asdf
+  :ensure nil
+  :quelpa (asdf :fetcher github
+                :repo "tabfugnic/asdf.el"
+                :branch "main"
+                :files ("asdf.el"))
+  :config
+  (setq asdf-binary "/opt/asdf-vm/bin/asdf")
+  (asdf-enable))
 
 ;;;; functions & macros
 
