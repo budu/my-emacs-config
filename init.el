@@ -89,7 +89,15 @@
  typescript-indent-level 2
  truncate-lines 0)
 
-;; don't use tabs in align-regexp
+;;;; advice
+
+; don't ask when saving buffers
+(defadvice basic-save-buffer (around auto-confirm compile activate)
+  (cl-letf (((symbol-function 'yes-or-no-p) (lambda (&rest args) t))
+            ((symbol-function 'y-or-n-p) (lambda (&rest args) t)))
+    ad-do-it))
+
+; don't use tabs in align-regexp
 (defadvice align-regexp (around align-regexp-with-spaces activate)
   (let ((indent-tabs-mode nil))
     ad-do-it))
