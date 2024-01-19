@@ -440,9 +440,10 @@
 (use-package rvm
   :init (rvm-use-default))
 
-(use-package ruby-mode
+(use-package ruby-ts-mode
   :mode ".irbrc\\'"
   :mode "\\.arb\\'"
+  :hook ((ruby-mode . company-mode))
   :bind (:map ruby-mode-map
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
 
