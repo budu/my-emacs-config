@@ -404,6 +404,17 @@
            (flycheck-display-errors-delay 0.25)
            (flycheck-emacs-lisp-load-path 'inherit)))
 
+;;;; company
+
+(use-package company
+  :diminish company-mode
+  :hook (prog-mode . company-mode)
+  :custom ((company-idle-delay 0.25)
+           (company-minimum-prefix-length 2)
+           (company-tooltip-align-annotations t)
+           (company-tooltip-limit 10)
+           (company-tooltip-flip-when-above t)))
+
 ;;;; ein
 
 (use-package ein
