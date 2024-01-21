@@ -451,10 +451,11 @@
 (use-package rvm
   :init (rvm-use-default))
 
-(use-package ruby-ts-mode
+(use-package ruby-mode
   :mode ".irbrc\\'"
   :mode "\\.arb\\'"
-  :hook ((ruby-mode . company-mode))
+  :hook ((ruby-mode tree-sitter-mode)
+         (ruby-mode . company-mode))
   :bind (:map ruby-mode-map
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
 
