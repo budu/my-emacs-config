@@ -92,6 +92,15 @@
                (browse-url (format "https://github.com/codegenome/reservotron/commit/%s" thing)))
               (t (message "Nothing to open at point for; %s" thing)))))))
 
+(defun mu/org-fold-all-done-entries ()
+  "Close/fold all entries marked DONE."
+  (interactive)
+  (save-excursion
+    (goto-char (point-max))
+    (while (outline-previous-heading)
+      (when (org-entry-is-done-p)
+        (hide-entry)))))
+
 (defun mu/sort-words (reverse beg end)
   "Sort words in region alphabetically, in REVERSE if negative.
    Prefixed with negative \\[universal-argument], sorts in reverse.

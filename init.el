@@ -349,6 +349,10 @@
 (add-hook 'text-mode-hook
           (lambda () (setq fill-column 72)))
 
+;;;; org
+
+(add-hook 'org-mode-hook 'mu/org-fold-all-done-entries)
+
 ;;;; prog
 
 (setq scheme-program-name "racket")
