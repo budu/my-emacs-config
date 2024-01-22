@@ -360,7 +360,6 @@
 (use-package dockerfile-mode)
 (use-package geiser-racket)
 (use-package lua-mode)
-(use-package slim-mode)
 (use-package yaml-mode)
 
 ;;;; eglot
@@ -468,8 +467,7 @@
   :hook (ruby-mode . rspec-mode))
 
 (use-package robe
-  :hook ((ruby-mode . robe-mode)
-         (slim-mode . robe-mode)) ; FIXME: bindings not working
+  :hook ((ruby-mode . robe-mode))
   :bind (:map ruby-mode-map
          ("C-c C-d" . 'robe-doc)
          ("C-c C-k" . 'robe-rails-refresh)
@@ -486,6 +484,10 @@
   (setq rubocop-autocorrect-on-save t))
 
 (use-package ruby-end)
+
+(use-package slim-mode
+  :bind (:map slim-mode-map
+         ("C-c '" . 'ruby-toggle-string-quotes)))
 
 (use-package rails-i18n
   :bind (:map ruby-mode-map
