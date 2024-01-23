@@ -199,6 +199,9 @@
                        ("style" . "github")))
           (":broom:" . (("name" . "Broom")
                         ("image" . "~/.emacs.d/emojis/1f9f9.png")
+                        ("style" . "github")))
+          (":mirror:" . (("name" . "Mirror")
+                        ("image" . "~/.emacs.d/emojis/1fa9e.png")
                         ("style" . "github"))))))
 
 ;;;; backups
