@@ -274,6 +274,12 @@
   :custom ((counsel-describe-function-function #'helpful-callable)
            (counsel-describe-variable-function #'helpful-variable)))
 
+;;;; mastodon
+
+(use-package mastodon
+  :custom ((mastodon-instance-url "https://ruby.social")
+           (mastodon-active-user "budu")))
+
 ;;;; screenshot
 
 (use-package screenshot
