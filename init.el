@@ -1,12 +1,15 @@
-;;;;;;;;
-;;;;;;;; This configuration is based on David Wilson's excellent Emacs From Scratch.
-;;;;;;;; series. https://github.com/daviwil/emacs-from-scratch
-;;;;;;;;
-;;;;;;;; Custom variables/functions should be prefixed with "mu/"
-;;;;;;;;
-;;;;;;;; One guiding principle of this configuration is to make key binding as close as my
-;;;;;;;; bash/readline configuration.
-;;;;;;;;
+;;; package --- My Emacs init file
+;;;
+;;; Commentary:
+;;;   This configuration is based on David Wilson's excellent Emacs From Scratch
+;;;   series: https://github.com/daviwil/emacs-from-scratch
+;;;
+;;;   Custom variables/functions should be prefixed with "mu/"
+;;;
+;;;   One guiding principle of this configuration is to make key binding as close as my
+;;;   bash/readline configuration.
+;;;
+;;; Code:
 
 ;;;; packages
 
