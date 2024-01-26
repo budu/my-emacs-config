@@ -453,7 +453,6 @@
 ;;;; restclient
 
 (use-package restclient
-  :ensure t
   :mode (("\\.rc\\'" . restclient-mode)))
 
 ;;;; ruby
