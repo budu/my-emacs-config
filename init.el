@@ -530,6 +530,18 @@
   :init (require 'libyaml)
   :config (advice-add 'rails-i18n--read-lines :override #'yaml-read-file))
 
+;;;; javascript
+
+;; this needs some npm packages to be installed
+;; npm install -g javascript-typescript-langserver
+;; npm install typescript-eslint-language-service -D
+(use-package js2-mode
+  :hook (js2-mode . js2-imenu-extras-mode)
+  :mode ("\\.js$" . js2-mode)
+  :custom
+  (js2-mode-assume-strict t)
+  (js2-warn-about-unused-function-arguments t))
+
 ;;;; coffeescript
 
 (use-package coffee-mode
