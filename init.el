@@ -371,6 +371,16 @@
 
 (add-hook 'org-mode-hook 'mu/org-fold-all-done-entries)
 
+;;;; folding
+
+;; old but working, might want to look into ts-fold
+(use-package origami
+  :bind (("C-c v" . origami-recursively-toggle-node)
+         ("C-c V" . origami-toggle-all-nodes)
+         ("C-c C-v" . origami-toggle-node))
+  :hook ((prog-mode . origami-mode)
+         (text-mode . origami-mode)))
+
 ;;;; prog
 
 (setq scheme-program-name "racket")
