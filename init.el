@@ -92,6 +92,9 @@
  typescript-indent-level 2
  truncate-lines 0)
 
+; list directories first in dired
+(setq dired-listing-switches "-alh --group-directories-first")
+
 ;;;; advice
 
 ; don't ask when saving buffers
