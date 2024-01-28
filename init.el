@@ -540,7 +540,8 @@
   :mode ("\\.js$" . js2-mode)
   :custom
   (js2-mode-assume-strict t)
-  (js2-warn-about-unused-function-arguments t))
+  (js2-warn-about-unused-function-arguments t)
+  (js2-strict-missing-semi-warning nil))
 
 ;;;; coffeescript
 
