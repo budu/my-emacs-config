@@ -533,6 +533,10 @@
   :init (require 'libyaml)
   :config (advice-add 'rails-i18n--read-lines :override #'yaml-read-file))
 
+(use-package yari
+  :bind (:map ruby-mode-map
+         ("C-c C-y" . 'yari)))
+
 ;;;; javascript
 
 ;; this needs some npm packages to be installed
