@@ -414,7 +414,7 @@
 (use-package copilot
   :ensure nil
   :quelpa (copilot :fetcher github
-                   :repo "zerolfx/copilot.el"
+                   :repo "copilot-emacs/copilot.el"
                    :branch "main"
                    :files ("dist" "*.el"))
   :hook ((prog-mode . copilot-mode)
