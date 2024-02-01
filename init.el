@@ -402,8 +402,7 @@
 (use-package eglot
   :hook (prog-mode . eglot-ensure)
   :init
-  (setq max-mini-window-height 1
-        eldoc-echo-area-use-multiline-p nil
+  (setq eldoc-echo-area-use-multiline-p nil
         eglot-put-doc-in-help-buffer nil) ;'eglot-doc-too-large-for-echo-area)
   :custom
   (eglot-autoshutdown t)
