@@ -9,6 +9,8 @@
 ;;;   One guiding principle of this configuration is to make key binding as close as my
 ;;;   bash/readline configuration.
 ;;;
+;;;   TODO: check https://github.com/patrickt/emacs
+;;;
 ;;; Code:
 
 ;;;; packages
