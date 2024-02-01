@@ -487,6 +487,7 @@
   :mode ".irbrc\\'"
   :mode "\\.arb\\'"
   :hook ((ruby-mode tree-sitter-mode)
+         ; (ruby-mode . eglot-ensure) ; this is not working
          (ruby-mode . company-mode))
   :bind (:map ruby-mode-map
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
