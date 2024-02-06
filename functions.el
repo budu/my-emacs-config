@@ -71,12 +71,6 @@
          (concat (projectile-project-root) notes-directory "/")
          (find-file))))
 
-(defun mu/goto-i18n-locales ()
-  (interactive)
-  (->> "config/locales/en.yml"
-       (projectile-expand-root)
-       (find-file)))
-
 (defun mu/kmacro-start-or-end-macro (arg)
   (interactive "P")
   (if (or defining-kbd-macro executing-kbd-macro)

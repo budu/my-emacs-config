@@ -48,8 +48,10 @@
 
 ;;;; functions & macros
 
-(load-relative "functions.el")
 (load-relative "macros.el")
+(load-relative "mu/arrows.el")
+(load-relative "mu/i18n.el")
+(load-relative "functions.el")
 
 ;;;; vars
 
@@ -134,7 +136,6 @@
 (global-set-key "\C-c2"    'mu/sort-words)
 (global-set-key "\C-c3"    'rubocop-autocorrect-current-file)
 (global-set-key "\C-c5"    'mu/convert-region-to-percent-w-syntax)
-(global-set-key "\C-c9"    'mu/goto-i18n-locales)
 (global-set-key "\C-c0"    'mu/goto-personal-notes)
 (global-set-key "\C-cb"    'magit-blame)
 (global-set-key "\C-xl"    'magit-log-buffer-file)
@@ -528,11 +529,13 @@
 
 (use-package rails-i18n
   :bind (:map ruby-mode-map
-         ("C-c i" . 'rails-i18n-insert-with-cache)
-         ("C-c i" . 'rails-i18n-insert-no-cache)
+         ("C-c 9" . 'mu/i18n/goto-translation-file)
+         ("C-c i" . 'mu/i18n/extract-translation)
+         ("C-c C-i" . 'rails-i18n-insert-with-cache)
          :map slim-mode-map
-         ("C-c i" . 'rails-i18n-insert-with-cache)
-         ("C-c i" . 'rails-i18n-insert-no-cache))
+         ("C-c 9" . 'mu/i18n/goto-translation-file)
+         ("C-c i" . 'mu/i18n/extract-translation)
+         ("C-c C-i" . 'rails-i18n-insert-with-cache))
   :init (require 'libyaml)
   :config (advice-add 'rails-i18n--read-lines :override #'yaml-read-file))
 
