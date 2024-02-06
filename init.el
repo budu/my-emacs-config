@@ -358,17 +358,6 @@
   :init (setq counsel-projectile-switch-project-action #'projectile-vc)
   :config (counsel-projectile-mode))
 
-;;;; ellama
-
-(use-package ellama
-  :init
-  (setopt ellama-language "French")
-  (require 'llm-ollama)
-  (setopt ellama-provider
-		  (make-llm-ollama
-		   :chat-model "codellama:13b"
-       :embedding-model "codellama:13b")))
-
 ;;;; text
 
 (add-hook 'text-mode-hook
