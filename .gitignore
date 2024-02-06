@@ -2,6 +2,7 @@
 .dap-breakpoints
 .lsp-session-v1
 .mc-lists.el
+amx-items
 auto-save-list/
 elpa/
 emacs-backups/
