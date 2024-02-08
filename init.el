@@ -483,6 +483,7 @@
          ; (ruby-mode . eglot-ensure) ; this is not working
          (ruby-mode . company-mode))
   :bind (:map ruby-mode-map
+         ("C-c C-e" . "end")
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
 
 (use-package projectile-rails
