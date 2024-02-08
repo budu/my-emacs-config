@@ -51,7 +51,11 @@ are replaced by underscores."
     (insert (format "t('.%s')" key))
     (save-buffer)
     (let* ((language "en")
-           (current-path (replace-regexp-in-string "_controller" "" (file-name-sans-extension (buffer-file-name))))
+           ;; TODO: handle multiple extensions
+           (current-path (->> (buffer-file-name)
+                              (file-name-sans-extension)
+                              (replace-regexp-in-string "_controller" "" )
+                              (replace-regexp-in-string "app/views/components" "app/views")))
            (relative-path (replace-regexp-in-string (projectile-project-root) "" current-path))
            (i18n-path (append (->> (split-string relative-path "/" t)
                                    (mapcar (lambda (x) (string-trim x "_")))
