@@ -220,6 +220,20 @@
                         ("image" . "~/.emacs.d/emojis/1fa9e.png")
                         ("style" . "github"))))))
 
+;;;; behavior
+
+(use-package golden-ratio
+  :config (golden-ratio-mode 1)
+  :custom ((golden-ratio-auto-scale t)
+           (golden-ratio-exclude-modes '("ediff-mode" "dired-mode" "magit-popup-mode"))))
+
+(advice-add 'next-window-any-frame
+            :after
+            (lambda (&rest args) (golden-ratio)))
+(advice-add 'previous-window-any-frame
+            :after
+            (lambda (&rest args) (golden-ratio)))
+
 ;;;; backups
 
 (setq
