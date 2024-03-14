@@ -567,6 +567,12 @@
          ("C-j" . 'coffee-newline-and-indent))
   :custom (coffee-indent-like-python-mode t))
 
+;;;; rust
+
+(use-package rust-mode
+  :mode "\\.rs\\'"
+  :custom ((rust-format-on-save t)))
+
 ;;;; scss
 
 (use-package scss-mode
