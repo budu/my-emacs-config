@@ -615,12 +615,21 @@
   :custom-face (adoc-title-4-face ((t (:height 1.0))))
   :custom-face (adoc-title-5-face ((t (:height 0.9)))))
 
+;;;; Polymode
+
+(use-package polymode)
+
 ;;;; markdown
 
 (use-package markdown-mode
   :bind (:map markdown-mode-map
          ("C-M-b". markdown-backward-paragraph)
-         ("C-M-f". markdown-forward-paragraph)))
+         ("C-M-f". markdown-forward-paragraph))
+  :init
+  (setq markdown-fontify-code-blocks-natively t))
+
+(use-package poly-markdown
+  :hook (markdown-mode-hook . poly-markdown-mode))
 
 (use-package grip-mode
   :ensure t
