@@ -494,6 +494,7 @@
 (use-package ruby-mode
   :mode ".irbrc\\'"
   :mode "\\.arb\\'"
+  :mode "\\.axlsx\\'"
   :hook ((ruby-mode tree-sitter-mode)
          ; (ruby-mode . eglot-ensure) ; this is not working
          (ruby-mode . company-mode))
