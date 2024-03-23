@@ -160,7 +160,7 @@
 (global-set-key (kbd "<M-i>")   "<% %>\C-b\C-b\C-b") ; displace tab-to-tab-stop function
 (global-set-key (kbd "<C-m>")   'mu/kmacro-start-or-end-macro) ; displace newline
 
-(global-set-key (kbd "<f6>")    (lambda () (interactive) (find-file "~/memos")))
+(global-set-key (kbd "<f6>")    (lambda () (interactive) (find-file "~/Documents/memos")))
 (global-set-key (kbd "<f7>")    (lambda () (interactive) (find-file "~/projects/my-rails-template/template.rb")))
 (global-set-key (kbd "<f9>")    (lambda () (interactive) (find-file "~/.config/alacritty/alacritty.toml")))
 (global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
