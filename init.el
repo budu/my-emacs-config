@@ -127,7 +127,6 @@
 
 (define-key input-decode-map [?\C--] [C--])
 (define-key input-decode-map [?\C-m] [C-m])
-(define-key input-decode-map [?\C-i] [C-i])
 (define-key input-decode-map [?\M-i] [M-i])
 
 (global-set-key [C-tab]    'mu/cslist-to-indented-lines-and-back)
@@ -156,7 +155,6 @@
 (global-set-key (kbd "C-M-S-h") 'mark-defun)
 (global-set-key (kbd "C-M-S-k") 'kill-this-buffer)
 (global-set-key (kbd "M-p")     "-> {  }\C-b\C-b")
-(global-set-key (kbd "<C-i>")   "||\C-b") ; displace tab-bound function
 (global-set-key (kbd "<M-i>")   "<% %>\C-b\C-b\C-b") ; displace tab-to-tab-stop function
 (global-set-key (kbd "<C-m>")   'mu/kmacro-start-or-end-macro) ; displace newline
 
@@ -501,6 +499,8 @@
          (ruby-mode . company-mode))
   :bind (:map ruby-mode-map
          ("C-c C-e" . "end")
+         ("C-c l" . "||\C-b")
+         ("C-c o" . " do\n\nend\C-p\C-i")
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
 
 (use-package projectile-rails
