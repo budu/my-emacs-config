@@ -445,9 +445,8 @@
   :bind (:map copilot-completion-map
          ("<return>" . copilot-accept-completion)
          ("<M-tab>" . copilot-next-completion))
-  :config (progn
-            (set-face-attribute 'copilot-overlay-face nil
-                                :foreground "#585")))
+  :config
+  (set-face-attribute 'copilot-overlay-face nil :foreground "#585"))
 
 ;;;; flycheck
 
