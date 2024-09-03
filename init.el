@@ -649,19 +649,10 @@
 
 (use-package markdown-mode
   :bind (:map markdown-mode-map
-         ("C-M-b". markdown-backward-paragraph)
-         ("C-M-f". markdown-forward-paragraph))
-  :init
-  (setq markdown-fontify-code-blocks-natively t))
-
-(use-package poly-markdown
-  :hook (markdown-mode-hook . poly-markdown-mode))
-
-(use-package grip-mode
-  :ensure t
-  :custom ((grip-binary-path "~/.python/bin/grip"))
-  :bind (:map markdown-mode-command-map
-         ("g" . grip-mode)))
+         ("C-M-b" . markdown-backward-paragraph)
+         ("C-M-f" . markdown-forward-paragraph)
+         ("C-c l" . mu/md-link-commit)
+         ("C-c q" . mu/md-backquote)))
 
 ;;;; global hooks
 
