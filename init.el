@@ -71,8 +71,6 @@
 
 ;;;; vars
 
-(defvar mu/default-font-size 120)
-
 ; set paragraph-start to handle various lists style
 (setq paragraph-start "\f\\|[ \t]*$\\|[ \t]*[-+*] \\|[ \t]*[0-9]+\\. ")
 ; handle fill-paragraph list indentation
@@ -201,7 +199,7 @@
 
 (set-face-attribute 'default nil
                     :font "Fira Code Retina"
-                    :height mu/default-font-size)
+                    :height 80)
 
 ; Run these after the package has been installed:
 ; M-x all-the-icons-install-fonts
