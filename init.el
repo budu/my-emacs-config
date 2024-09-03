@@ -481,8 +481,7 @@
 ;;;; ein
 
 (use-package ein
-  :bind (:map ein:notebook-mode-map
-         ("<C-M-return>" . ein:worksheet-execute-cell)))
+  :bind (("<C-M-return>" . ein:worksheet-execute-cell)))
 
 ;;;; elisp
 
