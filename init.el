@@ -448,6 +448,16 @@
   :config
   (set-face-attribute 'copilot-overlay-face nil :foreground "#585"))
 
+;;;; gptel
+
+(straight-use-package 'gptel)
+
+(setq
+ gptel-model "llama3"
+ gptel-backend (gptel-make-ollama "Ollama"
+                 :host "localhost:11434"
+                 :stream t
+                 :models '("llama3")))
 ;;;; flycheck
 
 (use-package flycheck
