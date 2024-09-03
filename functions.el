@@ -101,6 +101,15 @@
       (when (org-entry-is-done-p)
         (hide-entry)))))
 
+(defun mu/select-ruby-block ()
+  "Select the current Ruby block."
+  (interactive)
+  (ruby-end-of-block)
+  (move-end-of-line nil)
+  (set-mark (point))
+  (ruby-beginning-of-block)
+  (move-beginning-of-line nil))
+
 (defun mu/sort-words (reverse beg end)
   "Sort words in region alphabetically, in REVERSE if negative.
    Prefixed with negative \\[universal-argument], sorts in reverse.
