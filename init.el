@@ -549,7 +549,7 @@
   (add-hook 'ruby-mode-hook 'rubocop-mode)
   :diminish rubocop-mode
   :config
-  (setq rubocop-autocorrect-on-save t))
+  (setq rubocop-autocorrect-on-save nil))
 
 (use-package ruby-end)
 
