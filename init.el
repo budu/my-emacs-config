@@ -62,6 +62,20 @@
   (setq asdf-binary "/opt/asdf-vm/bin/asdf")
   (asdf-enable))
 
+;;;; env vars
+
+(defun load-env-vars ()
+  "Load environment variables from the ~/.env file."
+  (let ((env-file (expand-file-name "~/.env")))
+    (when (file-exists-p env-file)
+      (with-temp-buffer
+        (insert-file-contents env-file)
+        (goto-char (point-min))
+        (while (re-search-forward "^\\([A-Za-z_][A-Za-z0-9_]*\\)=\\(.*\\)$" nil t)
+          (setenv (match-string 1) (match-string 2)))))))
+
+(load-env-vars)
+
 ;;;; functions & macros
 
 (load-relative "macros.el")
