@@ -423,10 +423,6 @@ Around advice for FUN with ARGS."
 (add-hook 'text-mode-hook
           (lambda () (setq fill-column 72)))
 
-;;;; org
-
-(add-hook 'org-mode-hook 'mu/org-fold-all-done-entries)
-
 ;;;; folding
 
 ;; old but working, might want to look into ts-fold
