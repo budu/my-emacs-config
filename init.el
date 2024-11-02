@@ -515,11 +515,6 @@ Around advice for FUN with ARGS."
            (company-tooltip-limit 10)
            (company-tooltip-flip-when-above t)))
 
-;;;; ein
-
-(use-package ein
-  :bind (("<C-M-return>" . ein:worksheet-execute-cell)))
-
 ;;;; elisp
 
 ;; docs only show usage from command line:
