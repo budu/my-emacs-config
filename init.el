@@ -206,7 +206,6 @@ Around advice for FUN with ARGS."
 (global-set-key (kbd "C-<f5>")  'my/org/open-daily-note)
 (global-set-key (kbd "<f6>")    (lambda () (interactive) (find-file "~/Documents/memos")))
 (global-set-key (kbd "<f7>")    (lambda () (interactive) (find-file "~/projects/my-rails-template/template.rb")))
-(global-set-key (kbd "<f9>")    (lambda () (interactive) (find-file "~/.config/alacritty/alacritty.toml")))
 (global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
 (global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
 (global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
