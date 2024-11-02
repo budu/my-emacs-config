@@ -64,3 +64,5 @@ are replaced by underscores."
            (i18n-path (cons language (cdr i18n-path)))
            (translation-file (mu/i18n/translation-file)))
       (mu/i18n/insert-entry translation-file i18n-path text))))
+
+;;; i18n.el ends here

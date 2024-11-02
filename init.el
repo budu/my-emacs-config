@@ -711,4 +711,4 @@ Around advice for FUN with ARGS."
   (add-hook hook
             (lambda () (setq show-trailing-whitespace nil))))
 
-;;;; end
+;;; init.el ends here
