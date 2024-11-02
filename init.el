@@ -553,7 +553,8 @@ Around advice for FUN with ARGS."
          (ruby-mode . company-mode))
   :bind (:map ruby-mode-map
          ("C-c C-e" . "end\C-j")
-         ("C-c h" . mu/select-ruby-block)
+         ("C-M-h" . er/mark-ruby-block-up)
+         ("C-M-p" . er/ruby-backward-up)
          ("C-c l" . "||\C-b")
          ("C-c j" . " \M- do\n\nend\C-p\C-i")
          ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
@@ -564,7 +565,18 @@ Around advice for FUN with ARGS."
   :config (projectile-rails-global-mode))
 
 (use-package rspec-mode
-  :hook (ruby-mode . rspec-mode))
+  :hook (ruby-mode . rspec-mode)
+  :bind (:map ruby-mode-map
+         ("<f9>" . 'rspec-verify)
+         ("C-<f9>" . 'rspec-verify-live))
+  :config
+  (defun rspec-verify-live ()
+    "Run the specified spec, or the spec file for the current buffer."
+    (interactive)
+    (let ((process-environment (cons "LIVE=t" process-environment)))
+      (rspec--autosave-buffer-maybe)
+      (rspec-run-single-file (rspec-spec-file-for (buffer-file-name))
+                             (rspec-core-options)))))
 
 (use-package robe
   :hook ((ruby-mode . robe-mode))
