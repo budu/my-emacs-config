@@ -79,9 +79,12 @@
 ;;;; functions & macros
 
 (load-relative "macros.el")
-(load-relative "mu/arrows.el")
-(load-relative "mu/i18n.el")
 (load-relative "functions.el")
+
+;; List all files in the mu/ directory
+(let ((mu-dir (concat (file-name-directory (or load-file-name buffer-file-name)) "mu/")))
+  (dolist (file (directory-files mu-dir t "\\.el$"))
+    (load file)))
 
 ;;;; vars
 
