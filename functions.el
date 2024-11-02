@@ -18,6 +18,14 @@
     (ellama-instant
      (format "Translate %s to French" (thing-at-point 'word)))))
 
+(defun mu/word-with-underscores-at-point-bounds ()
+  "Find the bounds of a word at point, including hyphens and underscores."
+  (save-excursion
+    (skip-chars-backward "a-zA-Z0-9-_")
+    (let ((start (point)))
+      (skip-chars-forward "a-zA-Z0-9-_")
+      (cons start (point)))))
+
 ;; Written in collaboration with ChatGPT 3.5, might need improvements
 (defun mu/convert-region-to-percent-w-syntax (begin end)
   "Convert a region of text inside square brackets to Ruby's %w syntax and replace it."
@@ -91,6 +99,16 @@
               ((string-match-p "^[0-9a-f]\\{21,41\\}$" thing)
                (browse-url (format "https://github.com/codegenome/reservotron/commit/%s" thing)))
               (t (message "Nothing to open at point for; %s" thing)))))))
+
+(defun mu/xdg-open ()
+  "Open the file(s) at point with an external application."
+  (interactive)
+  (let ((file-list (dired-get-marked-files)))
+    (mapc
+     (lambda (file-path)
+       (let ((process-connection-type nil))
+         (start-process "" nil "xdg-open" file-path)))
+     file-list)))
 
 (defun mu/org-fold-all-done-entries ()
   "Close/fold all entries marked DONE."
