@@ -3,7 +3,7 @@
 ;;; Code:
 
 (defun mu/i18n/translation-file ()
-  (projectile-expand-root "config/locales/en.yml"))
+  (projectile-expand-root "config/locales/extracted_locales.en.yml"))
 
 (defun mu/i18n/goto-translation-file ()
   (interactive)
