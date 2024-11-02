@@ -127,6 +127,11 @@
  typescript-indent-level 2
  truncate-lines 0)
 
+(defun my-compilation-mode-hook ()
+  (face-remap-add-relative 'default '(:height 0.7)))
+
+(add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
+
 (defun bugfix-display-line-numbers--turn-on (fun &rest args)
   "Avoid `display-line-numbers-mode' in `image-mode' and related.
 Around advice for FUN with ARGS."
