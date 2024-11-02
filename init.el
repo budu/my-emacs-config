@@ -127,6 +127,14 @@
  typescript-indent-level 2
  truncate-lines 0)
 
+(defun bugfix-display-line-numbers--turn-on (fun &rest args)
+  "Avoid `display-line-numbers-mode' in `image-mode' and related.
+Around advice for FUN with ARGS."
+  (unless (derived-mode-p 'image-mode 'docview-mode 'pdf-view-mode)
+    (apply fun args)))
+
+(advice-add 'display-line-numbers--turn-on :around #'bugfix-display-line-numbers--turn-on)
+
 ; list directories first in dired
 (setq dired-listing-switches "-alh --group-directories-first")
 
