@@ -482,26 +482,6 @@ Around advice for FUN with ARGS."
   :config
   (set-face-attribute 'copilot-overlay-face nil :foreground "#585"))
 
-;;;; gptel
-
-(use-package gptel
-  :straight t
-  :bind (("C-c g" . gptel-menu)
-         ("C-c t" . gptel-rewrite-menu)
-         (:map gptel-mode-map
-          ("<C-M-return>" . gptel-send)))
-  :hook ((gptel-post-response-functions gptel-end-of-response))
-  :config
-  (setq
-   ;; gptel-backend (gptel-make-ollama "Ollama"
-   ;;                 :host "localhost:11434"
-   ;;                 :stream t
-   ;;                 :models '("llama3.1"))
-   ;; gptel-model "llama3.1"))
-   gptel-api-key (getenv "CHATGPT_EMACS_KEY")
-   gptel-backend gptel--openai
-   gptel-model   "gpt-4o"))
-
 ;;;; flycheck
 
 (use-package flycheck
