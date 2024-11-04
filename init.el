@@ -339,6 +339,13 @@ Around advice for FUN with ARGS."
   :custom ((counsel-describe-function-function #'helpful-callable)
            (counsel-describe-variable-function #'helpful-variable)))
 
+;;;; posframe
+
+(use-package ivy-posframe
+  :config
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
+  (ivy-posframe-mode 1))
+
 ;;;; mastodon
 
 (use-package mastodon
