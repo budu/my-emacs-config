@@ -289,6 +289,14 @@ Around advice for FUN with ARGS."
  kept-old-versions 2
  version-control t)     ; use versioned backups
 
+
+;;;; keyfreq
+
+(use-package keyfreq
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
+
 ;;;; ivy
 
 (use-package expand-region
