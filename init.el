@@ -344,7 +344,10 @@ Around advice for FUN with ARGS."
 (use-package ivy-posframe
   :config
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
-  (ivy-posframe-mode 1))
+  (ivy-posframe-mode 1)
+  (set-face-attribute 'ivy-posframe nil
+                      :foreground "white"
+                      :background "DarkSlateBlue"))
 
 ;;;; mastodon
 
