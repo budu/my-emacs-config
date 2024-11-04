@@ -10,6 +10,9 @@
 ;    this one is weird, why would they change the key for directive to 'h'?
 ;    I should study it thoroughly before embarking on my own
 
+(defconst chatgpt-api-key (getenv "CHATGPT_EMACS_KEY"))
+(defconst claude-api-key (getenv "CLAUDE_EMACS_KEY"))
+
 ; TODO: move to global keybindings
 (global-set-key (kbd "C-c g") 'gptel-menu)
 ; TODO: replace by my own but study and use first
@@ -33,9 +36,6 @@
                          :repo "karthink/gptel-quick"))
 
 ;;; Customization
-
-(defconst chatgpt-api-key (getenv "CHATGPT_EMACS_KEY"))
-(defconst claude-api-key (getenv "CLAUDE_EMACS_KEY"))
 
 (defvar mu/gptel/quick-timeout 10
   "Time in seconds before dismissing the summary.")
