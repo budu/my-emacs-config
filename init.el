@@ -693,7 +693,7 @@ Around advice for FUN with ARGS."
          ("C-M-b" . markdown-backward-paragraph)
          ("C-M-f" . markdown-forward-paragraph)
          ("C-c l" . mu/md-link-commit)
-         ("C-c q" . mu/md-backquote)))
+         ("C-c '" . mu/md-backquote)))
 
 ;;;; global hooks
 
