@@ -46,8 +46,8 @@ calling ORIG-FUN with ARGS."
 (add-hook 'org-mode-hook 'mu/org-fold-all-done-entries)
 
 (with-eval-after-load 'org
-  (define-key org-mode-map (kbd "C-c c") 'my/org-insert-src-block)
-  (define-key org-mode-map (kbd "C-c e") 'my/org-insert-example-block))
+  (define-key org-mode-map (kbd "C-c c") 'mu/org-insert-src-block)
+  (define-key org-mode-map (kbd "C-c e") 'mu/org-insert-example-block))
 
 (setq org-latex-listings 'minted
       org-latex-packages-alist '(("" "minted"))
