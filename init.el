@@ -555,6 +555,8 @@ Around advice for FUN with ARGS."
          ; (ruby-mode . eglot-ensure) ; this is not working
          (ruby-mode . company-mode))
   :bind (:map ruby-mode-map
+         ("M-." . mu/ruby/find-definition)
+         ("C-M-." . 'mu/ruby/find-references)
          ("C-c C-e" . "end\C-j")
          ("C-M-h" . er/mark-ruby-block-up)
          ("C-M-p" . er/ruby-backward-up)

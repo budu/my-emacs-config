@@ -41,8 +41,6 @@ If only one result is found, jumps directly to it. Otherwise shows results in iv
                             (goto-char (point-min))
                             (forward-line (1- (get-text-property 0 'line x)))))))))
 
-(global-set-key (kbd "M-.") 'mu/ruby/find-definition)
-
 (defun mu/ruby/find-references ()
   "Search for all references to the Ruby symbol at point using project.el and ripgrep.
 Shows results in ivy for selection."
@@ -79,5 +77,3 @@ Shows results in ivy for selection."
                                    root))
                          (goto-char (point-min))
                          (forward-line (1- (get-text-property 0 'line x))))))))
-
-(global-set-key (kbd "C-M-.") 'mu/ruby/find-references)
