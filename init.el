@@ -186,6 +186,7 @@ Around advice for FUN with ARGS."
 (global-set-key "\C-c1"    'sort-lines)
 (global-set-key "\C-c2"    'mu/sort-words)
 (global-set-key "\C-c3"    'rubocop-autocorrect-current-file)
+(global-set-key "\C-c4"    (lambda () (interactive) (kill-new (buffer-file-name))))
 (global-set-key "\C-c5"    'mu/convert-region-to-percent-w-syntax)
 (global-set-key "\C-c0"    'mu/goto-personal-notes)
 (global-set-key "\C-cb"    'magit-blame)
@@ -206,18 +207,18 @@ Around advice for FUN with ARGS."
 (global-set-key (kbd "C-:")     "&:")
 (global-set-key (kbd "C-M-S-h") 'mark-defun)
 (global-set-key (kbd "C-M-S-k") 'kill-this-buffer)
-(global-set-key (kbd "M-p")     "-> {  }\C-b\C-b")
 (global-set-key (kbd "<M-i>")   "<% %>\C-b\C-b\C-b") ; displace tab-to-tab-stop function
 (global-set-key (kbd "<C-m>")   'mu/kmacro-start-or-end-macro) ; displace newline
 
 (global-set-key (kbd "<f5>")    (lambda () (interactive) (find-file "~/org/index.org")))
 (global-set-key (kbd "C-<f5>")  'my/org/open-daily-note)
-(global-set-key (kbd "<f6>")    (lambda () (interactive) (find-file "~/Documents/memos")))
+(global-set-key (kbd "<f6>")    'mastodon-toot)
 (global-set-key (kbd "<f7>")    (lambda () (interactive) (find-file "~/projects/my-rails-template/template.rb")))
 (global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
 (global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
 (global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
+(global-set-key (kbd "C-c SPC")    'rspec-toggle-spec-and-target)
 (global-set-key (kbd "C-<return>") 'mu/open-at-point)
 
 (global-set-key (kbd "C-M-q")
