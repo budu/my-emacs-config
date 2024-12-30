@@ -257,7 +257,11 @@ Around advice for FUN with ARGS."
   :hook (prog-mode . rainbow-mode))
 
 (use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode)
+  :config
+  (custom-set-faces
+   '(rainbow-delimiters-depth-1-face ((t (:foreground "#444444")))))
+  )
 
 (use-package emojify
   :hook (after-init . global-emojify-mode)
