@@ -542,6 +542,11 @@ Around advice for FUN with ARGS."
 (use-package rvm
   :init (rvm-use-default))
 
+(defface my-ruby-paren-face
+  '((t (:foreground "#444444")))
+  "Face for ruby parentheses"
+  :group 'ruby)
+
 (use-package ruby-mode
   :mode ".irbrc\\'"
   :mode "\\.arb\\'"
@@ -555,7 +560,12 @@ Around advice for FUN with ARGS."
          ("C-M-p" . er/ruby-backward-up)
          ("C-c l" . "||\C-b")
          ("C-c j" . " \M- do\n\nend\C-p\C-i")
-         ("C-M-d" . 'mu/kill-parens))) ; displace smie-down-list
+         ("C-M-d" . 'mu/kill-parens)) ; displace smie-down-list
+  :config
+  (font-lock-add-keywords
+   'ruby-mode
+   '(("[()]" 0 'my-ruby-paren-face)))
+  )
 
 (use-package projectile-rails
   :hook ((ruby-mode . rvm-activate-corresponding-ruby))
