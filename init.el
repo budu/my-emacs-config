@@ -158,6 +158,14 @@ Around advice for FUN with ARGS."
 
 (delete-selection-mode 1)
 
+; use aggressive auto-revert
+(global-auto-revert-mode t)
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
+(setq auto-revert-use-notify t)
+(setq auto-revert-notify-watch-descriptor-list t)
+(setq auto-revert-interval 0.1)
+
 ;;;; multiple-cursors
 
 (use-package multiple-cursors)
