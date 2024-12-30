@@ -74,6 +74,8 @@
     (->> notes-directory
          (projectile-expand-root)
          (directory-files)
+         (-filter (lambda (file)
+                    (string-match-p "^[0-9]\\{4\\}-W[0-5][0-9]\\.md$" file)))
          (last)
          (car)
          (concat (projectile-project-root) notes-directory "/")
