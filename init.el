@@ -210,9 +210,10 @@ Around advice for FUN with ARGS."
 (global-set-key (kbd "<M-i>")   "<% %>\C-b\C-b\C-b") ; displace tab-to-tab-stop function
 (global-set-key (kbd "<C-m>")   'mu/kmacro-start-or-end-macro) ; displace newline
 
+(global-set-key (kbd "<f2>")    'mastodon-toot)
 (global-set-key (kbd "<f5>")    (lambda () (interactive) (find-file "~/org/index.org")))
 (global-set-key (kbd "C-<f5>")  'my/org/open-daily-note)
-(global-set-key (kbd "<f6>")    'mastodon-toot)
+(global-set-key (kbd "<f6>")    'mu/goto-personal-notes)
 (global-set-key (kbd "<f7>")    (lambda () (interactive) (find-file "~/projects/my-rails-template/template.rb")))
 (global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
 (global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
