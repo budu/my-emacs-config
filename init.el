@@ -726,6 +726,20 @@ Around advice for FUN with ARGS."
          ("C-c l" . mu/md-link-commit)
          ("C-c '" . mu/md-backquote)))
 
+;;;; Transient
+
+(use-package transient)
+
+;;;; Aider.el
+
+(use-package aider
+  :straight (:host github :repo "tninja/aider.el" :files ("aider.el"))
+  :config
+  (setq aider-args '("--no-git"))
+  ;; (setenv "OPENAI_API_KEY" <your-openai-api-key>)
+  ;; Optional: Set a key binding for the transient menu
+  (global-set-key (kbd "C-c a") 'aider-transient-menu))
+
 ;;;; global hooks
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
