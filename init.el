@@ -127,6 +127,9 @@
  typescript-indent-level 2
  truncate-lines 0)
 
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+
 (defun my-compilation-mode-hook ()
   (face-remap-add-relative 'default '(:height 0.7)))
 
