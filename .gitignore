@@ -20,3 +20,5 @@ straight/
 transient/
 tree-sitter/
 url/
+.aider*
+.env
