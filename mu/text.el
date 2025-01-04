@@ -66,4 +66,14 @@ Excluding surrounding spaces and punctuation."
 
 (global-set-key (kbd "M-SPC") #'mu/text/select-current-space-delimited-word)
 
+(defun remove-zero-width-spaces ()
+  "Remove zero-width spaces from the current buffer."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (search-forward "\u200B" nil t)
+      (replace-match "" nil t))))
+
+(global-set-key (kbd "C-c z") 'remove-zero-width-spaces)
+
 ;;; text.el ends here
