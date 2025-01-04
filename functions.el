@@ -70,15 +70,9 @@
 
 (defun mu/goto-personal-notes ()
   (interactive)
-  (let ((notes-directory "doc/nb-notes"))
+  (let ((notes-directory "nb-notes/current.org"))
     (->> notes-directory
          (projectile-expand-root)
-         (directory-files)
-         (-filter (lambda (file)
-                    (string-match-p "^[0-9]\\{4\\}-W[0-5][0-9]\\.md$" file)))
-         (last)
-         (car)
-         (concat (projectile-project-root) notes-directory "/")
          (find-file))))
 
 (defun mu/kmacro-start-or-end-macro (arg)
@@ -95,12 +89,19 @@
   (interactive)
   (let ((thing (thing-at-point 'url)))
     (if thing (browse-url-at-point)
-      (let ((thing (thing-at-point 'symbol)))
+      (let* ((thing (thing-at-point 'symbol))
+             (toplevel (magit-toplevel))
+             (parent-dir (when (and toplevel
+                                  (string-match-p "/nb-notes/?$" toplevel))
+                          (file-name-directory (directory-file-name toplevel)))))
         (cond ((string-match-p "^[0-9a-f]\\{7,20\\}$" thing)
-               (magit-show-commit thing))
+               (if parent-dir
+                   (let ((default-directory parent-dir))
+                     (magit-show-commit thing))
+                 (magit-show-commit thing)))
               ((string-match-p "^[0-9a-f]\\{21,41\\}$" thing)
                (browse-url (format "https://github.com/codegenome/reservotron/commit/%s" thing)))
-              (t (message "Nothing to open at point for; %s" thing)))))))
+              (t (message "Nothing to open at point for: %s" thing)))))))
 
 (defun mu/xdg-open ()
   "Open the file(s) at point with an external application."
