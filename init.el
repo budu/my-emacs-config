@@ -221,6 +221,8 @@ Around advice for FUN with ARGS."
 
 (global-set-key (kbd "C-c SPC")    'rspec-toggle-spec-and-target)
 (global-set-key (kbd "C-<return>") 'mu/open-at-point)
+(with-eval-after-load 'magit
+  (define-key magit-mode-map (kbd "C-<return>") 'mu/open-at-point))
 
 (global-set-key (kbd "C-M-q")
   (lambda () (interactive)
