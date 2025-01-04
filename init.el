@@ -285,7 +285,8 @@ Around advice for FUN with ARGS."
 (use-package golden-ratio
   :config (golden-ratio-mode 1)
   :custom ((golden-ratio-auto-scale t)
-           (golden-ratio-exclude-modes '("ediff-mode" "magit-popup-mode"))))
+           (golden-ratio-exclude-modes '("ediff-mode" "magit-popup-mode"))
+           (golden-ratio-exclude-buffer-names '("*Calendar*"))))
 
 (advice-add 'next-window-any-frame
             :after
