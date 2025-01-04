@@ -751,6 +751,7 @@ Around advice for FUN with ARGS."
 
 (dolist (hook '(special-mode-hook
                 term-mode-hook
+                calendar-mode-hook
                 comint-mode-hook
                 compilation-mode-hook
                 minibuffer-setup-hook))
