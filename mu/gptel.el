@@ -17,7 +17,6 @@
 (global-set-key (kbd "C-c g") 'gptel-menu)
 ; TODO: replace by my own but study and use first
 (global-set-key (kbd "C-c t") 'gptel-rewrite-menu)
-(global-set-key (kbd "C-c q") 'gptel-quick)
 
 (use-package gptel
   :straight t
