@@ -11,6 +11,7 @@
   (define-key mu/org-map (kbd "p") 'org-priority-up)
   (define-key mu/org-map (kbd "n") 'org-priority-down)
   (add-hook 'org-mode-hook #'visual-line-mode)
+  (setq org-hide-emphasis-markers t)
   (setq org-tags-column -20)  ; Adjust the number to control tag position
   (setq org-auto-align-tags t)
   (setq org-tags-case-fold-search t)
@@ -71,11 +72,9 @@
   )
 
 (use-package org-bullets
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  :hook (org-mode . org-bullets-mode))
 
 (use-package org-appear
-  :straight (org-appear :type git :host github :repo "awth13/org-appear")
   :hook (org-mode . org-appear-mode))
 
 (defun org-get-tag-face (kwd)
