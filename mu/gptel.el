@@ -112,3 +112,31 @@
 (global-set-key (kbd "C-c C-x l") 'mu/gptel/switch-backend-and-model)
 
 ;;; gptel.el ends here
+
+;; override posframe-show to use same args as ivy-posframe
+(defun gptel-quick--update-posframe (response pos)
+  "Show RESPONSE at in a posframe (at POS) or the echo area."
+  (if (require 'posframe nil t)
+      (let ((fringe-indicator-alist nil)
+            (coords) (poshandler))
+        (if (and pos (not (equal (posn-x-y pos) '(0 . 0))))
+            (setq coords (gptel-quick--frame-relative-coordinates pos))
+          (setq poshandler #'posframe-poshandler-window-center))
+        ;; FIXME: why isn't it positioned like in ivy-posframe?
+        (with-ivy-window
+          (apply #'posframe-show
+                 "*gptel-quick*"
+                 :string response
+                 :font ivy-posframe-font
+                 :position (point)
+                 :poshandler poshandler
+                 :background-color (face-attribute 'ivy-posframe :background nil t)
+                 :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
+                 :border-width ivy-posframe-border-width
+                 :border-color (face-attribute 'ivy-posframe-border :background nil t)
+                 :override-parameters ivy-posframe-parameters
+                 :refposhandler ivy-posframe-refposhandler
+                 :hidehandler #'ivy-posframe-hidehandler
+                 :tty-non-selected-cursor t
+                 (funcall ivy-posframe-size-function))))
+    (message response)))
