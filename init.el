@@ -437,6 +437,7 @@ Around advice for FUN with ARGS."
   (when (file-directory-p "~/projects")
     (setq projectile-project-search-path '("~/projects")))
   (setq projectile-switch-project-action #'projectile-vc)
+  (setq projectile-generic-command "fd . -H -0 --type f")
   :config (projectile-mode))
 
 (use-package projectile-ripgrep)
