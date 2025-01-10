@@ -1,3 +1,7 @@
+;;; package --- Helpers for Ruby
+;;; Commentary:
+;;; Code:
+
 (defun mu/ruby/find-definition ()
   "Search for Ruby method, class, or module definition at point using project.el and ripgrep.
 If only one result is found, jumps directly to it. Otherwise shows results in ivy."
@@ -77,3 +81,5 @@ Shows results in ivy for selection."
                                    root))
                          (goto-char (point-min))
                          (forward-line (1- (get-text-property 0 'line x))))))))
+
+;;; ruby.el ends here
