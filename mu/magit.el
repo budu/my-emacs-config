@@ -22,4 +22,17 @@
 
 (global-set-key (kbd "C-c q") 'mu/magit/quicksave)
 
+(defun mu/magit/open-parent ()
+  "Open magit for the root of the project."
+  (interactive)
+  (let* ((toplevel (magit-toplevel))
+         (parent-dir (when (and toplevel
+                                (string-match-p "/nb-notes/?$" toplevel))
+                       (file-name-directory (directory-file-name toplevel)))))
+    (if parent-dir
+        (magit-status parent-dir)
+      (magit-status))))
+
+(global-set-key (kbd "C-x C-g") 'mu/magit/open-parent)
+
 ;;; magit.el ends here
