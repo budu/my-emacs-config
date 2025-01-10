@@ -49,23 +49,6 @@ If region is active, toggle the region.  Otherwise, toggle the word at point."
 
 (global-set-key (kbd "C-c m") 'mu/text/toggle-case-dwim)
 
-(defun mu/text/select-current-space-delimited-word ()
-  "Select the current space-delimited word under or before point.
-Excluding surrounding spaces and punctuation."
-  (interactive)
-  (let* ((bounds (save-excursion
-                  (skip-chars-backward "^[:space:]\n")
-                  (skip-chars-forward "^[:alnum:]_-")
-                  (let ((start (point)))
-                    (skip-chars-forward "[:alnum:]_-")
-                    (cons start (point)))))
-         (start (car bounds))
-         (end (cdr bounds)))
-    (goto-char start)
-    (push-mark end nil t)))
-
-(global-set-key (kbd "M-SPC") #'mu/text/select-current-space-delimited-word)
-
 (defun remove-zero-width-spaces ()
   "Remove zero-width spaces from the current buffer."
   (interactive)
