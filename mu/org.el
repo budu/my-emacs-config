@@ -6,10 +6,12 @@
   (define-key org-mode-map (kbd "C-<return>") 'mu/open-at-point)
   (define-key org-mode-map (kbd "M-p") 'org-metaup)
   (define-key org-mode-map (kbd "M-n") 'org-metadown)
+  (define-key org-mode-map (kbd "M-h") 'er/expand-region)
   (define-prefix-command 'mu/org-map)
   (define-key org-mode-map (kbd "C-c o") 'mu/org-map)
   (define-key mu/org-map (kbd "p") 'org-priority-up)
   (define-key mu/org-map (kbd "n") 'org-priority-down)
+  (define-key mu/org-map (kbd "w") 'mu/org/copy-as-markdown)
   (add-hook 'org-mode-hook #'visual-line-mode)
   (setq org-hide-emphasis-markers t)
   (setq org-tags-column -20)  ; Adjust the number to control tag position
@@ -162,6 +164,51 @@ calling ORIG-FUN with ARGS."
 
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c `") #'mu/org/surround-with-tilde)) ;; replace org-table-edit-field
+
+(defun mu/org/git-hash-to-org-link ()
+  "Convert git hash at point into an org link"
+  (interactive)
+  (let* ((bounds (bounds-of-thing-at-point 'word))
+         (hash (thing-at-point 'word t))
+         (default-directory (if (string= (file-name-nondirectory
+                                        (directory-file-name default-directory))
+                                       "nb-notes")
+                              (expand-file-name ".." default-directory)
+                            default-directory))
+         (repo-url (replace-regexp-in-string
+                   "[\n\r]+$" ""
+                   (shell-command-to-string "git config --get remote.origin.url")))
+         (clean-url (replace-regexp-in-string "\\.git$" "" repo-url))
+         (https-url (cond
+                    ;; Convert SSH URL format (git@github.com:user/repo)
+                    ((string-match "git@\\([^:]+\\):\\(.+\\)" clean-url)
+                     (format "https://%s/%s"
+                            (match-string 1 clean-url)
+                            (match-string 2 clean-url)))
+                    ;; Convert git:// format
+                    ((string-match "git://\\(.+\\)" clean-url)
+                     (format "https://%s" (match-string 1 clean-url)))
+                    ;; Already HTTPS or HTTP
+                    ((string-match "^https?://" clean-url) clean-url)
+                    ;; Default case
+                    (t clean-url)))
+         (short-hash (substring hash 0 7))
+         (org-link (format "[[%s/commit/%s][%s]]" https-url hash short-hash)))
+    (goto-char (car bounds))
+    (delete-region (car bounds) (cdr bounds))
+    (insert org-link)))
+
+(global-set-key (kbd "C-c l") 'mu/org/git-hash-to-org-link)
+
+(defun mu/org/copy-as-markdown ()
+  (interactive)
+  (let ((org-export-with-toc nil)
+        (wc (current-window-configuration)))
+    (with-current-buffer (org-md-export-as-markdown)
+      (clipboard-kill-region (point-min) (point-max))
+      (kill-buffer))
+    (set-window-configuration wc)
+    (message "Copied as Markdown")))
 
 ;; from https://claude.ai/chat/e8c83a90-3424-4873-a04f-17cd29545fae
 
