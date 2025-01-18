@@ -71,6 +71,7 @@
                            :background "#103b66"))))
    '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
   (setq org-startup-folded t)
+  (require 'org-tempo)
   )
 
 (use-package org-bullets
