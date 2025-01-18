@@ -665,6 +665,8 @@ Around advice for FUN with ARGS."
   (js2-warn-about-unused-function-arguments t)
   (js2-strict-missing-semi-warning nil))
 
+(use-package json-mode)
+
 ;;;; coffeescript
 
 (use-package coffee-mode
