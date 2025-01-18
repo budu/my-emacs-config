@@ -213,6 +213,8 @@ Around advice for FUN with ARGS."
 (global-set-key (kbd "<M-i>")   "<% %>\C-b\C-b\C-b") ; displace tab-to-tab-stop function
 (global-set-key (kbd "<C-m>")   'mu/kmacro-start-or-end-macro) ; displace newline
 
+(global-set-key (kbd "M-s M-s") 'avy-goto-char-timer)
+
 (global-set-key (kbd "<f2>")    'mastodon-toot)
 (global-set-key (kbd "<f5>")    (lambda () (interactive) (find-file "~/org/index.org")))
 (global-set-key (kbd "C-<f5>")  'my/org/open-daily-note)
