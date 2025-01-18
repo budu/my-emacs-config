@@ -211,6 +211,45 @@ calling ORIG-FUN with ARGS."
     (set-window-configuration wc)
     (message "Copied as Markdown")))
 
+(defun mu/org/auto-link--extract-real-url (ddg-url)
+  "Extract the real URL from a DuckDuckGo redirect URL."
+  (when (string-match "uddg=\\([^&]+\\)" ddg-url)
+    (url-unhex-string (match-string 1 ddg-url))))
+
+(defun mu/org/auto-link-dwim ()
+  "Convert text to an org-mode link using DuckDuckGo search.
+If region is active, use the region text.
+Otherwise, use the word at point."
+  (interactive)
+  (let* ((bounds (if (use-region-p)
+                     (cons (region-beginning) (region-end))
+                   (bounds-of-thing-at-point 'word)))
+         (text (when bounds
+                (buffer-substring-no-properties (car bounds) (cdr bounds))))
+         (search-url (when text
+                      (concat "https://duckduckgo.com/html/?q="
+                             (url-hexify-string text))))
+         (url-buffer (url-retrieve-synchronously search-url))
+         ddg-url
+         url)
+    (when (and text url-buffer)
+      (with-current-buffer url-buffer
+        (goto-char (point-min))
+        (when (re-search-forward "class=\"result__url\" href=\"\\([^\"]+\\)\"" nil t)
+          (setq ddg-url (match-string 1))
+          (when ddg-url
+            (setq url (mu/org/auto-link--extract-real-url ddg-url))))
+        (kill-buffer))
+
+      ;; Replace the text with org link if we found a URL
+      (when (and url bounds)
+        (delete-region (car bounds) (cdr bounds))
+        (insert (format "[[%s][%s]]" url text))))))
+
+; copy link with shr-maybe-probe-and-copy-url
+(with-eval-after-load 'org
+  (define-key mu/org-map (kbd "l") 'mu/org/auto-link-dwim))
+
 ;; from https://claude.ai/chat/e8c83a90-3424-4873-a04f-17cd29545fae
 
 ;; (defun org-smart-paste ()
