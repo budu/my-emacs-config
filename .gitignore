@@ -22,3 +22,7 @@ tree-sitter/
 url/
 .aider*
 .env
+forge-database.sqlite
+rake.cache
+.local/
+local-vars.el
