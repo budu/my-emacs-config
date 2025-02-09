@@ -259,6 +259,25 @@ Otherwise, use the word at point."
 (with-eval-after-load 'org
   (define-key mu/org-map (kbd "l") 'mu/org/auto-link-dwim))
 
+;; from https://stackoverflow.com/questions/25161792
+(defun mu/org/focus ()
+  "Show next entry, keeping other entries closed."
+  (interactive)
+  (if (save-excursion (end-of-line) (outline-invisible-p))
+      (progn (org-show-entry) (show-children))
+    (outline-back-to-heading)
+    (unless (and (bolp) (org-on-heading-p))
+      (org-up-heading-safe)
+      (hide-subtree)
+      (error "Boundary reached"))
+    (org-overview)
+    (org-reveal t)
+    (org-show-entry)
+    (show-children)))
+
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "M-<tab>") 'mu/org/focus))
+
 ;; from https://claude.ai/chat/e8c83a90-3424-4873-a04f-17cd29545fae
 
 ;; (defun org-smart-paste ()
