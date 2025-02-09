@@ -15,6 +15,9 @@
 
 ;;;; packages
 
+(define-prefix-command 'mu/cg-map)
+(global-set-key (kbd "C-c g") 'mu/cg-map)
+
 (let ((default-directory  "~/.emacs.d/lisp/"))
   (normal-top-level-add-to-load-path '("emacs-libyaml")))
 

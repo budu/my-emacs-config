@@ -26,4 +26,6 @@
             ;; TODO: turn the Ticket #<number> in the heading into a link to the ticket
       (message "Template file not found: %s" template-file))))
 
+(define-key mu/cg-map (kbd "t") 'mu/cg/create-ticket-todo)
+
 ;;; cg.el ends here
