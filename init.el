@@ -293,6 +293,10 @@ Around advice for FUN with ARGS."
                         ("image" . "~/.emacs.d/emojis/1fa9e.png")
                         ("style" . "github"))))))
 
+;;;; Open ~/org/index.org by default on load
+
+(find-file "~/org/index.org")
+
 ;;;; behavior
 
 (use-package golden-ratio
