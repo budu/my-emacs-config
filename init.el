@@ -646,14 +646,14 @@ Around advice for FUN with ARGS."
 
 (use-package slim-mode
   :bind (:map slim-mode-map
-         ("C-c '" . 'ruby-toggle-string-quotes)))
+         ("M-." . mu/ruby/find-definition)
+         ("C-c '" . 'ruby-toggle-string-quotes)
+         ("C-c 9" . 'mu/i18n/goto-translation-file)
+         ("C-c i" . 'mu/i18n/extract-translation)
+         ("C-c C-i" . 'rails-i18n-insert-with-cache)))
 
 (use-package rails-i18n
   :bind (:map ruby-mode-map
-         ("C-c 9" . 'mu/i18n/goto-translation-file)
-         ("C-c i" . 'mu/i18n/extract-translation)
-         ("C-c C-i" . 'rails-i18n-insert-with-cache)
-         :map slim-mode-map
          ("C-c 9" . 'mu/i18n/goto-translation-file)
          ("C-c i" . 'mu/i18n/extract-translation)
          ("C-c C-i" . 'rails-i18n-insert-with-cache))
