@@ -73,6 +73,12 @@
    '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
   (setq org-startup-folded t)
   (require 'org-tempo)
+  ;; Load org-babel languages
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)))
+  ;; Optional but recommended: Don't ask for confirmation when executing code blocks
+  (setq org-confirm-babel-evaluate nil)
   )
 
 (use-package org-bullets
