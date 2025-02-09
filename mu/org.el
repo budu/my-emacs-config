@@ -4,6 +4,8 @@
 
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-<return>") 'mu/open-at-point)
+  (define-key org-mode-map (kbd "M-<return>") 'org-insert-heading-respect-content)
+  (define-key org-mode-map (kbd "M-S-<return>") 'org-insert-todo-heading-respect-content)
   (define-key org-mode-map (kbd "M-p") 'org-metaup)
   (define-key org-mode-map (kbd "M-n") 'org-metadown)
   (define-key org-mode-map (kbd "M-h") 'er/expand-region)
