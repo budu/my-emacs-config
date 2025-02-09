@@ -19,11 +19,14 @@
                           ticket-number ticket-number))
             (org-schedule nil today)
             (insert "\n")
-            (insert template-content)
-            (save-excursion
-              (while (search-backward "NUMBER" nil t)
-                (replace-match (number-to-string ticket-number) t t)))))
-            ;; TODO: turn the Ticket #<number> in the heading into a link to the ticket
+            (let ((template-start (point)))
+              (insert template-content)
+              (save-excursion
+                (save-restriction
+                  (narrow-to-region template-start (point))
+                  (goto-char template-start)
+                  (while (search-forward "NUMBER" nil t)
+                    (replace-match (number-to-string ticket-number) t t)))))))
       (message "Template file not found: %s" template-file))))
 
 (define-key mu/cg-map (kbd "t") 'mu/cg/create-ticket-todo)
