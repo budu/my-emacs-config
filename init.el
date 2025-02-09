@@ -527,6 +527,7 @@ Around advice for FUN with ARGS."
          ("<return>" . copilot-accept-completion)
          ("<M-tab>" . copilot-next-completion))
   :config
+  (setq copilot-max-char-warning-disable t)
   (set-face-attribute 'copilot-overlay-face nil :foreground "#585"))
 
 ;;;; flycheck
