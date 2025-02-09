@@ -4,19 +4,8 @@
 ;;;   https://github.com/karthink/gptel-quick
 ;;; Code:
 
-; TODO: what is the difference between gptel-menu and gptel-rewrite-menu
-; => gptel-menu: general command center
-; => gptel-rewrite-menu: specialized for rewriting tasks
-;    this one is weird, why would they change the key for directive to 'h'?
-;    I should study it thoroughly before embarking on my own
-
 (defconst chatgpt-api-key (getenv "CHATGPT_EMACS_KEY"))
 (defconst claude-api-key (getenv "CLAUDE_EMACS_KEY"))
-
-; TODO: move to global keybindings
-(global-set-key (kbd "C-c g") 'gptel-menu)
-; TODO: replace by my own but study and use first
-(global-set-key (kbd "C-c t") 'gptel-rewrite-menu)
 
 (use-package gptel
   :straight t
@@ -140,3 +129,27 @@
                  :tty-non-selected-cursor t
                  (funcall ivy-posframe-size-function))))
     (message response)))
+
+;; TODO: I want a keymap for gptel
+;; I never want to use the gptel-menu or gptel-rewrite as I find them offensive.
+;; I want the following functions:
+;; - DONE take a region and rewrite it (do nothing if no selection)
+;; - analyze a region or whole buffer
+;; - summarize a region or whole buffer
+;; - ask something and get the response in a new buffer
+;; - a key to open gptel-menu
+
+(define-key mu/cg-map (kbd "r") 'mu/gptel/rewrite-region)
+(define-key mu/cg-map (kbd "m") 'gptel-menu)
+
+(defun mu/gptel/rewrite-region (beg end)
+  "Rewrite the region between BEG and END using the LLM.
+Does nothing if no region is selected."
+  (interactive "r")
+  (when (use-region-p)
+    (let ((text (buffer-substring-no-properties beg end)))
+      (delete-region beg end)
+      (gptel-request
+          (format "Rewrite this text:%s" text)
+        :position beg
+        :in-place t))))
