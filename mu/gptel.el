@@ -1,7 +1,6 @@
 ;;; package --- gptel package configuration and helpers
 ;;; Commentary:
 ;;;   https://github.com/karthink/gptel
-;;;   https://github.com/karthink/gptel-quick
 ;;; Code:
 
 (defconst chatgpt-api-key (getenv "CHATGPT_EMACS_KEY"))
@@ -17,48 +16,14 @@
    gptel-api-key chatgpt-api-key
    gptel-backend gptel--openai
    gptel-model   "gpt-4o"))
+   ;; gptel-backend (gptel-make-anthropic "Claude"
+   ;;                 :stream t :key claude-api-key)
+   ;; gptel-model 'claude-3-5-sonnet-20241022))
 
-(use-package gptel-quick
-  :straight (gptel-quick :type git
-                         :host github
-                         :repo "karthink/gptel-quick"))
+
+;; Error running timer: (wrong-type-argument number-or-marker-p nil)
 
 ;;; Customization
-
-(defvar mu/gptel/quick-timeout 10
-  "Time in seconds before dismissing the summary.")
-
-;; OpenAI
-
-(require 'gptel)
-
-(defvar mu/gptel/openai-backend gptel--openai)
-(defconst mu/gptel/openai-models gptel--openai-models)
-
-;; Anthropic
-
-(require 'gptel-anthropic)
-
-; TODO: review
-; see https://docs.anthropic.com/en/docs/about-claude/models
-(defconst mu/gptel/anthropic-models
-  '((claude-3-5-sonnet-latest
-     :description "Claude Sonnet"
-     :capabilities (tool)
-     :context-window 200
-     :input-cost 1.50
-     :output-cost 7.00)
-    (claude-3-haiku-latest
-     :description "Claude Haiku"
-     :capabilities (tool)
-     :context-window 200
-     :input-cost 1.50
-     :output-cost 7.00)))
-
-(defconst mu/gptel/anthropic-backend
-  (gptel-make-anthropic "Claude"
-                        :stream t
-                        :key claude-api-key))
 
 ;; Ollama
 
@@ -79,68 +44,7 @@
      :input-cost 1.00
      :output-cost 5.00)))
 
-;; Actions
-
-(defun mu/gptel/switch-backend-and-model ()
-  "Switch between different backends and models for gptel."
-  (interactive)
-  (let* ((backend-options `(("OpenAI"    . ,mu/gptel/openai-backend)
-                            ("Anthropic" . ,mu/gptel/anthropic-backend)
-                            ("Ollama"    . ,mu/gptel/ollama-backend)))
-         (selected-backend (completing-read "Choose backend: " (mapcar #'car backend-options)))
-         (models (cond
-                  ((string= selected-backend "OpenAI") mu/gptel/openai-models)
-                  ((string= selected-backend "Anthropic") mu/gptel/anthropic-models)
-                  ((string= selected-backend "Ollama") mu/gptel/ollama-models)))
-         (model-options (mapcar (lambda (model) (symbol-name (car model))) models))
-         (selected-model (completing-read "Choose model: " model-options)))
-    (setq gptel-backend (cdr (assoc selected-backend backend-options))
-          gptel-model selected-model)
-    (message "Switched to backend: %s, model: %s" selected-backend selected-model)))
-
-(global-set-key (kbd "C-c C-x l") 'mu/gptel/switch-backend-and-model)
-
-;;; gptel.el ends here
-
-;; override posframe-show to use same args as ivy-posframe
-(defun gptel-quick--update-posframe (response pos)
-  "Show RESPONSE at in a posframe (at POS) or the echo area."
-  (if (require 'posframe nil t)
-      (let ((fringe-indicator-alist nil)
-            (coords) (poshandler))
-        (if (and pos (not (equal (posn-x-y pos) '(0 . 0))))
-            (setq coords (gptel-quick--frame-relative-coordinates pos))
-          (setq poshandler #'posframe-poshandler-window-center))
-        ;; FIXME: why isn't it positioned like in ivy-posframe?
-        (with-ivy-window
-          (apply #'posframe-show
-                 "*gptel-quick*"
-                 :string response
-                 :font ivy-posframe-font
-                 :position (point)
-                 :poshandler poshandler
-                 :background-color (face-attribute 'ivy-posframe :background nil t)
-                 :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
-                 :border-width ivy-posframe-border-width
-                 :border-color (face-attribute 'ivy-posframe-border :background nil t)
-                 :override-parameters ivy-posframe-parameters
-                 :refposhandler ivy-posframe-refposhandler
-                 :hidehandler #'ivy-posframe-hidehandler
-                 :tty-non-selected-cursor t
-                 (funcall ivy-posframe-size-function))))
-    (message response)))
-
-;; TODO: I want a keymap for gptel
-;; I never want to use the gptel-menu or gptel-rewrite as I find them offensive.
-;; I want the following functions:
-;; - DONE take a region and rewrite it (do nothing if no selection)
-;; - analyze a region or whole buffer
-;; - summarize a region or whole buffer
-;; - ask something and get the response in a new buffer
-;; - a key to open gptel-menu
-
-(define-key mu/cg-map (kbd "r") 'mu/gptel/rewrite-region)
-(define-key mu/cg-map (kbd "m") 'gptel-menu)
+(define-key mu/cg-map (kbd "g") 'gptel-menu)
 
 (defun mu/gptel/rewrite-region (beg end)
   "Rewrite the region between BEG and END using the LLM.
@@ -150,6 +54,30 @@ Does nothing if no region is selected."
     (let ((text (buffer-substring-no-properties beg end)))
       (delete-region beg end)
       (gptel-request
-          (format "Rewrite this text:%s" text)
+          (format "Rewrite this text: %s" text)
         :position beg
         :in-place t))))
+
+(define-key mu/cg-map (kbd "r") 'mu/gptel/rewrite-region)
+
+(defun mu/gptel/convert-to-markdown (beg end)
+  "Rewrite the region between BEG and END using the LLM.
+Does nothing if no region is selected."
+  (interactive "r")
+  (when (use-region-p)
+    (let ((text (buffer-substring-no-properties beg end)))
+      (delete-region beg end)
+      (gptel-request
+          (format "Convert to markdown: %s" text)
+        :position beg
+        :stream t
+        :in-place t))))
+
+(define-key mu/cg-map (kbd "m") 'mu/gptel/convert-to-markdown)
+
+;; TODO:
+;; - analyze a region or whole buffer
+;; - summarize a region or whole buffer
+;; - ask something and get the response in a new buffer
+
+;;; gptel.el ends here

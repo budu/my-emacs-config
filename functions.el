@@ -51,22 +51,32 @@
     (setq start (region-beginning))
     (setq end (region-end)))
   (if (string-match-p "\n" (buffer-substring start end))
-      (let ((insertion
-             (mapconcat
-              (lambda (x) (string-trim x))
-              (split-string (buffer-substring start end) "\n") " ")))
+      (let* ((insertion (mapconcat
+                         (lambda (x) (string-trim x))
+                         (split-string (buffer-substring start end) "\n") " "))
+             (insertion (replace-regexp-in-string " ." "." insertion)))
         (delete-region start end)
         (insert insertion)
-        (indent-region start end)
+        (indent-region start (point))
         (when arg (forward-char (length insertion))))
-      (let ((insertion
-             (mapconcat
-              (lambda (x) (string-trim x))
-              (split-string (buffer-substring start end) ",") ",\C-j")))
-        (delete-region start end)
-        (insert insertion)
-        (indent-region start end)
-        (when arg (forward-char (length insertion))))))
+    (if (string-match-p "," (buffer-substring start end))
+        (let ((insertion
+               (mapconcat
+                (lambda (x) (string-trim x))
+                (split-string (buffer-substring start end) ",") ",\C-j")))
+          (delete-region start end)
+          (insert insertion)
+          (indent-region start (point))
+          (when arg (forward-char (length insertion))))
+        (let ((insertion
+               (mapconcat
+                (lambda (x) (string-trim x))
+                (split-string (buffer-substring start end) "\\.") "\C-j.")))
+          (delete-region start end)
+          (insert insertion)
+          (indent-region start (point))
+          (when arg (forward-char (length insertion)))))
+      ))
 
 (defun mu/goto-personal-notes ()
   (interactive)

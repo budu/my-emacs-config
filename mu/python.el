@@ -35,11 +35,11 @@
 ;; ----------------------------------------
 ;; Blacken (auto-format with Black)
 ;; ----------------------------------------
-(use-package blacken
-  :hook (python-mode . blacken-mode)
-  :config
-  ;; Optional: Configure line length
-  (setq blacken-line-length 120))
+;; (use-package blacken
+;;   :hook (python-mode . blacken-mode)
+;;   :config
+;;   ;; Optional: Configure line length
+;;   (setq blacken-line-length 120))
 
 ;; ----------------------------------------
 ;; OPTIONAL: Virtual environment tools

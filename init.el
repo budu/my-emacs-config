@@ -179,78 +179,6 @@ Around advice for FUN with ARGS."
 (setq auto-revert-notify-watch-descriptor-list t)
 (setq auto-revert-interval 0.1)
 
-;;;; multiple-cursors
-
-(use-package multiple-cursors)
-
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c /") 'mc/mark-all-dwim)
-
-;;;; global key bindings
-
-(define-key input-decode-map [?\C--] [C--])
-(define-key input-decode-map [?\M-i] [M-i])
-
-(global-set-key [C-tab]    'mu/cslist-to-indented-lines-and-back)
-(global-set-key [C--]      'text-scale-decrease)     ; displace negative-argument
-(global-set-key "\C-c1"    'sort-lines)
-(global-set-key "\C-c2"    'mu/sort-words)
-(global-set-key "\C-c3"    'rubocop-autocorrect-current-file)
-(global-set-key "\C-c4"    (lambda () (interactive) (kill-new (buffer-file-name))))
-(global-set-key "\C-c5"    'mu/convert-region-to-percent-w-syntax)
-(global-set-key "\C-c0"    'mu/goto-personal-notes)
-(global-set-key "\C-cb"    'magit-blame)
-(global-set-key "\C-xl"    'magit-log-buffer-file)
-(global-set-key "\C-c\C-c" 'comment-or-uncomment-region)
-(global-set-key "\C-h"     'delete-backward-char)         ; displace help-command
-(global-set-key "\C-w"     'backward-kill-word)           ; displace kill-region
-(global-set-key "\C-x\C-b" 'mu/switch-to-last-buffer)     ; displace list-buffers
-(global-set-key "\C-x\C-c" 'kill-region)                  ; displace save-buffers-kill-terminal
-(global-set-key "\C-x\M-q" 'save-buffers-kill-emacs)
-(global-set-key "\M-j"     'previous-window-any-frame)    ; displace default-indent-new-line
-(global-set-key "\M-k"     'next-window-any-frame)        ; displace kill-sentence
-(global-set-key "\C-\M-h"  'mark-paragraph)               ; displace mark-defun
-(global-set-key "\C-\M-g"  'mu/search-gems)
-
-(global-set-key (kbd "C-=")     'text-scale-increase)
-(global-set-key (kbd "C-'")     'mu/touch)
-(global-set-key (kbd "C-:")     "&:")
-(global-set-key (kbd "C-M-S-h") 'mark-defun)
-(global-set-key (kbd "C-M-S-k") 'kill-this-buffer)
-(global-set-key (kbd "<M-i>")   "<% %>\C-b\C-b\C-b") ; displace tab-to-tab-stop function
-
-(global-set-key (kbd "M-s M-s") 'avy-goto-char-timer)
-
-(global-set-key (kbd "<f2>")    'mastodon-toot)
-(global-set-key (kbd "<f5>")    (lambda () (interactive) (find-file "~/org/index.org")))
-(global-set-key (kbd "C-<f5>")  'my/org/open-daily-note)
-(global-set-key (kbd "<f6>")    'mu/goto-personal-notes)
-(global-set-key (kbd "<f7>")    'org-agenda-list)
-(global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
-(global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
-(global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
-
-(global-set-key (kbd "C-c SPC")    'rspec-toggle-spec-and-target)
-(global-set-key (kbd "C-<return>") 'mu/open-at-point)
-(with-eval-after-load 'magit
-  (define-key magit-mode-map (kbd "C-<return>") 'mu/open-at-point))
-
-(global-set-key (kbd "C-M-q")
-  (lambda () (interactive)
-    (setq fill-column (- (window-width) 7))))
-
-;; key binding to wrap region in quote
-(global-set-key (kbd "C-\"") 'mu/wrap-in-interpolated-quotes)
-
-(global-set-key "\C-cw"   "%w[")
-(global-set-key "\C-ci"   "%i[")
-(global-set-key "\C-z"    "()\C-b") ; displace suspend-frame
-(global-set-key "\M-z"    "[]\C-b") ; displace zap-to-char
-(global-set-key "\C-\M-z" "{}\C-b")
-(global-set-key "\C-\M-d" 'mu/kill-parens) ; displace down-list
-
 ;;;; appearance
 
 (set-face-attribute 'default nil
@@ -267,7 +195,9 @@ Around advice for FUN with ARGS."
   :init (doom-modeline-mode 1))
 
 (use-package doom-themes
-  :init (load-theme 'doom-dracula t))
+  :init (load-theme 'doom-dracula t)
+  (custom-set-faces
+   '(default ((t (:background "#121a1e"))))))
 
 (use-package rainbow-mode
   :hook (prog-mode . rainbow-mode))
@@ -390,7 +320,7 @@ Around advice for FUN with ARGS."
   (ivy-posframe-mode 1)
   (set-face-attribute 'ivy-posframe nil
                       :foreground "white"
-                      :background "DarkSlateBlue"))
+                      :background "#126"))
 
 ;;;; mastodon
 
@@ -451,10 +381,10 @@ Around advice for FUN with ARGS."
   :init
   (setq projectile-switch-project-action #'projectile-vc)
   (setq projectile-generic-command "fd . -H -0 --type f")
+  (setq projectile-create-missing-test-files t)
   :config
   (setq projectile-project-search-path '("~/cg" "~/projects"))
-  (projectile-load-known-projects)
-  (projectile-mode))
+  (projectile-load-known-projects))
 
 (use-package projectile-ripgrep)
 
@@ -513,11 +443,12 @@ Around advice for FUN with ARGS."
 ;;;; copilot
 
 (use-package copilot
-  :ensure nil
-  :quelpa (copilot :fetcher github
+  :straight (:host github
                    :repo "copilot-emacs/copilot.el"
-                   :branch "main"
-                   :files ("dist" "*.el"))
+                   :files ("dist" "*.el")
+                   ;; use straight-thaw-versions to update this
+                   ;; see straight/versions/default.el
+                   :commit "a03a4373886e5ee183cc33f90ebf669e0ce163e4")
   :hook ((prog-mode . copilot-mode)
          (text-mode . copilot-mode)
          (git-commit-mode . copilot-mode)
@@ -527,7 +458,13 @@ Around advice for FUN with ARGS."
          ("<return>" . copilot-accept-completion)
          ("<M-tab>" . copilot-next-completion))
   :config
-  (setq copilot-max-char-warning-disable t)
+  (setq copilot-max-char-warning-disable t
+        ;; this is weird the package complains about the wrong version but use the version
+        ;; install in the .emacs.d/.cache while I needed to specify the path explicitly to
+        ;; the system version which is 1.270.0
+        copilot-version "1.294.0"
+        copilot-server-executable "/home/budu/.asdf/shims/copilot-language-server"
+        )
   (set-face-attribute 'copilot-overlay-face nil :foreground "#585"))
 
 ;;;; flycheck
@@ -544,7 +481,7 @@ Around advice for FUN with ARGS."
 (use-package company
   :diminish company-mode
   :hook (prog-mode . company-mode)
-  :custom ((company-idle-delay 0.25)
+  :custom ((company-idle-delay 0.1)
            (company-minimum-prefix-length 2)
            (company-tooltip-align-annotations t)
            (company-tooltip-limit 10)
@@ -588,7 +525,8 @@ Around advice for FUN with ARGS."
   :mode ".irbrc\\'"
   :mode "\\.arb\\'"
   :mode "\\.axlsx\\'"
-  :hook ((ruby-mode tree-sitter-mode)
+  :hook (; FIXME: object-of-class-p: Lisp nesting exceeds ‘max-lisp-eval-depth’: 1601 [2 times]
+         ; (ruby-mode tree-sitter-mode)
          ; (ruby-mode . eglot-ensure) ; this is not working
          (ruby-mode . company-mode))
   :bind (:map ruby-mode-map
@@ -739,26 +677,88 @@ Around advice for FUN with ARGS."
 
 ;;;; markdown
 
+;; fix markdown command is not found
 (use-package markdown-mode
   :bind (:map markdown-mode-map
          ("C-M-b" . markdown-backward-paragraph)
          ("C-M-f" . markdown-forward-paragraph)
          ("C-c l" . mu/md-link-commit)
-         ("C-c '" . mu/md-backquote)))
+         ("C-c '" . mu/md-backquote))
+  :hook
+  (markdown-mode . markdown-toggle-markup-hiding)
+  :config
+  (setq markdown-command "~/bin/pandoc"))
 
 ;;;; Transient
 
 (use-package transient)
 
+;;;; Ansi-color
+
+(use-package ansi-color
+  :config
+  (defun my-ansi-color-apply ()
+    "Interpret ANSI color escape sequences in the current buffer."
+    (interactive)
+    (ansi-color-apply-on-region (point-min) (point-max)))
+
+  ;; Function to process log files
+  (defun my-colorize-compilation-buffer ()
+    (when (string-match-p "\\.log\\'" (or buffer-file-name ""))
+      (read-only-mode -1)
+      (my-ansi-color-apply)
+      (read-only-mode 1)))
+
+  ;; Automatically process log files when opened
+  (add-hook 'find-file-hook 'my-colorize-compilation-buffer))
+
 ;;;; Aider.el
 
-(use-package aider
-  :straight (:host github :repo "tninja/aider.el" :files ("aider.el"))
+;; (use-package aider
+;;   :straight (:host github :repo "tninja/aider.el" :files ("aider.el"))
+;;   :config
+;;   (setq aider-args '("--no-git"))
+;;   ;; (setenv "OPENAI_API_KEY" <your-openai-api-key>)
+;;   ;; Optional: Set a key binding for the transient menu
+;;   (global-set-key (kbd "C-c a") 'aider-transient-menu))
+
+;;;; Eat
+
+(use-package eat
+  :straight (:host codeberg
+             :repo "akib/emacs-eat"
+             :type git
+             :files ("*.el" ("term" "term/*.el") "*.texi"
+                     "*.ti" ("terminfo/e" "terminfo/e/*")
+                     ("terminfo/65" "terminfo/65/*")
+                     ("integration" "integration/*")
+                     (:exclude ".dir-locals.el" "*-tests.el")))
+
   :config
-  (setq aider-args '("--no-git"))
-  ;; (setenv "OPENAI_API_KEY" <your-openai-api-key>)
-  ;; Optional: Set a key binding for the transient menu
-  (global-set-key (kbd "C-c a") 'aider-transient-menu))
+  ;; override these keys explicitly to prevent eat-mode from shadowing global keys
+  (with-eval-after-load 'eat
+    (define-key eat-semi-char-mode-map (kbd "M-j") #'previous-window-any-frame)
+    (define-key eat-semi-char-mode-map (kbd "M-k") #'next-window-any-frame)
+    (define-key eat-char-mode-map (kbd "M-j") #'previous-window-any-frame)
+    (define-key eat-char-mode-map (kbd "M-k") #'next-window-any-frame)))
+
+;;;; Claude Code
+
+(use-package claude-code
+  :straight (:type git :host github :repo "stevemolitor/claude-code.el" :branch "main"
+                   :files ("*.el" (:exclude "demo.gif")))
+  :bind-keymap
+  ("C-c k" . claude-code-command-map)
+  :hook ((claude-code--start . sm-setup-claude-faces))
+  :config
+  (claude-code-mode))
+
+(defun claude-code-send-region-internal (start end)
+  "Call claude-code-send-region from START to END and handle prefix ARG."
+  (save-excursion
+    (goto-char start)
+    (push-mark end nil t)
+    (claude-code-send-region)))
 
 ;;;; global hooks
 
@@ -774,5 +774,90 @@ Around advice for FUN with ARGS."
                 minibuffer-setup-hook))
   (add-hook hook
             (lambda () (setq show-trailing-whitespace nil))))
+
+;; TODO: move all use-package out
+(global-set-key "\C-cb" 'magit-blame)
+(global-set-key "\C-c\C-c" 'comment-or-uncomment-region)
+
+;;;; multiple-cursors
+
+(use-package multiple-cursors)
+
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c /") 'mc/mark-all-dwim)
+
+;;;; global key bindings
+
+(define-key input-decode-map [?\C--] [C--])
+(define-key input-decode-map [?\M-i] [M-i])
+
+(global-set-key (kbd "M-<mouse-2>") #'mouse-yank-at-click)
+
+(global-set-key [C-tab]    'mu/cslist-to-indented-lines-and-back)
+(global-set-key [C--]      'text-scale-decrease)     ; displace negative-argument
+(global-set-key "\C-c1"    'sort-lines)
+(global-set-key "\C-c2"    'mu/sort-words)
+(global-set-key "\C-c3"    'rubocop-autocorrect-current-file)
+(global-set-key "\C-c4"    (lambda () (interactive) (kill-new (buffer-file-name))))
+(global-set-key "\C-c5"    'mu/convert-region-to-percent-w-syntax)
+(global-set-key "\C-c0"    'mu/goto-personal-notes)
+(global-set-key "\C-xl"    'magit-log-buffer-file)
+(global-set-key "\C-h"     'delete-backward-char)         ; displace help-command
+(global-set-key "\C-w"     'backward-kill-word)           ; displace kill-region
+(global-set-key "\C-x\C-b" 'mu/switch-to-last-buffer)     ; displace list-buffers
+(global-set-key "\C-x\C-c" 'kill-region)                  ; displace save-buffers-kill-terminal
+(global-set-key "\C-x\M-q" 'save-buffers-kill-emacs)
+(global-set-key "\M-j"     'previous-window-any-frame)    ; displace default-indent-new-line
+(global-set-key "\M-k"     'next-window-any-frame)        ; displace kill-sentence
+(global-set-key "\C-\M-h"  'mark-paragraph)               ; displace mark-defun
+(global-set-key "\C-\M-g"  'mu/search-gems)
+
+(global-set-key (kbd "C-=")     'text-scale-increase)
+(global-set-key (kbd "C-'")     'mu/touch)
+(global-set-key (kbd "C-:")     "&:")
+(global-set-key (kbd "C-M-S-h") 'mark-defun)
+(global-set-key (kbd "C-M-S-k") 'kill-this-buffer)
+(global-set-key (kbd "<M-i>")   "<% %>\C-b\C-b\C-b") ; displace tab-to-tab-stop function
+
+(global-set-key (kbd "M-s M-s") 'avy-goto-char-timer)
+
+(global-set-key (kbd "<f2>")    'mastodon-toot)
+(global-set-key (kbd "<f5>")    (lambda () (interactive) (find-file "~/org/index.org")))
+(global-set-key (kbd "C-<f5>")  'my/org/open-daily-note)
+(global-set-key (kbd "<f6>")    'mu/goto-personal-notes)
+(global-set-key (kbd "<f7>")    'org-agenda-list)
+;; (global-set-key (kbd "<f9>")    '???)
+(global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
+(global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
+(global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
+
+(global-set-key (kbd "C-c SPC")    'rspec-toggle-spec-and-target)
+(global-set-key (kbd "C-<return>") 'mu/open-at-point)
+(with-eval-after-load 'magit
+  (define-key magit-mode-map (kbd "C-<return>") 'mu/open-at-point))
+
+(global-set-key (kbd "C-M-q")
+  (lambda () (interactive)
+    (setq fill-column (- (window-width) 7))))
+
+;; key binding to wrap region in quote
+(global-set-key (kbd "C-\"") 'mu/wrap-in-interpolated-quotes)
+
+(global-set-key "\C-cw"   "%w[")
+(global-set-key "\C-ci"   "%i[")
+(global-set-key "\C-z"    "()\C-b") ; displace suspend-frame
+(global-set-key "\M-z"    "[]\C-b") ; displace zap-to-char
+(global-set-key "\C-\M-z" "{}\C-b")
+(global-set-key "\C-\M-d" 'mu/kill-parens) ; displace down-list
+
+(add-hook 'sh-mode-hook
+ (lambda ()
+   (define-key sh-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)))
+
+(add-hook 'python-mode-hook
+ (lambda ()
+   (define-key python-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)))
 
 ;;; init.el ends here

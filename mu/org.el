@@ -278,33 +278,175 @@ Otherwise, use the word at point."
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "M-<tab>") 'mu/org/focus))
 
-;; from https://claude.ai/chat/e8c83a90-3424-4873-a04f-17cd29545fae
+(defun mu/org/create-today-todo (title)
+  "Create a TODO entry scheduled for today, with TITLE prompted from user."
+  (interactive "sTitle of TODO: ")
+  (insert (format "* TODO %s\nSCHEDULED: <%s>\n\n#+begin_quote prompt\n\n#+end_quote\n"
+                  title
+                  (format-time-string "%Y-%m-%d")))
+  ;; Move cursor inside the quote block.
+  (search-backward "#+end_quote")
+  (forward-line -1))
 
-;; (defun org-smart-paste ()
-;;   "If there is an active region and the clipboard content is a URL,
-;;    create an org-mode link with the region as description and the URL as target.
-;;    Otherwise, perform a regular paste operation."
-;;   (interactive)
-;;   (let ((clipboard (current-kill 0))
-;;         (url-regex "\\`\\(?:https?://\\|www\\.\\)\\(?:[-.[:alnum:]]+\\.[[:alpha:]]{2,}\\)?[[:graph:]]*"))
-;;     (if (and (use-region-p)
-;;              (string-match-p url-regex clipboard))
-;;         (let* ((region-text (buffer-substring-no-properties
-;;                             (region-beginning)
-;;                             (region-end)))
-;;                (link-text (format "[[%s][%s]]"
-;;                                 clipboard
-;;                                 region-text)))
-;;           (delete-region (region-beginning) (region-end))
-;;           (insert link-text))
-;;       (yank))))
+(define-key mu/cg-map (kbd "d") 'mu/org/create-today-todo)
 
-;; ;; Bind the function to C-y in org-mode
-;; (with-eval-after-load 'org
-;;   (define-key org-mode-map (kbd "C-y") 'org-smart-paste))
+;; FIXME: gobble up the next heading if the current one is empty
+;; TODO: always prompt for title
+;; TODO: save the org buffer after inserting the COMMIT hash
+;; TODO: refresh magit status buffer
+;; TODO: use parent repo if currently inside nb-notes
+(defun mu/org/todo-done-and-commit ()
+  "Mark current TODO as DONE, commit only staged changes.
+Use the TODO heading title as commit subject and entry contents as body.
+Add a line 'COMMIT: <commit hash>' at the end of the TODO entry.
+When inside nb-notes directory, commits to the parent repository."
+  (interactive)
+  (save-excursion
+    (org-back-to-heading t)
+    (unless (org-get-todo-state)
+      (error "Not a TODO entry"))
 
-;; If you prefer to keep C-y as the default yank and use a different key binding:
-;; (with-eval-after-load 'org
-;;   (define-key org-mode-map (kbd "C-c C-y") 'org-smart-paste))
+    ;; Get headline text and prepare variables
+    (let* ((original-dir default-directory)
+           (in-nb-notes (string-match-p "^/.+/nb-notes\\(/\\|$\\)" default-directory))
+           (git-dir (if in-nb-notes
+                        (file-name-as-directory
+                         (car (split-string original-dir "/nb-notes" t)))
+                      original-dir))
+           (headline (org-get-heading t t t t))
+           (entry-content (string-trim
+                           (org-no-properties
+                            (save-excursion
+                              (org-end-of-meta-data t)
+                              (buffer-substring-no-properties
+                               (point)
+                               (save-excursion (org-end-of-subtree t t)))))))
+           (commit-message (concat headline "\n\n" entry-content))
+           pre-commit-hash
+           commit-hash)
+
+      ;; Set directory for git operations
+      (setq default-directory git-dir)
+
+      ;; Get current commit hash before commit
+      (setq pre-commit-hash (magit-git-string "rev-parse" "HEAD"))
+
+      ;; First check if there are staged changes
+      (unless (magit-staged-files)
+        (error "No staged changes to commit"))
+
+      ;; Commit staged changes via Magit
+      (magit-call-git "commit" "-m" commit-message)
+
+      ;; Get the new commit hash after commit attempt
+      (setq commit-hash (magit-git-string "rev-parse" "HEAD"))
+
+      ;; Check if commit actually happened by comparing before/after hashes
+      (unless (and commit-hash
+                   (not (string= pre-commit-hash commit-hash)))
+        (error "Commit failed unexpectedly"))
+
+      ;; Restore original directory for Org operations
+      (setq default-directory original-dir)
+
+      ;; Mark TODO entry as DONE using Org mode's API
+      (org-todo 'done)
+
+      ;; Insert the commit hash at the end of the Org entry
+      (org-end-of-subtree t t)
+      (forward-line -1)
+      (end-of-line)
+      (insert (format "\nCOMMIT: %s\n" commit-hash))
+
+      ;; feedback
+      (message "Committed %s and updated Org entry%s."
+               commit-hash
+               (if in-nb-notes " (in parent repository)" "")))))
+
+(define-key mu/cg-map (kbd "c") 'mu/org/todo-done-and-commit)
+
+(defun mu/org/send-first-prompt-block-to-claude (&optional arg)
+  "Send the content of the first '#+begin_quote prompt' block within the current org-mode TODO subtree to Claude.
+
+With prefix ARG, switch to Claude buffer after sending."
+  (interactive)
+  (progn
+    (org-back-to-heading t)
+    (unless (org-entry-is-todo-p)
+      (user-error "Cursor is not on a TODO heading"))
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          block-start block-end)
+      (if (re-search-forward "^#\\+begin_quote[ \t]+prompt[ \t]*$" subtree-end t)
+          (progn
+            (setq block-start (line-beginning-position 2)) ; Next line after #+begin_quote prompt
+            (if (re-search-forward "^#\\+end_quote[ \t]*$" subtree-end t)
+                (progn
+                  (setq block-end (1- (line-beginning-position)))
+                  ;; Send the region explicitly without leaving marks active
+                  (claude-code-send-region-internal block-start block-end)
+                  ;; Deactivate the region explicitly
+                  (deactivate-mark)
+                  ;; Switch to Claude buffer explicitly
+                  (pop-to-buffer "*claude*"))
+              (user-error "No matching '#+end_quote' found")))
+        (user-error "No '#+begin_quote prompt' block found in current TODO")))))
+
+(defun mu/org/send-last-prompt-block-to-claude (&optional arg)
+  "Send the content of the last '#+begin_quote prompt' block within the current org-mode TODO subtree to Claude.
+
+With prefix ARG, switch to Claude buffer after sending."
+  (interactive)
+  (org-back-to-heading t)
+  (unless (org-entry-is-todo-p)
+    (user-error "Cursor is not on a TODO heading"))
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        last-block-start last-block-end)
+    ;; Navigate through all blocks, remembering the last one
+    (save-excursion
+      (while (re-search-forward "^#\\+begin_quote[ \t]+prompt[ \t]*$" subtree-end t)
+        (setq last-block-start (line-beginning-position 2))  ;; Next line after #+begin_quote prompt
+        (if (re-search-forward "^#\\+end_quote[ \t]*$" subtree-end t)
+            (setq last-block-end (1- (line-beginning-position)))
+          (user-error "Unmatched '#+begin_quote prompt' without '#+end_quote'"))))
+    (if (and last-block-start last-block-end)
+        (progn
+          ;; Send the region explicitly without leaving marks active
+          (claude-code-send-region-internal last-block-start last-block-end)
+          ;; Deactivate the region explicitly
+          (deactivate-mark)
+          ;; Switch to Claude buffer if ARG is provided
+          (pop-to-buffer "*claude*"))
+      (user-error "No '#+begin_quote prompt' block found in current TODO"))))
+
+(define-key mu/cg-map (kbd "f") 'mu/org/send-last-prompt-block-to-claude)
+
+(defun mu/org/copy-block-at-point (&optional element)
+  "Copy the current block at point to the kill ring.
+If ELEMENT is provided, use it as the starting point for finding the block."
+  (interactive)
+  (let ((elem (or element (org-element-context))))
+    (cond
+     ;; Found a src block element
+     ((eq (org-element-type elem) 'src-block)
+      (let ((content (org-element-property :value elem)))
+        (kill-new content)
+        (message "Copied src-block to kill ring")))
+
+     ;; Found a block element
+     ((string-suffix-p "-block" (symbol-name (org-element-type elem)))
+      (let ((begin (org-element-property :contents-begin elem))
+            (end (org-element-property :contents-end elem))
+            (type-name (symbol-name (org-element-type elem))))
+        (kill-ring-save begin end)
+        (message "Copied %s to kill ring" type-name)))
+
+     ;; No parent element (reached the top without finding a block)
+     ((null (org-element-property :parent elem))
+      (message "No org block at point"))
+
+     ;; Try with the parent element
+     (t (mu/org/copy-block-at-point (org-element-property :parent elem))))))
+
+(define-key mu/cg-map (kbd "b") 'mu/org/copy-block-at-point)
 
 ;;; org.el ends here
