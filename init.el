@@ -407,6 +407,14 @@ Around advice for FUN with ARGS."
 (add-hook 'text-mode-hook
           (lambda () (setq fill-column 72)))
 
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+(define-key global-map "\M-Q" 'unfill-paragraph)
+
 ;;;; folding
 
 ;; old but working, might want to look into ts-fold
