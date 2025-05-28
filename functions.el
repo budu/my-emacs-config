@@ -54,7 +54,7 @@
       (let* ((insertion (mapconcat
                          (lambda (x) (string-trim x))
                          (split-string (buffer-substring start end) "\n") " "))
-             (insertion (replace-regexp-in-string " ." "." insertion)))
+             (insertion (replace-regexp-in-string " \\." "." insertion)))
         (delete-region start end)
         (insert insertion)
         (indent-region start (point))
