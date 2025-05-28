@@ -33,6 +33,7 @@
         (magit-status parent-dir)
       (magit-status))))
 
-(global-set-key (kbd "C-x C-g") 'mu/magit/open-parent)
+(global-set-key (kbd "C-x g") 'mu/magit/open-parent)
+(global-set-key (kbd "C-x C-g") 'magit-status)
 
 ;;; magit.el ends here
