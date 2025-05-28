@@ -7,7 +7,7 @@
   (let ((time (current-time)))
     (when-let ((buffer-time (buffer-local-value 'buffer-display-time buffer)))
       (> (float-time (time-subtract time buffer-time))
-         (* 24 60 60)))))
+         (* 48 60 60)))))
 
 (defun mu/auto-clean-buffers/get-old-buffers ()
   "Return a list of buffers that haven't been accessed in 24 hours."
@@ -20,12 +20,18 @@
    (buffer-list)))
 
 (defun mu/auto-clean-buffers/cleanup-old-buffers ()
-  "Close buffers that haven't been accessed in 24 hours."
+  "Close buffers that haven't been accessed in 24 hours, keeping at least 3 open."
   (interactive)
-  (let ((old-buffers (mu/auto-clean-buffers/get-old-buffers)))
-    (when old-buffers
-      (message "Closing %d unused buffer(s)" (length old-buffers))
-      (mapc 'kill-buffer old-buffers))))
+  (let* ((old-buffers (mu/auto-clean-buffers/get-old-buffers))
+         (num-old (length old-buffers))
+         (total-buffers (length (buffer-list)))
+         (min-buffers 12) ; Minimum number of buffers to keep open
+         (num-to-close (max 0 (min num-old (- total-buffers min-buffers)))))
+    (when (> num-to-close 0)
+      (let ((buffers-to-close (seq-take old-buffers num-to-close)))
+        (message "Closing %d unused buffer(s) (keeping at least %d)"
+                 num-to-close min-buffers)
+        (mapc 'kill-buffer buffers-to-close)))))
 
 (defun mu/auto-clean-buffers/setup-automatic-buffer-cleanup ()
   "Set up automatic buffer cleanup to run every hour."
