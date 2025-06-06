@@ -365,58 +365,38 @@ When inside nb-notes directory, commits to the parent repository."
 
 (define-key mu/cg-map (kbd "c") 'mu/org/todo-done-and-commit)
 
-(defun mu/org/send-first-prompt-block-to-claude (&optional arg)
-  "Send the content of the first '#+begin_quote prompt' block within the current org-mode TODO subtree to Claude.
-
-With prefix ARG, switch to Claude buffer after sending."
-  (interactive)
-  (progn
-    (org-back-to-heading t)
-    (unless (org-entry-is-todo-p)
-      (user-error "Cursor is not on a TODO heading"))
-    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-          block-start block-end)
-      (if (re-search-forward "^#\\+begin_quote[ \t]+prompt[ \t]*$" subtree-end t)
-          (progn
-            (setq block-start (line-beginning-position 2)) ; Next line after #+begin_quote prompt
-            (if (re-search-forward "^#\\+end_quote[ \t]*$" subtree-end t)
-                (progn
-                  (setq block-end (1- (line-beginning-position)))
-                  ;; Send the region explicitly without leaving marks active
-                  (claude-code-send-region-internal block-start block-end)
-                  ;; Deactivate the region explicitly
-                  (deactivate-mark)
-                  ;; Switch to Claude buffer explicitly
-                  (pop-to-buffer "*claude*"))
-              (user-error "No matching '#+end_quote' found")))
-        (user-error "No '#+begin_quote prompt' block found in current TODO")))))
-
 (defun mu/org/send-last-prompt-block-to-claude (&optional arg)
-  "Send the content of the last '#+begin_quote prompt' block within the current org-mode TODO subtree to Claude.
-
+  "Send last '#+begin_quote prompt' in body (excluding subheadings) of current TODO entry to Claude.
 With prefix ARG, switch to Claude buffer after sending."
-  (interactive)
+  (interactive "P")
   (org-back-to-heading t)
   (unless (org-entry-is-todo-p)
     (user-error "Cursor is not on a TODO heading"))
-  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-        last-block-start last-block-end)
-    ;; Navigate through all blocks, remembering the last one
+  (let* ((body-start (save-excursion
+                       (org-back-to-heading t)
+                       (forward-line 1)  ;; skip heading
+                       (let ((drawer-re "^\\s-*:\\(?:PROPERTIES\\|[A-Z]+\\):\\s-*$"))
+                         (while (and (not (eobp)) (looking-at drawer-re))
+                           (org-forward-element))
+                         (point))))
+         (body-end (save-excursion
+                     (outline-next-heading)
+                     (point)))
+         last-block-start last-block-end)
     (save-excursion
-      (while (re-search-forward "^#\\+begin_quote[ \t]+prompt[ \t]*$" subtree-end t)
-        (setq last-block-start (line-beginning-position 2))  ;; Next line after #+begin_quote prompt
-        (if (re-search-forward "^#\\+end_quote[ \t]*$" subtree-end t)
+      (goto-char body-start)
+      ;; Search for all blocks, remembering the last one
+      (while (re-search-forward "^#\\+begin_quote[ \t]+prompt[ \t]*$" body-end t)
+        (setq last-block-start (line-beginning-position 2))
+        (if (re-search-forward "^#\\+end_quote[ \t]*$" body-end t)
             (setq last-block-end (1- (line-beginning-position)))
           (user-error "Unmatched '#+begin_quote prompt' without '#+end_quote'"))))
     (if (and last-block-start last-block-end)
         (progn
-          ;; Send the region explicitly without leaving marks active
           (claude-code-send-region-internal last-block-start last-block-end)
-          ;; Deactivate the region explicitly
           (deactivate-mark)
-          ;; Switch to Claude buffer if ARG is provided
-          (pop-to-buffer "*claude*"))
-      (user-error "No '#+begin_quote prompt' block found in current TODO"))))
+          (when arg (pop-to-buffer "*claude*")))
+      (user-error "No '#+begin_quote prompt' block found in current TODO body"))))
 
 (define-key mu/cg-map (kbd "f") 'mu/org/send-last-prompt-block-to-claude)
 
