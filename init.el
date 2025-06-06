@@ -60,6 +60,17 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;;;; performance
+
+(setq gc-cons-threshold (* 100 1024 1024) ;; GC sometime after allocating 100Mb
+      ;; jit-lock-defer-time nil
+      ;; jit-lock-stealth-time 1.25
+      ;; jit-lock-stealth-nice 0.5
+      jit-lock-chunk-size 4096
+      read-process-output-max (* 1024 1024)
+      package-native-compile t)
+(run-with-idle-timer 2 t (lambda () (garbage-collect))) ;; Trigger a GC after 5s of idle time
+
 ;;;; shims
 
 (use-package asdf
