@@ -694,6 +694,7 @@ Around advice for FUN with ARGS."
          ("C-c '" . mu/md-backquote))
   :hook
   (markdown-mode . markdown-toggle-markup-hiding)
+  (markdown-mode . visual-line-mode)
   :config
   (setq markdown-command "~/bin/pandoc"))
 
