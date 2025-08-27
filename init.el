@@ -44,22 +44,6 @@
 (use-package quelpa)
 (use-package quelpa-use-package)
 
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
 ;;;; performance
 
 (setq gc-cons-threshold (* 100 1024 1024) ;; GC sometime after allocating 100Mb
@@ -472,12 +456,6 @@ Around advice for FUN with ARGS."
 ;;;; copilot
 
 (use-package copilot
-  :straight (:host github
-                   :repo "copilot-emacs/copilot.el"
-                   :files ("dist" "*.el")
-                   ;; use straight-thaw-versions to update this
-                   ;; see straight/versions/default.el
-                   :commit "a03a4373886e5ee183cc33f90ebf669e0ce163e4")
   :hook ((prog-mode . copilot-mode)
          (text-mode . copilot-mode)
          (git-commit-mode . copilot-mode)
@@ -742,28 +720,9 @@ Around advice for FUN with ARGS."
   ;; Automatically process log files when opened
   (add-hook 'find-file-hook 'my-colorize-compilation-buffer))
 
-;;;; Aider.el
-
-;; (use-package aider
-;;   :straight (:host github :repo "tninja/aider.el" :files ("aider.el"))
-;;   :config
-;;   (setq aider-args '("--no-git"))
-;;   ;; (setenv "OPENAI_API_KEY" <your-openai-api-key>)
-;;   ;; Optional: Set a key binding for the transient menu
-;;   (global-set-key (kbd "C-c a") 'aider-transient-menu))
-
 ;;;; Eat
 
 (use-package eat
-  :straight (:host codeberg
-             :repo "akib/emacs-eat"
-             :type git
-             :files ("*.el" ("term" "term/*.el") "*.texi"
-                     "*.ti" ("terminfo/e" "terminfo/e/*")
-                     ("terminfo/65" "terminfo/65/*")
-                     ("integration" "integration/*")
-                     (:exclude ".dir-locals.el" "*-tests.el")))
-
   :config
   ;; override these keys explicitly to prevent eat-mode from shadowing global keys
   (with-eval-after-load 'eat
@@ -775,8 +734,7 @@ Around advice for FUN with ARGS."
 ;;;; Claude Code
 
 (use-package claude-code
-  :straight (:type git :host github :repo "stevemolitor/claude-code.el" :branch "main"
-                   :files ("*.el" (:exclude "demo.gif")))
+  :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
   :bind-keymap
   ("C-c k" . claude-code-command-map)
   :hook ((claude-code--start . sm-setup-claude-faces))

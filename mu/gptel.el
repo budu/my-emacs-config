@@ -7,7 +7,6 @@
 (defconst claude-api-key (getenv "CLAUDE_EMACS_KEY"))
 
 (use-package gptel
-  :straight t
   :bind ((:map gptel-mode-map
           ("<C-M-return>" . gptel-send)))
   :hook ((gptel-post-response-functions gptel-end-of-response))
@@ -19,7 +18,6 @@
    ;; gptel-backend (gptel-make-anthropic "Claude"
    ;;                 :stream t :key claude-api-key)
    ;; gptel-model 'claude-3-5-sonnet-20241022))
-
 
 ;; Error running timer: (wrong-type-argument number-or-marker-p nil)
 
