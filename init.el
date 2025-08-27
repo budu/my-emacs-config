@@ -752,21 +752,27 @@ Around advice for FUN with ARGS."
   "Smart Claude buffer switching:
 - If Claude buffer exists and is displayed, switch to that window
 - If Claude buffer exists but not displayed, switch to it and go to end
-- If no Claude buffer exists, create one and go to end"
+- If no Claude buffer exists, create one and go to end
+- Never starts claude-code inside nb-notes directory, always in containing git project"
   (interactive)
   (let* ((claude-buffer (get-buffer "*claude*"))
-         (claude-window (when claude-buffer (get-buffer-window claude-buffer))))
+         (claude-window (when claude-buffer (get-buffer-window claude-buffer)))
+         (current-dir (or (when buffer-file-name
+                            (file-name-directory buffer-file-name))
+                          default-directory))
+         (target-dir (mu/get-project-dir)))
     (cond
      ;; Claude buffer displayed - switch to its window
      (claude-window (select-window claude-window))
      ;; Claude buffer exists but not displayed - switch to it
      (claude-buffer (claude-code-switch-to-buffer))
-     ;; No Claude buffer - create one
+     ;; No Claude buffer - create one in the appropriate directory
      (t
-      (claude-code)
-      (->> (get-buffer "*claude*")
-           (get-buffer-window)
-           (select-window))))
+      (let ((default-directory target-dir))
+        (claude-code)
+        (->> (get-buffer "*claude*")
+             (get-buffer-window)
+             (select-window)))))
     (goto-char (point-max))))
 
 ;;;; global hooks
