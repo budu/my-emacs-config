@@ -755,7 +755,10 @@ Around advice for FUN with ARGS."
 - If no Claude buffer exists, create one and go to end
 - Never starts claude-code inside nb-notes directory, always in containing git project"
   (interactive)
-  (let* ((claude-buffer (get-buffer "*claude*"))
+  (let* ((claude-buffers (seq-filter (lambda (buf)
+                                       (string-match-p "^\\*claude" (buffer-name buf)))
+                                     (buffer-list)))
+         (claude-buffer (car (last claude-buffers))) ; Pick the last Claude buffer
          (claude-window (when claude-buffer (get-buffer-window claude-buffer)))
          (current-dir (or (when buffer-file-name
                             (file-name-directory buffer-file-name))
@@ -765,14 +768,18 @@ Around advice for FUN with ARGS."
      ;; Claude buffer displayed - switch to its window
      (claude-window (select-window claude-window))
      ;; Claude buffer exists but not displayed - switch to it
-     (claude-buffer (claude-code-switch-to-buffer))
+     (claude-buffer (switch-to-buffer claude-buffer))
      ;; No Claude buffer - create one in the appropriate directory
      (t
       (let ((default-directory target-dir))
         (claude-code)
-        (->> (get-buffer "*claude*")
-             (get-buffer-window)
-             (select-window)))))
+        ;; Find the newly created Claude buffer
+        (let ((new-claude-buffers (seq-filter (lambda (buf)
+                                                (string-match-p "^\\*claude" (buffer-name buf)))
+                                              (buffer-list))))
+          (->> (car (last new-claude-buffers))
+               (get-buffer-window)
+               (select-window))))))
     (goto-char (point-max))))
 
 ;;;; global hooks
