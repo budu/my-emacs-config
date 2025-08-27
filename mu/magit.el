@@ -2,11 +2,14 @@
 ;;; Commentary:
 ;;; Code:
 
+;; TODO: make it opt-in only
 (defun mu/magit/quicksave ()
   "Stage everything, commit and push."
   (interactive)
-  (let ((default-directory (magit-toplevel)))
-    (if default-directory
+  (let ((default-directory (if (fboundp 'magit-toplevel)
+                               (magit-toplevel)
+                             default-directory)))
+    (if (and default-directory (magit-git-repo-p default-directory))
         (progn
           ;; Stage all changes including untracked files
           (magit-stage-modified t)
@@ -25,7 +28,9 @@
 (defun mu/magit/open-parent ()
   "Open magit for the root of the project."
   (interactive)
-  (let* ((toplevel (magit-toplevel))
+  (let* ((toplevel (if (fboundp 'magit-toplevel)
+                       (magit-toplevel)
+                     default-directory))
          (parent-dir (when (and toplevel
                                 (string-match-p "/nb-notes/?$" toplevel))
                        (file-name-directory (directory-file-name toplevel)))))
