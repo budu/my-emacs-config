@@ -465,13 +465,7 @@ Around advice for FUN with ARGS."
          ("<return>" . copilot-accept-completion)
          ("<M-tab>" . copilot-next-completion))
   :config
-  (setq copilot-max-char-warning-disable t
-        ;; this is weird the package complains about the wrong version but use the version
-        ;; install in the .emacs.d/.cache while I needed to specify the path explicitly to
-        ;; the system version which is 1.270.0
-        copilot-version "1.294.0"
-        copilot-server-executable "/home/budu/.asdf/shims/copilot-language-server"
-        )
+  (setq copilot-max-char-warning-disable t)
   (set-face-attribute 'copilot-overlay-face nil :foreground "#585"))
 
 ;;;; flycheck
