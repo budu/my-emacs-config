@@ -809,6 +809,7 @@ Around advice for FUN with ARGS."
 (define-key input-decode-map [?\M-i] [M-i])
 
 (global-set-key (kbd "M-<mouse-2>") #'mouse-yank-at-click)
+(global-set-key (kbd "C-M-y")   #'mouse-yank-primary)
 
 (global-set-key [C-tab]    'mu/cslist-to-indented-lines-and-back)
 (global-set-key [C--]      'text-scale-decrease)     ; displace negative-argument
