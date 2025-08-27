@@ -875,4 +875,9 @@ Around advice for FUN with ARGS."
  (lambda ()
    (define-key python-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)))
 
+(define-key mu/cg-map (kbd "w")
+  (lambda () (interactive)
+    (eww-display-html 'utf-8 (buffer-name) nil (point-min) (current-buffer))
+    (setq show-trailing-whitespace nil)))
+
 ;;; init.el ends here
