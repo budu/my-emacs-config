@@ -19,17 +19,26 @@
           (not (get-buffer-process buf))))  ; Skip buffers with active processes
    (buffer-list)))
 
+(defun mu/auto-clean-buffers/get-file-buffers ()
+  "Return a list of buffers that visit files (excluding special buffers)."
+  (seq-filter
+   (lambda (buf)
+     (and (buffer-file-name buf)
+          (not (string-match-p "\\`[ *]" (buffer-name buf)))))
+   (buffer-list)))
+
 (defun mu/auto-clean-buffers/cleanup-old-buffers ()
-  "Close buffers that haven't been accessed in 24 hours, keeping at least 3 open."
+  "Close buffers that haven't been accessed in 24 hours, keeping at least 12 file buffers open."
   (interactive)
   (let* ((old-buffers (mu/auto-clean-buffers/get-old-buffers))
+         (file-buffers (mu/auto-clean-buffers/get-file-buffers))
          (num-old (length old-buffers))
-         (total-buffers (length (buffer-list)))
-         (min-buffers 12) ; Minimum number of buffers to keep open
-         (num-to-close (max 0 (min num-old (- total-buffers min-buffers)))))
+         (total-file-buffers (length file-buffers))
+         (min-buffers 12) ; Minimum number of file buffers to keep open
+         (num-to-close (max 0 (min num-old (- total-file-buffers min-buffers)))))
     (when (> num-to-close 0)
       (let ((buffers-to-close (seq-take old-buffers num-to-close)))
-        (message "Closing %d unused buffer(s) (keeping at least %d)"
+        (message "Closing %d unused buffer(s) (keeping at least %d file buffers)"
                  num-to-close min-buffers)
         (mapc 'kill-buffer buffers-to-close)))))
 
