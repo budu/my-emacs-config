@@ -742,6 +742,13 @@ Around advice for FUN with ARGS."
     (push-mark end nil t)
     (claude-code-send-region)))
 
+(defun mu/get-claude-buffer ()
+  "Get the most recent Claude buffer, or nil if none exists."
+  (let ((claude-buffers (seq-filter (lambda (buf)
+                                      (string-match-p "^\\*claude" (buffer-name buf)))
+                                    (buffer-list))))
+    (car (last claude-buffers))))
+
 (defun mu/claude-smart-switch ()
   "Smart Claude buffer switching:
 - If Claude buffer exists and is displayed, switch to that window
@@ -749,10 +756,7 @@ Around advice for FUN with ARGS."
 - If no Claude buffer exists, create one and go to end
 - Never starts claude-code inside nb-notes directory, always in containing git project"
   (interactive)
-  (let* ((claude-buffers (seq-filter (lambda (buf)
-                                       (string-match-p "^\\*claude" (buffer-name buf)))
-                                     (buffer-list)))
-         (claude-buffer (car (last claude-buffers))) ; Pick the last Claude buffer
+  (let* ((claude-buffer (mu/get-claude-buffer))
          (claude-window (when claude-buffer (get-buffer-window claude-buffer)))
          (current-dir (or (when buffer-file-name
                             (file-name-directory buffer-file-name))
@@ -768,13 +772,10 @@ Around advice for FUN with ARGS."
       (let ((default-directory target-dir))
         (claude-code)
         ;; Find the newly created Claude buffer
-        (let ((new-claude-buffers (seq-filter (lambda (buf)
-                                                (string-match-p "^\\*claude" (buffer-name buf)))
-                                              (buffer-list))))
-          (->> (car (last new-claude-buffers))
-               (get-buffer-window)
-               (select-window))))))
-    (goto-char (point-max))))
+        (->> (mu/get-claude-buffer)
+             (get-buffer-window)
+             (select-window))))))
+    (goto-char (point-max)))
 
 ;;;; global hooks
 

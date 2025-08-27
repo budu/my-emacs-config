@@ -395,7 +395,11 @@ With prefix ARG, switch to Claude buffer after sending."
         (progn
           (claude-code-send-region-internal last-block-start last-block-end)
           (deactivate-mark)
-          (when arg (pop-to-buffer "*claude*")))
+          (when arg
+            (let ((claude-buffer (mu/get-claude-buffer)))
+              (if claude-buffer
+                  (pop-to-buffer claude-buffer)
+                (message "No Claude buffer found")))))
       (user-error "No '#+begin_quote prompt' block found in current TODO body"))))
 
 (define-key mu/cg-map (kbd "f") 'mu/org/send-last-prompt-block-to-claude)
