@@ -15,7 +15,7 @@
           (let ((template-content (buffer-string)))
             (kill-buffer)
             (org-insert-heading)
-            (insert (format "TODO [#A] [[https://cg-project.codegenome.com/projects/49/stories/%d][Ticket #%d]] :ticket:\n"
+            (insert (format "TODO [[https://cg-project.codegenome.com/projects/49/stories/%d][Ticket #%d]] :ticket:\n"
                           ticket-number ticket-number))
             (org-schedule nil today)
             (insert "\n")
