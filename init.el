@@ -99,6 +99,15 @@
 
 ;;;; functions & macros
 
+(defun mu/get-project-dir ()
+  (let* ((original-dir default-directory)
+         (in-nb-notes (string-match-p "^/.+/nb-notes\\(/\\|$\\)" default-directory))
+         (git-dir (if in-nb-notes
+                      (file-name-as-directory
+                       (car (split-string original-dir "/nb-notes" t)))
+                    original-dir)))
+    git-dir))
+
 (load-relative "macros.el")
 (load-relative "functions.el")
 
@@ -346,8 +355,9 @@ Around advice for FUN with ARGS."
   :quelpa (screenshot :fetcher github
                       :repo "tecosaur/screenshot"
                       :branch "master"
-                      :files ("screenshot.el"))
-  :bind (("<f8>" . screenshot)))
+                      :files ("screenshot.el")))
+
+(define-key mu/cg-map (kbd "s") 'screenshot)
 
 ;;;; spelling
 
@@ -780,6 +790,27 @@ Around advice for FUN with ARGS."
     (push-mark end nil t)
     (claude-code-send-region)))
 
+(defun mu/claude-smart-switch ()
+  "Smart Claude buffer switching:
+- If Claude buffer exists and is displayed, switch to that window
+- If Claude buffer exists but not displayed, switch to it and go to end
+- If no Claude buffer exists, create one and go to end"
+  (interactive)
+  (let* ((claude-buffer (get-buffer "*claude*"))
+         (claude-window (when claude-buffer (get-buffer-window claude-buffer))))
+    (cond
+     ;; Claude buffer displayed - switch to its window
+     (claude-window (select-window claude-window))
+     ;; Claude buffer exists but not displayed - switch to it
+     (claude-buffer (claude-code-switch-to-buffer))
+     ;; No Claude buffer - create one
+     (t
+      (claude-code)
+      (->> (get-buffer "*claude*")
+           (get-buffer-window)
+           (select-window))))
+    (goto-char (point-max))))
+
 ;;;; global hooks
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -848,7 +879,7 @@ Around advice for FUN with ARGS."
 (global-set-key (kbd "C-<f5>")  'my/org/open-daily-note)
 (global-set-key (kbd "<f6>")    'mu/goto-personal-notes)
 (global-set-key (kbd "<f7>")    'org-agenda-list)
-;; (global-set-key (kbd "<f9>")    '???)
+(global-set-key (kbd "<f8>")    'mu/claude-smart-switch)
 (global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
 (global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
 (global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
