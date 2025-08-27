@@ -370,6 +370,8 @@ Around advice for FUN with ARGS."
   :commands magit-status
   :custom (magit-display-buffer-function
            #'magit-display-buffer-same-window-except-diff-v1)
+  :bind (:map magit-mode-map
+              ("<return>" . magit-diff-visit-worktree-file))
   :init
   (setq magit-list-refs-sortby "-creatordate"))
 
