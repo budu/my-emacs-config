@@ -75,6 +75,8 @@
    '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
   (setq org-startup-folded t)
   (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("r" . "src ruby"))
+  (add-to-list 'org-structure-template-alist '("p" . "quote prompt"))
   ;; Load org-babel languages
   (org-babel-do-load-languages
    'org-babel-load-languages
