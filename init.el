@@ -809,6 +809,15 @@ Around advice for FUN with ARGS."
              (select-window))))))
     (goto-char (point-max)))
 
+;;;; ACP (agent-shell)
+
+(use-package shell-maker :ensure t)
+(use-package acp :vc (:url "https://github.com/xenodium/acp.el" :rev :newest))
+(use-package agent-shell :vc (:url "https://github.com/xenodium/agent-shell" :rev :newest))
+
+;; The setup documentation currently only mention using the API keys directly
+;; but we want to use our account instead
+
 ;;;; global hooks
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
