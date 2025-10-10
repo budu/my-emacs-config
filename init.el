@@ -12,11 +12,10 @@
 ;;;   TODO: check https://github.com/patrickt/emacs
 ;;;
 ;;; Update:
-;;;   package-upgrade-all
+;;;   package-refresh-contents
+;;;   package-upgrade-all or package-upgrade for individual package
 ;;;   quelpa-self-upgrade
 ;;;   quelpa-upgrade-all
-;;;   straight-pull-all
-;;;   straight-rebuild-all
 ;;;
 ;;; Code:
 
