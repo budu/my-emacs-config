@@ -886,6 +886,7 @@ Around advice for FUN with ARGS."
 (global-set-key (kbd "<f5>")    (lambda () (interactive) (find-file "~/org/index.org")))
 (global-set-key (kbd "C-<f5>")  'my/org/open-daily-note)
 (global-set-key (kbd "<f6>")    'mu/goto-personal-notes)
+(global-set-key (kbd "C-<f6>")  'mu/set-personal-notes-target)
 (global-set-key (kbd "<f7>")    'org-agenda-list)
 (global-set-key (kbd "<f8>")    'mu/claude-smart-switch)
 (global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))

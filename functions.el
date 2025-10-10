@@ -78,12 +78,36 @@
           (when arg (forward-char (length insertion)))))
       ))
 
+(defvar mu/personal-notes-target "nb-notes/current.org"
+  "Target file for `mu/goto-personal-notes'.
+This can be customized to change where F6 navigates to.")
+
 (defun mu/goto-personal-notes ()
+  "Go to the personal notes file specified by `mu/personal-notes-target'."
   (interactive)
-  (let ((notes-directory "nb-notes/current.org"))
-    (->> notes-directory
-         (projectile-expand-root)
-         (find-file))))
+  (->> mu/personal-notes-target
+       (projectile-expand-root)
+       (find-file)))
+
+(defun mu/set-personal-notes-target ()
+  "Set the current buffer's file as the target for `mu/goto-personal-notes'.
+This allows you to dynamically change where F6 takes you.
+The path is calculated relative to the project root, excluding nb-notes directory."
+  (interactive)
+  (if (buffer-file-name)
+      (let* ((file-path (buffer-file-name))
+             (file-dir (file-name-directory file-path))
+             ;; Use same logic as mu/get-project-dir to handle nb-notes
+             (in-nb-notes (string-match-p "^/.+/nb-notes\\(/\\|$\\)" file-dir))
+             (project-root (if in-nb-notes
+                               (file-name-as-directory
+                                (car (split-string file-dir "/nb-notes" t)))
+                             (or (projectile-project-root)
+                                 file-dir)))
+             (relative-path (file-relative-name file-path project-root)))
+        (setq mu/personal-notes-target relative-path)
+        (message "Personal notes target set to: %s (relative to %s)" relative-path project-root))
+    (user-error "Current buffer is not visiting a file")))
 
 (defun mu/kmacro-start-or-end-macro (arg)
   (interactive "P")
