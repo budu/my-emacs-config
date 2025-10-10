@@ -292,7 +292,7 @@ Around advice for FUN with ARGS."
 
 (use-package ivy
   :diminish
-  :bind (("C-M-s" . swiper)
+  :bind (("C-s" . swiper)
          :map ivy-minibuffer-map
          ("C-l" . ivy-alt-done)
          ("C-w" . ivy-yank-word)
