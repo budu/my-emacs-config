@@ -4,9 +4,22 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-agenda-files '("~/cg/reservotron/nb-notes/current.org"))
- '(package-selected-packages nil)
+ '(package-selected-packages
+   '(acp adoc-mode agent-shell all-the-icons asdf blacken buttercup claude-code coffee-mode
+         company-box copilot counsel-projectile crystal-mode dap-mode direnv dockerfile-mode
+         doom-modeline doom-themes eat ein elisp-lint ement emmet-mode emojify
+         exec-path-from-shell expand-region flycheck-posframe flyspell-correct-ivy forge
+         geiser-racket golden-ratio gptel grip-mode helpful ivy-posframe ivy-rich js2-mode
+         json-mode keyfreq load-relative lsp-ivy lsp-ui lua-mode mastodon multiple-cursors
+         org-appear org-bullets origami pkg-info poly-markdown projectile-rails
+         projectile-ripgrep python-pytest quelpa-use-package rails-i18n rainbow-delimiters
+         rainbow-mode restclient robe rspec-mode rubocop ruby-electric ruby-end rust-mode
+         rvm screenshot scss-mode shell-maker slim-mode transient-posframe web-mode
+         which-key yaml-mode yari zenburn-theme))
  '(package-vc-selected-packages
-   '((claude-code :url "https://github.com/stevemolitor/claude-code.el")))
+   '((agent-shell :url "https://github.com/xenodium/agent-shell")
+     (acp :url "https://github.com/xenodium/acp.el")
+     (claude-code :url "https://github.com/stevemolitor/claude-code.el")))
  '(screenshot-font-size 8))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -16,6 +29,10 @@
  '(default ((t (:background "#121a1e"))))
  '(markdown-header-delimiter-face ((t (:foreground "hot pink" :inherit markdown-header-face))))
  '(markdown-header-face ((t (:foreground "hot pink" :inherit bold))))
+ '(markdown-header-face-1 ((t (:inherit markdown-header-face :foreground "yellow" :height 1.0))))
+ '(markdown-header-face-2 ((t (:inherit markdown-header-face :foreground "purple" :height 1.0))))
+ '(markdown-header-face-3 ((t (:inherit markdown-header-face :foreground "magenta" :height 1.0))))
+ '(markdown-header-face-4 ((t (:inherit markdown-header-face :foreground "dark cyan" :height 1.0))))
  '(markdown-list-face ((t (:foreground "green"))))
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-code ((t (:inherit (shadow fixed-pitch)))))
