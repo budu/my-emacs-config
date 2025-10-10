@@ -292,88 +292,11 @@ Otherwise, use the word at point."
 
 (define-key mu/cg-map (kbd "d") 'mu/org/create-today-todo)
 
-;; FIXME: gobble up the next heading if the current one is empty
-;; TODO: always prompt for title
-;; TODO: save the org buffer after inserting the COMMIT hash
-;; TODO: refresh magit status buffer
-;; TODO: use parent repo if currently inside nb-notes
-(defun mu/org/todo-done-and-commit ()
-  "Mark current TODO as DONE, commit only staged changes.
-Use the TODO heading title as commit subject and entry contents as body.
-Add a line 'COMMIT: <commit hash>' at the end of the TODO entry.
-When inside nb-notes directory, commits to the parent repository."
-  (interactive)
-  (save-excursion
-    (org-back-to-heading t)
-    (unless (org-get-todo-state)
-      (error "Not a TODO entry"))
-
-    ;; Get headline text and prepare variables
-    (let* ((original-dir default-directory)
-           (in-nb-notes (string-match-p "^/.+/nb-notes\\(/\\|$\\)" default-directory))
-           (git-dir (if in-nb-notes
-                        (file-name-as-directory
-                         (car (split-string original-dir "/nb-notes" t)))
-                      original-dir))
-           (headline (org-get-heading t t t t))
-           (entry-content (string-trim
-                           (org-no-properties
-                            (save-excursion
-                              (org-end-of-meta-data t)
-                              (buffer-substring-no-properties
-                               (point)
-                               (save-excursion (org-end-of-subtree t t)))))))
-           (commit-message (concat headline "\n\n" entry-content))
-           pre-commit-hash
-           commit-hash)
-
-      ;; Set directory for git operations
-      (setq default-directory git-dir)
-
-      ;; Get current commit hash before commit
-      (setq pre-commit-hash (magit-git-string "rev-parse" "HEAD"))
-
-      ;; First check if there are staged changes
-      (unless (magit-staged-files)
-        (error "No staged changes to commit"))
-
-      ;; Commit staged changes via Magit
-      (magit-call-git "commit" "-m" commit-message)
-
-      ;; Get the new commit hash after commit attempt
-      (setq commit-hash (magit-git-string "rev-parse" "HEAD"))
-
-      ;; Check if commit actually happened by comparing before/after hashes
-      (unless (and commit-hash
-                   (not (string= pre-commit-hash commit-hash)))
-        (error "Commit failed unexpectedly"))
-
-      ;; Restore original directory for Org operations
-      (setq default-directory original-dir)
-
-      ;; Mark TODO entry as DONE using Org mode's API
-      (org-todo 'done)
-
-      ;; Insert the commit hash at the end of the Org entry
-      (org-end-of-subtree t t)
-      (forward-line -1)
-      (end-of-line)
-      (insert (format "\nCOMMIT: %s\n" commit-hash))
-
-      ;; feedback
-      (message "Committed %s and updated Org entry%s."
-               commit-hash
-               (if in-nb-notes " (in parent repository)" "")))))
-
-(define-key mu/cg-map (kbd "c") 'mu/org/todo-done-and-commit)
-
 (defun mu/org/send-last-prompt-block-to-claude (&optional arg)
-  "Send last '#+begin_quote prompt' in body (excluding subheadings) of current TODO entry to Claude.
+  "Send last '#+begin_quote prompt' in body (excluding subheadings) of current heading entry to Claude.
 With prefix ARG, switch to Claude buffer after sending."
   (interactive "P")
   (org-back-to-heading t)
-  (unless (org-entry-is-todo-p)
-    (user-error "Cursor is not on a TODO heading"))
   (let* ((body-start (save-excursion
                        (org-back-to-heading t)
                        (forward-line 1)  ;; skip heading
@@ -394,15 +317,14 @@ With prefix ARG, switch to Claude buffer after sending."
             (setq last-block-end (1- (line-beginning-position)))
           (user-error "Unmatched '#+begin_quote prompt' without '#+end_quote'"))))
     (if (and last-block-start last-block-end)
-        (progn
-          (claude-code-send-region-internal last-block-start last-block-end)
+        (let ((claude-buffer (mu/get-claude-buffer)))
+          (mu/claude-code-send-region-internal claude-buffer last-block-start last-block-end)
           (deactivate-mark)
           (when arg
-            (let ((claude-buffer (mu/get-claude-buffer)))
-              (if claude-buffer
-                  (pop-to-buffer claude-buffer)
-                (message "No Claude buffer found")))))
-      (user-error "No '#+begin_quote prompt' block found in current TODO body"))))
+            (if claude-buffer
+                (pop-to-buffer claude-buffer)
+              (message "No Claude buffer found")))))
+    (user-error "No '#+begin_quote prompt' block found in current heading body")))
 
 (define-key mu/cg-map (kbd "f") 'mu/org/send-last-prompt-block-to-claude)
 

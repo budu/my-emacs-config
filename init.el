@@ -897,4 +897,10 @@ Around advice for FUN with ARGS."
     (eww-display-html 'utf-8 (buffer-name) nil (point-min) (current-buffer))
     (setq show-trailing-whitespace nil)))
 
+
+(define-key mu/cg-map (kbd "c")
+  (lambda ()
+    (interactive)
+    (claude-code--do-send-command "Review the staged changed and commit. Just the already staged changes, nothing else")))
+
 ;;; init.el ends here
