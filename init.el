@@ -764,12 +764,16 @@ Around advice for FUN with ARGS."
   :config
   (claude-code-mode))
 
-(defun claude-code-send-region-internal (start end)
+(defun mu/claude-code-send-region-internal (buffer start end)
   "Call claude-code-send-region from START to END and handle prefix ARG."
   (save-excursion
     (goto-char start)
     (push-mark end nil t)
-    (claude-code-send-region)))
+    (claude-code-send-region buffer)))
+
+;; HACK might be better to advice claude-code--directory
+(defun claude-code--get-or-prompt-for-buffer ()
+  (mu/get-claude-buffer))
 
 (defun mu/get-claude-buffer ()
   "Get the most recent Claude buffer, or nil if none exists."
