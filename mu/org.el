@@ -292,42 +292,6 @@ Otherwise, use the word at point."
 
 (define-key mu/cg-map (kbd "d") 'mu/org/create-today-todo)
 
-(defun mu/org/send-last-prompt-block-to-claude (&optional arg)
-  "Send last '#+begin_quote prompt' in body (excluding subheadings) of current heading entry to Claude.
-With prefix ARG, switch to Claude buffer after sending."
-  (interactive "P")
-  (org-back-to-heading t)
-  (let* ((body-start (save-excursion
-                       (org-back-to-heading t)
-                       (forward-line 1)  ;; skip heading
-                       (let ((drawer-re "^\\s-*:\\(?:PROPERTIES\\|[A-Z]+\\):\\s-*$"))
-                         (while (and (not (eobp)) (looking-at drawer-re))
-                           (org-forward-element))
-                         (point))))
-         (body-end (save-excursion
-                     (outline-next-heading)
-                     (point)))
-         last-block-start last-block-end)
-    (save-excursion
-      (goto-char body-start)
-      ;; Search for all blocks, remembering the last one
-      (while (re-search-forward "^#\\+begin_quote[ \t]+prompt[ \t]*$" body-end t)
-        (setq last-block-start (line-beginning-position 2))
-        (if (re-search-forward "^#\\+end_quote[ \t]*$" body-end t)
-            (setq last-block-end (1- (line-beginning-position)))
-          (user-error "Unmatched '#+begin_quote prompt' without '#+end_quote'"))))
-    (if (and last-block-start last-block-end)
-        (let ((claude-buffer (mu/get-claude-buffer)))
-          (mu/claude-code-send-region-internal claude-buffer last-block-start last-block-end)
-          (deactivate-mark)
-          (when arg
-            (if claude-buffer
-                (pop-to-buffer claude-buffer)
-              (message "No Claude buffer found")))))
-    (user-error "No '#+begin_quote prompt' block found in current heading body")))
-
-(define-key mu/cg-map (kbd "f") 'mu/org/send-last-prompt-block-to-claude)
-
 (defun mu/org/copy-block-at-point (&optional element)
   "Copy the current block at point to the kill ring.
 If ELEMENT is provided, use it as the starting point for finding the block."

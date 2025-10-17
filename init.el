@@ -753,71 +753,6 @@ Around advice for FUN with ARGS."
     (define-key eat-char-mode-map (kbd "M-j") #'previous-window-any-frame)
     (define-key eat-char-mode-map (kbd "M-k") #'next-window-any-frame)))
 
-;;;; Claude Code
-
-(use-package claude-code
-  :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest)
-  :bind-keymap
-  ("C-c k" . claude-code-command-map)
-  :hook ((claude-code--start . sm-setup-claude-faces))
-  :config
-  (claude-code-mode))
-
-(defun mu/claude-code-send-region-internal (buffer start end)
-  "Call claude-code-send-region from START to END and handle prefix ARG."
-  (save-excursion
-    (goto-char start)
-    (push-mark end nil t)
-    (claude-code-send-region buffer)))
-
-;; HACK might be better to advice claude-code--directory
-(defun claude-code--get-or-prompt-for-buffer ()
-  (mu/get-claude-buffer))
-
-(defun mu/get-claude-buffer ()
-  "Get the most recent Claude buffer, or nil if none exists."
-  (let ((claude-buffers (seq-filter (lambda (buf)
-                                      (string-match-p "^\\*claude" (buffer-name buf)))
-                                    (buffer-list))))
-    (car (last claude-buffers))))
-
-(defun mu/claude-smart-switch ()
-  "Smart Claude buffer switching:
-- If Claude buffer exists and is displayed, switch to that window
-- If Claude buffer exists but not displayed, switch to it and go to end
-- If no Claude buffer exists, create one and go to end
-- Never starts claude-code inside nb-notes directory, always in containing git project"
-  (interactive)
-  (let* ((claude-buffer (mu/get-claude-buffer))
-         (claude-window (when claude-buffer (get-buffer-window claude-buffer)))
-         (current-dir (or (when buffer-file-name
-                            (file-name-directory buffer-file-name))
-                          default-directory))
-         (target-dir (mu/get-project-dir)))
-    (cond
-     ;; Claude buffer displayed - switch to its window
-     (claude-window (select-window claude-window))
-     ;; Claude buffer exists but not displayed - switch to it
-     (claude-buffer (switch-to-buffer claude-buffer))
-     ;; No Claude buffer - create one in the appropriate directory
-     (t
-      (let ((default-directory target-dir))
-        (claude-code)
-        ;; Find the newly created Claude buffer
-        (->> (mu/get-claude-buffer)
-             (get-buffer-window)
-             (select-window))))))
-    (goto-char (point-max)))
-
-;;;; ACP (agent-shell)
-
-(use-package shell-maker :ensure t)
-(use-package acp :vc (:url "https://github.com/xenodium/acp.el" :rev :newest))
-(use-package agent-shell :vc (:url "https://github.com/xenodium/agent-shell" :rev :newest))
-
-;; The setup documentation currently only mention using the API keys directly
-;; but we want to use our account instead
-
 ;;;; global hooks
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -888,7 +823,7 @@ Around advice for FUN with ARGS."
 (global-set-key (kbd "<f6>")    'mu/goto-personal-notes)
 (global-set-key (kbd "C-<f6>")  'mu/set-personal-notes-target)
 (global-set-key (kbd "<f7>")    'org-agenda-list)
-(global-set-key (kbd "<f8>")    'mu/claude-smart-switch)
+(global-set-key (kbd "<f8>")    'mu/agent-shell-smart-switch)
 (global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
 (global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
 (global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
@@ -920,15 +855,11 @@ Around advice for FUN with ARGS."
  (lambda ()
    (define-key python-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)))
 
+(define-key mu/cg-map (kbd "f") 'mu/send-prompt-block-to-agent-shell)
+
 (define-key mu/cg-map (kbd "w")
   (lambda () (interactive)
     (eww-display-html 'utf-8 (buffer-name) nil (point-min) (current-buffer))
     (setq show-trailing-whitespace nil)))
-
-
-(define-key mu/cg-map (kbd "c")
-  (lambda ()
-    (interactive)
-    (claude-code--do-send-command "Review the staged changed and commit. Just the already staged changes, nothing else")))
 
 ;;; init.el ends here
