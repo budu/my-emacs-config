@@ -26,3 +26,5 @@ forge-database.sqlite
 rake.cache
 .local/
 local-vars.el
+forge-database*
+eln-cache
