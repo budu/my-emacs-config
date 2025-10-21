@@ -861,6 +861,7 @@ Around advice for FUN with ARGS."
    (define-key python-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)))
 
 (define-key mu/cg-map (kbd "f") 'mu/send-prompt-block-to-agent-shell)
+(define-key mu/cg-map (kbd "r") 'magit-commit-reword)
 
 (define-key mu/cg-map (kbd "w")
   (lambda () (interactive)
