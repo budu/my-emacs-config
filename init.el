@@ -88,13 +88,17 @@
 ;;;; functions & macros
 
 (defun mu/get-project-dir ()
+  "Get the project root directory.
+If in nb-notes subdirectory, first navigate to parent before finding project root."
   (let* ((original-dir default-directory)
          (in-nb-notes (string-match-p "^/.+/nb-notes\\(/\\|$\\)" default-directory))
-         (git-dir (if in-nb-notes
-                      (file-name-as-directory
-                       (car (split-string original-dir "/nb-notes" t)))
-                    original-dir)))
-    git-dir))
+         (search-dir (if in-nb-notes
+                         (file-name-as-directory
+                          (car (split-string original-dir "/nb-notes" t)))
+                       original-dir))
+         (default-directory search-dir))
+    (or (projectile-project-root)
+        search-dir)))
 
 (load-relative "macros.el")
 (load-relative "functions.el")
@@ -363,6 +367,7 @@ Around advice for FUN with ARGS."
 
 (use-package flyspell
   :hook ((text-mode . flyspell-mode)
+         (agent-shell-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode))
   :config
   (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
@@ -822,7 +827,7 @@ Around advice for FUN with ARGS."
 (global-set-key (kbd "C-<f5>")  'my/org/open-daily-note)
 (global-set-key (kbd "<f6>")    'mu/goto-personal-notes)
 (global-set-key (kbd "C-<f6>")  'mu/set-personal-notes-target)
-(global-set-key (kbd "<f7>")    'org-agenda-list)
+(global-set-key (kbd "<f7>")    'mu/agent-shell-send-prompt-from-notes)
 (global-set-key (kbd "<f8>")    'mu/agent-shell-smart-switch)
 (global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
 (global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
