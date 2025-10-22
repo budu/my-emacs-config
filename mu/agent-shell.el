@@ -28,11 +28,11 @@
 
 ;;;; Helper Functions
 
-;; TODO: generalize to any agent
 (defun mu/get-agent-shell-buffer ()
   "Get the most recent agent-shell buffer, or nil if none exists."
   (let ((agent-buffers (seq-filter (lambda (buf)
-                                     (string-match-p "^Claude Code Agent" (buffer-name buf)))
+                                     (with-current-buffer buf
+                                       (derived-mode-p 'agent-shell-mode)))
                                    (buffer-list))))
     (car (last agent-buffers))))
 
