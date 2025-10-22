@@ -88,18 +88,30 @@ The region content is sent as a prompt without any formatting or metadata."
                             (file-name-directory buffer-file-name))
                           default-directory))
          (target-dir (mu/get-project-dir)))
-    (cond
-     ;; Agent buffer displayed - switch to its window
-     (agent-window (select-window agent-window))
-     ;; Agent buffer exists but not displayed - switch to it
-     (agent-buffer (switch-to-buffer agent-buffer))
-     ;; No agent buffer - create one in the appropriate directory
-     (t
-      (let ((default-directory target-dir))
-        (agent-shell-anthropic-start-claude-code)
-        ;; Find the newly created agent buffer
-        (->> (mu/get-agent-shell-buffer)
-             switch-to-buffer))))))
+    (let ((active-buffer
+           (cond
+            ;; Agent buffer displayed - switch to its window
+            (agent-window
+             (select-window agent-window)
+             (window-buffer agent-window))
+            ;; Agent buffer exists but not displayed - switch to it
+            (agent-buffer
+             (switch-to-buffer agent-buffer)
+             agent-buffer)
+            ;; No agent buffer - create one in the appropriate directory
+            (t
+             (let ((default-directory target-dir))
+               (agent-shell-anthropic-start-claude-code)
+               ;; Find the newly created agent buffer
+               (let ((new-buffer (mu/get-agent-shell-buffer)))
+                 (switch-to-buffer new-buffer)
+                 new-buffer))))))
+      (when active-buffer
+        (with-current-buffer active-buffer
+          (unless (agent-shell-jump-to-latest-permission-button-row)
+            (goto-char (point-max))
+            (when-let ((window (get-buffer-window active-buffer)))
+              (set-window-point window (point)))))))))
 
 (defun mu/send-prompt-block-to-agent-shell (&optional arg)
   "Send surrounding prompt block to agent-shell.
