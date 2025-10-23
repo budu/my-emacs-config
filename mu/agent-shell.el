@@ -75,43 +75,80 @@ The region content is sent as a prompt without any formatting or metadata."
       (shell-maker-submit))
     (agent-shell--display-buffer shell-buffer)))
 
-(defun mu/agent-shell-smart-switch ()
+(defun mu/agent-shell--agent-buffer-p (buffer)
+  "Return non-nil when BUFFER is a live `agent-shell-mode' buffer."
+  (and buffer
+       (buffer-live-p buffer)
+       (with-current-buffer buffer
+         (derived-mode-p 'agent-shell-mode))))
+
+(defun mu/agent-shell--ensure-agent-buffer (buffer)
+  "Return BUFFER when it is a valid agent shell buffer, else nil."
+  (when (mu/agent-shell--agent-buffer-p buffer)
+    buffer))
+
+(defun mu/agent-shell--resolve-agent-buffer ()
+  "Return the most relevant agent shell buffer after launching."
+  (or (mu/agent-shell--ensure-agent-buffer
+       (when (derived-mode-p 'agent-shell-mode)
+         (current-buffer)))
+      (mu/agent-shell--ensure-agent-buffer (mu/get-agent-shell-buffer))))
+
+(defun mu/agent-shell--display-buffer (buffer)
+  "Display BUFFER in the current frame and return it."
+  (when (mu/agent-shell--agent-buffer-p buffer)
+    (if-let ((window (get-buffer-window buffer)))
+        (select-window window)
+      (switch-to-buffer buffer))
+    buffer))
+
+(defun mu/agent-shell--select-existing-buffer ()
+  "Focus the latest agent shell buffer when available."
+  (when-let ((buffer (mu/agent-shell--ensure-agent-buffer (mu/get-agent-shell-buffer))))
+    (mu/agent-shell--display-buffer buffer)))
+
+(defun mu/agent-shell--start-interactive-shell (target-dir)
+  "Launch a new agent shell via `agent-shell' inside TARGET-DIR."
+  (let* ((default-directory target-dir)
+         (buffer (agent-shell-start :config (or (agent-shell-select-config
+                                                 :prompt "Start new agent: ")
+                                                (error "No agent config found")))))
+    (mu/agent-shell--display-buffer buffer)))
+
+(defun mu/agent-shell--start-default-shell (target-dir)
+  "Launch a new agent shell using the default anthropic command in TARGET-DIR."
+  (let ((default-directory target-dir))
+    (agent-shell-anthropic-start-claude-code))
+  (when-let ((buffer (mu/agent-shell--resolve-agent-buffer)))
+    (mu/agent-shell--display-buffer buffer)))
+
+(defun mu/agent-shell--focus-buffer (buffer)
+  "Move point to the most relevant location inside BUFFER."
+  (when (mu/agent-shell--agent-buffer-p buffer)
+    (with-current-buffer buffer
+      (unless (agent-shell-jump-to-latest-permission-button-row)
+        (goto-char (point-max))
+        (when-let ((window (get-buffer-window buffer)))
+          (set-window-point window (point))))))
+  buffer)
+
+(defun mu/agent-shell-smart-switch (&optional arg)
   "Smart agent-shell buffer switching:
 - If agent-shell buffer exists and is displayed, switch to that window
 - If agent-shell buffer exists but not displayed, switch to it and go to end
 - If no agent-shell buffer exists, create one and go to end
-- Never starts agent-shell inside nb-notes directory, always in containing git project"
-  (interactive)
-  (let* ((agent-buffer (mu/get-agent-shell-buffer))
-         (agent-window (when agent-buffer (get-buffer-window agent-buffer)))
-         (current-dir (or (when buffer-file-name
-                            (file-name-directory buffer-file-name))
-                          default-directory))
+- Never starts agent-shell inside nb-notes directory, always in containing git project
+
+With prefix ARG (such as using `C-u`), always start a new agent shell via
+`agent-shell`, allowing you to select the agent."
+  (interactive "P")
+  (let* ((force-new arg)
          (target-dir (mu/get-project-dir)))
-    (let ((active-buffer
-           (cond
-            ;; Agent buffer displayed - switch to its window
-            (agent-window
-             (select-window agent-window)
-             (window-buffer agent-window))
-            ;; Agent buffer exists but not displayed - switch to it
-            (agent-buffer
-             (switch-to-buffer agent-buffer)
-             agent-buffer)
-            ;; No agent buffer - create one in the appropriate directory
-            (t
-             (let ((default-directory target-dir))
-               (agent-shell-anthropic-start-claude-code)
-               ;; Find the newly created agent buffer
-               (let ((new-buffer (mu/get-agent-shell-buffer)))
-                 (switch-to-buffer new-buffer)
-                 new-buffer))))))
-      (when active-buffer
-        (with-current-buffer active-buffer
-          (unless (agent-shell-jump-to-latest-permission-button-row)
-            (goto-char (point-max))
-            (when-let ((window (get-buffer-window active-buffer)))
-              (set-window-point window (point)))))))))
+    (mu/agent-shell--focus-buffer
+     (cond
+      (force-new (mu/agent-shell--start-interactive-shell target-dir))
+      ((mu/agent-shell--select-existing-buffer))
+      (t (mu/agent-shell--start-default-shell target-dir))))))
 
 (defun mu/send-prompt-block-to-agent-shell (&optional arg)
   "Send surrounding prompt block to agent-shell.
