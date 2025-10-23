@@ -26,6 +26,12 @@
 (setq agent-shell-openai-authentication
       (agent-shell-openai-make-authentication :login t))
 
+(custom-set-variables
+ '(agent-shell-agent-configs
+   (list (agent-shell-anthropic-make-claude-code-config)
+         (agent-shell-openai-make-codex-config)
+         (agent-shell-google-make-gemini-config))))
+
 ;;;; Helper Functions
 
 (defun mu/get-agent-shell-buffer ()
