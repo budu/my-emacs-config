@@ -3,19 +3,22 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(agent-shell-agent-configs
+   (list (agent-shell-anthropic-make-claude-code-config) (agent-shell-openai-make-codex-config)
+         (agent-shell-google-make-gemini-config)))
  '(org-agenda-files '("~/cg/reservotron/nb-notes/current.org"))
  '(package-selected-packages
    '(acp adoc-mode agent-shell all-the-icons asdf blacken buttercup claude-code coffee-mode
-         company-box copilot counsel-projectile crystal-mode dap-mode direnv dockerfile-mode
-         doom-modeline doom-themes eat ein elisp-lint ement emmet-mode emojify
-         exec-path-from-shell expand-region flycheck-posframe flyspell-correct-ivy forge
-         geiser-racket golden-ratio gptel grip-mode helpful ivy-posframe ivy-rich js2-mode
-         json-mode keyfreq load-relative lsp-ivy lsp-ui lua-mode mastodon multiple-cursors
-         org-appear org-bullets origami pkg-info poly-markdown projectile-rails
-         projectile-ripgrep python-pytest quelpa-use-package rails-i18n rainbow-delimiters
-         rainbow-mode restclient robe rspec-mode rubocop ruby-electric ruby-end rust-mode
-         rvm screenshot scss-mode shell-maker slim-mode transient-posframe web-mode
-         which-key yaml-mode yari zenburn-theme))
+         company-box copilot counsel-projectile crystal-mode dap-mode dired direnv
+         dockerfile-mode doom-modeline doom-themes eat ein elisp-lint ement emmet-mode
+         emojify exec-path-from-shell expand-region flycheck-posframe flyspell-correct-ivy
+         forge geiser-racket golden-ratio gptel grip-mode helpful ivy-posframe ivy-rich
+         js2-mode json-mode keyfreq load-relative lsp-ivy lsp-ui lua-mode mastodon
+         multiple-cursors org-appear org-bullets origami pkg-info poly-markdown
+         projectile-rails projectile-ripgrep python-pytest quelpa-use-package rails-i18n
+         rainbow-delimiters rainbow-mode restclient robe rspec-mode rubocop ruby-electric
+         ruby-end rust-mode rvm screenshot scss-mode shell-maker slim-mode
+         transient-posframe web-mode which-key yaml-mode yari zenburn-theme))
  '(package-vc-selected-packages
    '((agent-shell :url "https://github.com/xenodium/agent-shell")
      (acp :url "https://github.com/xenodium/acp.el")
