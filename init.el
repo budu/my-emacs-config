@@ -335,6 +335,24 @@ Around advice for FUN with ARGS."
   :custom ((counsel-describe-function-function #'helpful-callable)
            (counsel-describe-variable-function #'helpful-variable)))
 
+;;;; dired
+
+(use-package dired
+  :ensure nil
+  :init
+   (require 'dired-x) ;; I think this is required for dired-omit-mode
+
+  :bind
+  (:map dired-mode-map
+	("C-." . dired-omit-mode))
+
+  :hook
+  (dired-mode . (lambda () (dired-omit-mode))) ;; hide .dot files by default
+
+  :config
+  (setq dired-omit-files   ;; hide .dot files when in dired-omit-mode
+      (concat dired-omit-files "\\|^\\..+$")))
+
 ;;;; posframe
 
 (use-package ivy-posframe
