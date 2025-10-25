@@ -140,6 +140,7 @@ The region content is sent as a prompt without any formatting or metadata."
 
 (defun mu/agent-shell-smart-switch (&optional arg)
   "Smart agent-shell buffer switching:
+- If already in agent-shell buffer and this command was just called, cycle session mode
 - If agent-shell buffer exists and is displayed, switch to that window
 - If agent-shell buffer exists but not displayed, switch to it and go to end
 - If no agent-shell buffer exists, create one and go to end
@@ -148,13 +149,22 @@ The region content is sent as a prompt without any formatting or metadata."
 With prefix ARG (such as using `C-u`), always start a new agent shell via
 `agent-shell`, allowing you to select the agent."
   (interactive "P")
-  (let* ((force-new arg)
-         (target-dir (mu/get-project-dir)))
-    (mu/agent-shell--focus-buffer
-     (cond
-      (force-new (mu/agent-shell--start-interactive-shell target-dir))
-      ((mu/agent-shell--select-existing-buffer))
-      (t (mu/agent-shell--start-default-shell target-dir))))))
+  (cond
+   ;; If we're already in an agent-shell buffer and this command was just called,
+   ;; cycle the session mode instead of switching
+   ((and (not arg)
+         (derived-mode-p 'agent-shell-mode)
+         (eq last-command 'mu/agent-shell-smart-switch))
+    (agent-shell-cycle-session-mode))
+   ;; Otherwise, do the normal smart switch behavior
+   (t
+    (let* ((force-new arg)
+           (target-dir (mu/get-project-dir)))
+      (mu/agent-shell--focus-buffer
+       (cond
+        (force-new (mu/agent-shell--start-interactive-shell target-dir))
+        ((mu/agent-shell--select-existing-buffer))
+        (t (mu/agent-shell--start-default-shell target-dir))))))))
 
 (defun mu/send-prompt-block-to-agent-shell (&optional arg)
   "Send surrounding prompt block to agent-shell.
