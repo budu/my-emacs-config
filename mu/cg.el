@@ -89,4 +89,15 @@
 
 (define-key mu/cg-map (kbd "p") 'mu/cg/copy-relative-path)
 
+(defun mu/cg/copy-absolute-path ()
+  "Copy the absolute path of the current file to the clipboard."
+  (interactive)
+  (if (not buffer-file-name)
+      (message "Buffer is not visiting a file")
+    (let ((file-path buffer-file-name))
+      (kill-new file-path)
+      (message "Copied: %s" file-path))))
+
+(define-key mu/cg-map (kbd "P") 'mu/cg/copy-absolute-path)
+
 ;;; cg.el ends here
