@@ -23,9 +23,10 @@
   (setq org-auto-align-tags t)
   (setq org-tags-case-fold-search t)
   (setq org-todo-keywords
-        '((sequence "TODO" "HOLD" "|" "DONE" "FAIL")))
+        '((sequence "TODO" "OPEN" "HOLD" "|" "DONE" "FAIL")))
   (setq org-todo-keyword-faces
-        '(("HOLD" . (:foreground "orange" :weight bold))
+        '(("OPEN" . (:foreground "cyan" :weight bold))
+          ("HOLD" . (:foreground "orange" :weight bold))
           ("FAIL" . (:foreground "red" :weight bold))))
   (setq org-tag-faces
         '(("WIP" . (:foreground "yellow" :weight bold))
