@@ -1,23 +1,3 @@
-(defun ellama-translate-en ()
-  "Ask ellama to translate selected region or word at point to English."
-  (interactive)
-  (if (region-active-p)
-      (ellama-instant
-       (format "Translate the following text to English, please keep any formatting and markup as is:\n%s"
-	       (buffer-substring-no-properties (region-beginning) (region-end))))
-    (ellama-instant
-     (format "Translate %s to English" (thing-at-point 'word)))))
-
-(defun ellama-translate-fr ()
-  "Ask ellama to translate selected region or word at point to French."
-  (interactive)
-  (if (region-active-p)
-      (ellama-instant
-       (format "Translate the following text to French, please keep any formatting and markup as is:\n%s"
-	       (buffer-substring-no-properties (region-beginning) (region-end))))
-    (ellama-instant
-     (format "Translate %s to French" (thing-at-point 'word)))))
-
 (defun mu/word-with-underscores-at-point-bounds ()
   "Find the bounds of a word at point, including hyphens and underscores."
   (save-excursion
