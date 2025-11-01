@@ -59,3 +59,7 @@
  '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8 :background "#103b66"))))
  '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
  '(rainbow-delimiters-depth-1-face ((t (:foreground "#444444")))))
+
+(provide 'custom)
+
+;;; custom.el ends here

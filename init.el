@@ -24,8 +24,8 @@
 (define-prefix-command 'mu/cg-map)
 (global-set-key (kbd "C-c g") 'mu/cg-map)
 
-(let ((default-directory  "~/.emacs.d/lisp/"))
-  (normal-top-level-add-to-load-path '("emacs-libyaml")))
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/lisp/emacs-libyaml/")
 
 (require 'package)
 
@@ -39,7 +39,6 @@
 
 (setq use-package-always-ensure t)
 
-(use-package load-relative)
 (use-package quelpa)
 (use-package quelpa-use-package)
 
@@ -100,8 +99,8 @@ If in nb-notes subdirectory, first navigate to parent before finding project roo
     (or (projectile-project-root)
         search-dir)))
 
-(load-relative "macros.el")
-(load-relative "functions.el")
+(require 'macros)
+(require 'functions)
 
 ;; List all files in the mu/ directory
 (let ((mu-dir (concat (file-name-directory (or load-file-name buffer-file-name)) "mu/")))
@@ -117,9 +116,9 @@ If in nb-notes subdirectory, first navigate to parent before finding project roo
 
 ;;;; local vars overrides
 
-(let ((filename "~/.emacs.d/local-vars.el"))
+(let ((filename "~/.emacs.d/lisp/local-vars.el"))
   (when (file-exists-p (expand-file-name filename))
-    (load-relative filename)))
+    (require 'local-vars)))
 
 ;;;; minimalism
 
@@ -135,8 +134,8 @@ If in nb-notes subdirectory, first navigate to parent before finding project roo
 
 ;;;; personal preference
 
-(setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
-(load-relative "custom.el")
+(setq custom-file (expand-file-name "~/.emacs.d/lisp/custom.el"))
+(require 'custom)
 
 (setq-default
  fill-column 92
@@ -287,6 +286,6 @@ Around advice for FUN with ARGS."
 
 ;;;; global key bindings
 
-(load-relative "keybindings.el")
+(require 'keybindings)
 
 ;;; init.el ends here

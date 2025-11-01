@@ -208,3 +208,7 @@ The path is calculated relative to the project root, excluding nb-notes director
     (goto-char start)
     (insert "\"#{")
     (goto-char (+ start 1))))
+
+(provide 'functions)
+
+;;; functions.el ends here
