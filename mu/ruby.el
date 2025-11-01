@@ -1,5 +1,11 @@
-;;; package --- Helpers for Ruby
+;;; ruby.el --- Ruby development configuration -*- lexical-binding: t; -*-
+;;
+;; Author: budu
+;;
 ;;; Commentary:
+;;
+;; Configuration for Ruby development including rspec, rubocop, and various helpers.
+;;
 ;;; Code:
 
 (defun mu/ruby/find-definition ()
@@ -156,5 +162,98 @@ First tries Flycheck overlays, then scans current line, and prompts as fallback.
 (eval-after-load 'rubocop
   '(let ((prefix-map (lookup-key rubocop-mode-map rubocop-keymap-prefix)))
      (define-key prefix-map (kbd "w") 'rubocop-open-documentation-at-point)))
+
+(use-package inf-ruby)
+
+(use-package rvm
+  :init (rvm-use-default))
+
+(defface my-ruby-paren-face
+  '((t (:foreground "#444444")))
+  "Face for ruby parentheses"
+  :group 'ruby)
+
+(use-package ruby-mode
+  :mode ".irbrc\\'"
+  :mode "\\.arb\\'"
+  :mode "\\.axlsx\\'"
+  :hook (; FIXME: object-of-class-p: Lisp nesting exceeds 'max-lisp-eval-depth': 1601 [2 times]
+         ; (ruby-mode tree-sitter-mode)
+         ; (ruby-mode . eglot-ensure) ; this is not working
+         (ruby-mode . company-mode))
+  :bind (:map ruby-mode-map
+         ("M-." . mu/ruby/find-definition)
+         ("C-M-." . 'mu/ruby/find-references)
+         ("C-c C-e" . "end\C-j")
+         ("C-M-h" . er/mark-ruby-block-up)
+         ("C-M-p" . er/ruby-backward-up)
+         ("C-c l" . "||\C-b")
+         ("C-c j" . " \M- do\n\nend\C-p\C-i")
+         ("C-M-d" . 'mu/kill-parens)) ; displace smie-down-list
+  :config
+  (font-lock-add-keywords
+   'ruby-mode
+   '(("[()]" 0 'my-ruby-paren-face)))
+  )
+
+(use-package projectile-rails
+  :hook ((ruby-mode . rvm-activate-corresponding-ruby))
+  :bind-keymap ("C-c r" . projectile-rails-command-map)
+  :config (projectile-rails-global-mode))
+
+(use-package rspec-mode
+  :hook (ruby-mode . rspec-mode)
+  :bind (:map ruby-mode-map
+         ("<f9>" . 'rspec-verify)
+         ("C-<f9>" . 'rspec-verify-live))
+  :config
+  (defun rspec-verify-live ()
+    "Run the specified spec, or the spec file for the current buffer."
+    (interactive)
+    (let ((process-environment (cons "LIVE=t" process-environment)))
+      (rspec--autosave-buffer-maybe)
+      (rspec-run-single-file (rspec-spec-file-for (buffer-file-name))
+                             (rspec-core-options)))))
+
+(use-package robe
+  :hook ((ruby-mode . robe-mode))
+  :bind (:map ruby-mode-map
+         ("C-c C-d" . 'robe-doc)
+         ("C-c C-k" . 'robe-rails-refresh)
+         ("C-c C-l" . 'robe-load-current-buffer)
+         ("C-c C-s" . 'robe-start)
+         ("C-c C-t" . 'robe-test)
+         ("C-c C-v" . 'robe-jump)))
+
+(use-package rubocop
+  :init
+  (add-hook 'ruby-mode-hook 'rubocop-mode)
+  :diminish rubocop-mode
+  :config
+  (setq rubocop-autocorrect-on-save nil))
+
+(use-package ruby-end)
+
+(use-package slim-mode
+  :bind (:map slim-mode-map
+         ("M-." . mu/ruby/find-definition)
+         ("C-c '" . 'ruby-toggle-string-quotes)
+         ("C-c 9" . 'mu/i18n/goto-translation-file)
+         ("C-c i" . 'mu/i18n/extract-translation)
+         ("C-c C-i" . 'rails-i18n-insert-with-cache)))
+
+(use-package rails-i18n
+  :bind (:map ruby-mode-map
+         ("C-c 9" . 'mu/i18n/goto-translation-file)
+         ("C-c i" . 'mu/i18n/extract-translation)
+         ("C-c C-i" . 'rails-i18n-insert-with-cache))
+  :init (require 'libyaml)
+  :config (advice-add 'rails-i18n--read-lines :override #'yaml-read-file))
+
+(use-package yari
+  :bind (:map ruby-mode-map
+         ("C-c C-y" . 'yari)))
+
+(provide 'mu/ruby)
 
 ;;; ruby.el ends here
