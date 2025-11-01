@@ -11,7 +11,7 @@
 (use-package acp :vc (:url "https://github.com/xenodium/acp.el" :rev :newest))
 (use-package agent-shell :vc (:url "https://github.com/xenodium/agent-shell" :rev :newest))
 
-;; set completion-mode
+(setopt agent-shell-file-completion-enabled t)
 
 (require 'agent-shell)
 (require 'agent-shell-anthropic)
