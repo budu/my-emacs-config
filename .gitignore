@@ -28,3 +28,4 @@ rake.cache
 local-vars.el
 forge-database*
 eln-cache
+tramp
