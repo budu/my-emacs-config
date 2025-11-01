@@ -848,7 +848,7 @@ Around advice for FUN with ARGS."
 (global-set-key (kbd "<f7>")    'mu/agent-shell-send-prompt-from-notes)
 (global-set-key (kbd "<f8>")    'mu/agent-shell-smart-switch)
 (global-set-key (kbd "<f10>")   (lambda () (interactive) (find-file "~/.bashrc")))
-(global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/.config/awesome/rc.lua")))
+(global-set-key (kbd "<f11>")   (lambda () (interactive) (find-file "~/dotfiles/awesome/.config/awesome/rc.lua")))
 (global-set-key (kbd "<f12>")   (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
 (global-set-key (kbd "C-c SPC")    'rspec-toggle-spec-and-target)
@@ -869,6 +869,7 @@ Around advice for FUN with ARGS."
 (global-set-key "\M-z"    "[]\C-b") ; displace zap-to-char
 (global-set-key "\C-\M-z" "{}\C-b")
 (global-set-key "\C-\M-d" 'mu/kill-parens) ; displace down-list
+(global-set-key "\C-_"    nil) ; displace undo
 
 (add-hook 'sh-mode-hook
  (lambda ()

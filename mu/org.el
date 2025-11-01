@@ -9,6 +9,8 @@
   (define-key org-mode-map (kbd "M-p") 'org-metaup)
   (define-key org-mode-map (kbd "M-n") 'org-metadown)
   (define-key org-mode-map (kbd "M-h") 'er/expand-region)
+  (define-key org-mode-map (kbd "C-(") 'org-shiftleft)
+  (define-key org-mode-map (kbd "C-)") 'org-shiftright)
   (define-prefix-command 'mu/org-map)
   (define-key org-mode-map (kbd "C-c o") 'mu/org-map)
   (define-key mu/org-map (kbd "p") 'org-priority-up)
