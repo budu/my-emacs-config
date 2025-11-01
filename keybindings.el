@@ -71,7 +71,15 @@
 (global-set-key "\M-z"    "[]\C-b") ; displace zap-to-char
 (global-set-key "\C-\M-z" "{}\C-b")
 (global-set-key "\C-\M-d" 'mu/kill-parens) ; displace down-list
-(global-set-key "\C-_"    nil) ; displace undo
+
+(defun mu/org-goto-root-heading ()
+  "Go to the root heading of the current Org mode buffer."
+  (interactive)
+  (condition-case nil
+      (while (org-up-heading-safe))
+    (error (message "Already at root heading."))))
+
+(global-set-key (kbd "C-_") 'mu/org-goto-root-heading) ; displace undo
 
 (add-hook 'sh-mode-hook
  (lambda ()
